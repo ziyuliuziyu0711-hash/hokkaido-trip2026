@@ -499,9 +499,9 @@
             
             // 篩選出有效的值
             const detailsList = [
-                { label: '⏰ 時間/營業時間', value: item.time },
-                { label: '🎫 門票', value: item.ticket },
-                { label: '🌟 完整特色/備註', value: item.feature },
+                { label: '⏰ 營業時間', value: item.time },
+                { label: '🎫 門票費用', value: item.ticket },
+                { label: '🌟 特色&備註', value: item.feature },
             ].filter(d => d.value && d.value.trim() !== '' && d.value.trim() !== '無'); 
 
             // 將 feature 內容中的分號替換為換行符，使文字更易閱讀
@@ -512,7 +512,7 @@
                 ? `<ul class="detail-list">
                     ${detailsList.map(d => {
                         // 特色/備註單獨處理，使用 <pre> 保持格式
-                        if (d.label === '🌟 完整特色/備註') {
+                        if (d.label === '🌟 特色&備註') {
                             return `<li class="feature-item"><span class="detail-label">🌟 完整特色/備註</span>: <pre>${formattedFeature}</pre></li>`;
                         } else {
                             return `<li><span class="detail-label">${d.label}</span>: ${d.value}</li>`;
@@ -782,10 +782,10 @@
             // 生成表單內容 (確保欄位對應)
             const formFields = [
                 { id: 'title', label: '景點/餐廳名稱 (必填)', type: 'text', value: activity.title, required: true },
-                { id: 'time', label: '時間/營業時間', type: 'text', value: activity.time },
-                { id: 'ticket', label: '門票資訊 (e.g. 成人 ¥1800)', type: 'text', value: activity.ticket },
-                { id: 'feature', label: '特色/備註 (完整且詳細)', type: 'textarea', value: activity.feature },
-                { id: 'location', label: '地點 (地圖導航用)', type: 'text', value: activity.location, required: true },
+                { id: 'time', label: '營業時間', type: 'text', value: activity.time },
+                { id: 'ticket', label: '門票資訊', type: 'text', value: activity.ticket },
+                { id: 'feature', label: '特色/備註', type: 'textarea', value: activity.feature },
+                { id: 'location', label: '地點', type: 'text', value: activity.location, required: true },
                 { id: 'travelTime', label: '車程時間 (從上一個景點到此景點的時間)', type: 'text', value: activity.travelTime },
             ];
 
@@ -875,7 +875,6 @@
                 <select id="expense-method" name="method" required>
                     <option value="現金">現金</option>
                     <option value="刷卡">刷卡</option>
-                    <option value="網購">網購</option>
                     <option value="其他">其他</option>
                 </select>
                 
