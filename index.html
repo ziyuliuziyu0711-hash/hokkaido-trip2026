@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-<header class="app-header">
-    <div class="header-branding">
-        <span class="family-icon">🐻</span>
-        <div class="title-group">
-            <h1 class="main-title">森林一家 2026</h1>
-            <h2 class="sub-title">北海道 7 日親子行程</h2>
-        </div>
-        <span class="family-icon">🦊</span>
-    </div>
-    <p class="header-slogan">森林＆小葵探索冰雪王國！</p>
-</header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐻🦊 森林一家 2026 北海道 7 日親子行程 ❄️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
-    <div id="app"></div>
+    <div class="app-container"> 
+        
+        <header class="app-header">
+            <div class="header-branding">
+                <span class="family-icon">🐻</span>
+                <div class="title-group">
+                    <h1 class="main-title">森林一家 2026</h1>
+                    <h2 class="sub-title">北海道 7 日親子行程</h2>
+                </div>
+                <span class="family-icon">🦊</span>
+            </div>
+            <p class="header-slogan">森林＆小葵探索冰雪王國！</p>
+        </header>
 
-    <script>
+        <div id="app"></div>
+
+    </div> <script>
         // ******************************************************
         // *** Vanilla JavaScript 行程應用程式 V2.0 邏輯 ***
         // ******************************************************
@@ -67,37 +79,4 @@
                         details: ['海獸表演：11:00、13:00、15:00', '企鵝散步：冬季限定 11:30、12:40、13:30、14:40', '門票：成人 1,800日圓'] },
                     { 
                         time: '午餐', desc: '❷🍽️ cafe BAAL カフェバール', location: 'cafe BAAL カフェバール', travelTime: '約 15 分鐘', 
-                        details: ['營業時間：11:30-14:30（週一公休）', '必點：牛排飯', '備註：店內油煙味重'],
-                        alt: { desc: '或 三角市場', location: '三角市場' }
-                    },
-                    { time: '下午', desc: '❸📷🛍️ 小樽堺町通り商店街', location: '小樽堺町通り商店街', 
-                        details: ['必逛：北一硝子、小樽音樂盒堂、LeTAO 總店、六花亭、北菓樓、SNOOPY茶屋'] },
-                    { time: '約 15:00', desc: '❹🚠 天狗山纜車 (賞景)', location: '小樽天狗山纜車', travelTime: '約 10 分鐘', 
-                        details: ['特色：北海道三大夜景之一', '門票：成人 1,800日圓', '營業時間：9:00-21:00'] },
-                    { time: '晚上', desc: '❺🏨 返回札幌大通東急STAY酒店', location: '札幌大通東急STAY酒店', travelTime: '約 50 分鐘返回札幌' },
-                ]
-            },
-            // 3/8
-            {
-                date: '3/8', day: 'Sun', title: 'Day 3: 旭川&美瑛&富良野', icon: '🌲', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
-                details: [
-                    { time: '早餐', desc: '🥪 Sandria三明治 (車程約 2hr)', location: 'Sandria', details: ['特色：24小時營業，多樣化選擇，平價實惠。'] },
-                    { time: '上午', desc: '❶🐧 旭山動物園', location: '旭山動物園', travelTime: '札幌出發約 2 小時',
-                        details: ['特色：冬季限定企鵝散步、行動展示 (北極熊、海豹)', '冬季時間：10:30–15:30', '門票：成人 ¥1000'] },
-                    { time: '午餐', desc: '❷🍜 山頭火拉麵', location: '山頭火本店', details: ['旭川發源，經典豚骨拉麵'] },
-                    { time: '下午', desc: '❸📷 美瑛聖誕樹', location: '美瑛聖誕樹', details: ['周邊景點：白鬚瀑布、四季彩之丘 (冬季部分關閉)'] },
-                    { time: '傍晚', desc: '❹📷 森林精靈露台', location: '森林精靈露台', travelTime: '約 1 小時', 
-                        details: ['特色：童話氛圍，木製小屋販售手工藝品，夜間點燈浪漫', '營業時間:10:00-20:45', '免費入場'] },
-                    { time: '晚上', desc: '❺🏪 COOP超市 & Seicomart', location: 'COOP supermarket Furano', 
-                        details: ['Seicomart：必買Hot Chef現做熟食、Secoma自有品牌。'] },
-                    { time: '住宿', desc: '❻🏨 富良野ホテル FURANO HOTEL', location: '富良野ホテル' },
-                ]
-            },
-            // 3/9
-            {
-                date: '3/9', day: 'Mon', title: 'Day 4: 富良野 → 登別溫泉', icon: '♨️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
-                details: [
-                    { time: '上午', desc: '❶🍫 白色戀人工廠', location: '白色戀人工廠', travelTime: '富良野出發約 2 小時 30 分鐘',
-                        details: ['特色：夢幻歐式建築，工廠參觀，甜點DIY體驗', '門票：成人 800日圓', '營業時間：10:00-19:00'] },
-                    { time: '中午', desc: '❷❄️ 國營瀧野鈴蘭丘陵公園', location: '國營瀧野鈴蘭丘陵公園', travelTime: '約 45 分鐘',
-                        details: ['冬季：化身為瀧野雪之世界，雪上活動，免費入園', '夏季：成人 450日圓', '營業時間：9:00
+                        details
