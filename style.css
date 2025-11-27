@@ -1,124 +1,148 @@
-/* style.css - 2025 北海道行程 App 樣式表 */
+/* style.css - 2025 北海道行程 App 樣式表 V3.0 (深色主題/新排版) */
 
 /* 1. 變數與基礎設定 */
 :root {
-    --primary-color: #007bff;     /* 主色調：藍色 (雪國/App 互動色) */
-    --secondary-color: #f8f9fa;   /* 淺灰色背景 */
-    --text-color: #343a40;        /* 主要文字顏色 */
+    --primary-color: #3b82f6;     /* 主色調：質感藍 */
+    --accent-color: #10b981;      /* 強調色：綠色 (例如地圖連結/特色按鈕) */
+    --background-dark: #f0f4f8;   /* 淺灰藍背景 */
     --card-bg: #ffffff;           /* 卡片背景色 */
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 柔和陰影 */
+    --text-color-dark: #1f2937;   /* 主要文字顏色 */
+    --text-color-light: #4b5563;  /* 次要文字顏色 */
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* 確保您已在 index.html 引入 Noto Sans TC */
 body {
     font-family: 'Noto Sans TC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--secondary-color);
-    color: var(--text-color);
+    background-color: var(--background-dark); /* 解決太白的問題 */
+    color: var(--text-color-dark);
     margin: 0;
     padding: 0;
     line-height: 1.6;
 }
 
 .app-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 30px auto;
-    padding: 20px;
+    padding: 30px;
     background-color: var(--card-bg);
-    border-radius: 12px;
+    border-radius: 16px;
     box-shadow: var(--shadow);
 }
 
 /* --- 2. Header --- */
 .app-header {
     text-align: center;
-    padding-bottom: 20px;
-    margin-bottom: 10px;
-    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 25px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--primary-color);
 }
 .app-header h1 {
     font-weight: 700;
     color: var(--primary-color);
     margin: 0;
+    font-size: 2.2rem;
+}
+.app-header p {
+    color: var(--text-color-light);
+    margin: 5px 0 0;
 }
 
-/* --- 3. Navigation (日期切換) --- */
+/* --- 3. Main Tabs (新增分頁導覽) --- */
+.main-tab-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.main-tab-btn {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-color-light);
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.main-tab-btn:hover {
+    color: var(--primary-color);
+}
+
+.main-tab-btn.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+/* --- 4. Date Navigation (日期縮寫上下擺放) --- */
 .day-nav {
     display: flex;
-    overflow-x: auto; /* 允許水平滾動 */
-    padding: 15px 0;
-    border-bottom: 1px solid #dee2e6;
-    margin-bottom: 20px;
-    /* 隱藏滾動條 (Webkit - Chrome, Safari) */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    overflow-x: auto;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    /* 隱藏滾動條 */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 .day-nav::-webkit-scrollbar {
     display: none;
 }
 
 .nav-button {
-    flex-shrink: 0; /* 防止按鈕被壓縮 */
-    background-color: #e9ecef;
-    color: var(--text-color);
-    border: none;
-    padding: 10px 15px;
-    margin-right: 8px;
-    border-radius: 20px;
+    flex-shrink: 0;
+    background-color: var(--background-dark);
+    color: var(--text-color-dark);
+    border: 1px solid #d1d5db;
+    padding: 8px 15px;
+    margin-right: 10px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-weight: 500;
     outline: none;
+    
+    /* 實現日期縮寫上下擺放 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.2;
 }
 
 .nav-button:hover {
-    background-color: #ced4da;
+    background-color: #e5e7eb;
+    border-color: var(--primary-color);
 }
 
 .nav-button.active {
     background-color: var(--primary-color);
     color: white;
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.4);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+    border-color: var(--primary-color);
+}
+
+.nav-day {
+    font-size: 0.9rem;
+    font-weight: 300;
+}
+.nav-date {
+    font-size: 1.4rem;
     font-weight: 700;
 }
 
-/* --- 4. Trip Detail Card --- */
-.day-card {
-    padding: 15px 0;
-}
-
+/* --- 5. Trip Detail Card --- */
 .card-title {
     color: var(--primary-color);
     margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-size: 2rem;
     padding-bottom: 5px;
+    border-bottom: 1px dashed #e5e7eb;
     font-weight: 700;
 }
 
-/* --- 5. Weather Box --- */
-.weather-box {
-    display: flex;
-    align-items: center;
-    background-color: #f0f8ff; /* 淺藍色背景 */
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    border: 1px solid #b3d9ff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.weather-icon {
-    font-size: 2.5rem;
-    margin-right: 15px;
-}
-
-.weather-info p {
-    margin: 0;
-    line-height: 1.4;
-    font-size: 0.95rem;
-}
-
-/* --- 6. Activity List --- */
+/* --- 6. Activity List (修正地圖連結樣式) --- */
 .activity-list {
     list-style: none;
     padding: 0;
@@ -126,40 +150,32 @@ body {
 
 .activity-item {
     display: flex;
+    flex-wrap: wrap; /* 允許換行以容納細節 */
     justify-content: space-between;
-    align-items: center;
     background-color: var(--secondary-color);
-    padding: 15px 20px; /* 增加內邊距 */
-    margin-bottom: 12px;
-    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
     border-left: 6px solid var(--primary-color);
-    transition: transform 0.2s;
+    transition: box-shadow 0.2s;
 }
 
 .activity-item:hover {
-    transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .activity-content {
     flex-grow: 1;
     margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 75%; /* 確保描述佔用足夠空間 */
+}
+
+.description-wrap {
+    font-size: 1.1rem;
+    margin-top: 5px;
 }
 
 .activity-item .time {
-    font-weight: bold;
-    color: #495057;
-    white-space: nowrap; /* 防止時間換行 */
-}
-
-/* 車程時間樣式 */
-.travel-time {
-    margin: 5px 0 0 0;
-    font-size: 0.85rem;
-    color: #6c757d;
-    font-style: italic;
-    display: flex;
-    align-items: center;
-}
-
-.travel
+    font
