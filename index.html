@@ -188,10 +188,10 @@
         // appContainer 變數現在引用的是 #app 元素
         const appContainer = document.getElementById('app');
         
-        // 輔助函式：生成 Google Maps 連結 (已修正)
+        // 輔助函式：生成 Google Maps 連結 (已修正：修復語法錯誤)
         function getMapLink(locationName) {
             if (!locationName) return null;
-            // 使用正確的 Google Maps 搜尋 URL 格式
+            // 修正為標準 Google Maps 搜尋 URL，確保 JavaScript 語法正確
             return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName + ', 北海道')}`;
         }
         
@@ -217,7 +217,6 @@
                 : mainLocation;
             
             // 替換描述中的第一個地點名稱為連結
-            // 這裡使用了正規表達式來確保替換的是描述中的第一個出現的地點名稱
             let descriptiveText = item.desc;
             if (mainLocation) {
                 // 替換描述中的第一個地點名稱為超連結，同時保留前面的編號/符號
