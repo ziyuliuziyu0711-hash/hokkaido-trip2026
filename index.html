@@ -3,156 +3,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐻🦊 森林一家 2026 北海道 7 日親子行程 ❄️</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
-    
+    <title>北海道七天六夜行程（完整版 V3.2）</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div class="app-container"> 
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-size='20' fill='%23000'%3E🗺️%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+    
+    <style>
+        /* 內聯 CSS 僅為演示，建議寫入 style.css */
         
-        <header class="app-header">
-            <div class="header-branding">
-                <span class="family-icon">🐻</span>
-                <div class="title-group">
-                    <h1 class="main-title">森林一家 2026</h1>
-                    <h2 class="sub-title">北海道 7 日親子行程</h2>
-                </div>
-                <span class="family-icon">🦊</span>
-            </div>
-            <p class="header-slogan">森林＆小葵探索冰雪王國！</p>
-        </header>
-
-        <div id="app"></div>
-
-    </div> <script>
-        // ******************************************************
-        // *** Vanilla JavaScript 行程應用程式 V2.0 邏輯 ***
-        // ******************************************************
-
-        // --- 核心數據結構 (Part 1: 數據大更新) ---
+        /* 基礎樣式和響應式設計請參考 style.css */
         
-        // 輔助函式：從描述中提取主要地點
-        function extractLocationName(desc) {
-            // 嘗試匹配常見的符號分隔，並取第一個詞條
-            const parts = desc.split(/｜|、|⮕/);
-            if (parts.length > 1) {
-                // 排除開頭的表情符號或編號
-                const cleanName = parts[1].trim().replace(/^[❶-❼✈️🏨🍽️📷🛍️🚗🐧🍜🚠🍫❄️🐻🔥🏪]/, '').trim();
-                return cleanName;
-            }
-            // 處理簡單描述
-            return desc.trim().split(' ')[0].replace(/^[❶-❼✈️🏨🍽️📷🛍️🚗🐧🍜🚠🍫❄️🐻🔥🏪]/, '').trim();
+        /* 讓手機應用程式的介面更簡潔 */
+        
+        /* Modal Style (編輯視窗) */
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none; /* 預設隱藏 */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
 
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        
+        #activity-form label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #activity-form input[type="text"],
+        #activity-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        #activity-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .form-actions button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .save-btn {
+            background-color: #3498db;
+            color: white;
+            flex-grow: 1;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            flex-grow: 0.5;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>❄️ 北海道七天六夜 (3/6 - 3/12)</h1>
+    </header>
+    
+    <div id="app">
+        </div>
+    
+    <div id="modal-container" class="modal-container">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>編輯行程項目</h2>
+            <form id="activity-form">
+                </form>
+        </div>
+    </div>
+
+    <script>
+        // ******************************************************
+        // *** Vanilla JavaScript 行程應用程式 V3.2 邏輯 (數據完整版) ***
+        // ******************************************************
+
+        // --- 核心數據結構 (Part 1: 數據結構重定義與內容填充) ---
+        
+        // 輔助函式：生成 Google Maps 連結 (確保地點名稱被正確編碼)
+        function getMapLink(locationName) {
+            if (!locationName) return null;
+            // 使用 encodeURIComponent 確保中文地點名稱正確傳遞
+            return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName + ', 北海道')}`;
+        }
+
+        // 新增行程結構，包含所有必要欄位 (根據使用者提供的完整詳細資訊填充)
         const tripData = [
             // 3/6
             {
                 date: '3/6', day: 'Fri', title: 'Day 1: 札幌市區遊', icon: '🏙️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 details: [
-                    { time: '6:00 - 13:15', desc: '❶✈️ 桃園機場 (TPE) ⮕ 新千歲機場 (CTS)', location: '新千歲機場' },
-                    { time: '下午', desc: '❷🏨 札幌大通東急STAY酒店', location: '札幌大通東急STAY酒店', travelTime: '機場巴士約 60-80 分鐘', details: ['搭機場巴士（約60-80分鐘）', '到國內線14、22站台搭車（因為先往國內線再到國際線載客）', '有分直達車、全達車'] },
+                    { id: 101, title: '桃園機場 (TPE) ⮕ 新千歲機場 (CTS)', time: '6:00 - 13:15', ticket: '無', feature: 'CI0130 華航。', location: '新千歲機場', travelTime: null },
                     { 
-                        time: '晚餐', desc: '❸🍽️ Soup Curry GARAKU', location: 'Soup Curry GARAKU', 
-                        details: ['營業時間：11:30-15:00、17:00-20:30 (周一至周日)', '人氣餐點：燉豬肉湯咖哩、嫩雞腿和蔬菜湯咖哩'], 
-                        alt: { desc: '或 奧芝商店 実家', location: '奥芝商店 実家', details: ['營業時間：11:00-15:00、17:00-20:30 (周二至周日)', '人氣餐點：嫩雞腿和蔬菜湯咖哩'] }
+                        id: 102, 
+                        title: '札幌大通東急STAY酒店 (Check-in)', 
+                        time: '下午', 
+                        ticket: '無', 
+                        feature: '搭機場巴士（約60-80分鐘）。到國內線14、22站台搭車（因為先往國內線再到國際線載客）。有分直達車、全達車。', 
+                        location: '札幌大通東急STAY酒店', 
+                        travelTime: '機場巴士約 60-80 分鐘' 
                     },
-                    { time: '晚上', desc: '❹📷 大通公園', location: '大通公園', details: ['周邊景點：札幌電視塔'] },
                     { 
-                        time: '購物', desc: '❺🛍️ 貍小路商店街', location: '貍小路商店街', 
-                        details: ['1～3丁目： 聚集了許多伴手禮店和藥妝店。', '4～5丁目： 藥妝店最密集的區域，也是購物人潮最多的地方。', '6～7丁目： 較偏向當地居民消費的居酒屋和特色餐廳。'] 
+                        id: 103, 
+                        title: '午餐選項：Soup Curry GARAKU (湯咖哩)', 
+                        time: '11:30-15:00', 
+                        ticket: '無', 
+                        feature: '營業時間：11:30-15:00, 17:00-20:30 (周一至周日)。人氣餐點：燉豬肉湯咖哩、嫩雞腿和蔬菜湯咖哩。', 
+                        location: 'Soup Curry GARAKU', 
+                        travelTime: '步行約 5-10 分鐘' 
                     },
-                    { time: '宵夜', desc: '❻🍽️ 成吉思汗羊肉', location: '成吉思汗だるま 本店' },
                     { 
-                        time: '採買', desc: '❼🛍️ 業務超市 (至22:00)', location: '業務超市 札幌店', 
-                        details: ['特色：主要販售業務用的大份量包裝商品。價格實惠、進口商品多、冷凍食品齊全。'] 
+                        id: 104, 
+                        title: '午餐選項：奥芝商店 実家 (湯咖哩)', 
+                        time: '11:00-15:00', 
+                        ticket: '無', 
+                        feature: '營業時間：11:00-15:00, 17:00-20:30 (周二至周日)。人氣餐點：嫩雞腿和蔬菜湯咖哩。', 
+                        location: '奥芝商店 実家', 
+                        travelTime: '步行約 5-10 分鐘' 
+                    },
+                    { 
+                        id: 105, 
+                        title: '大通公園', 
+                        time: '下午', 
+                        ticket: '無', 
+                        feature: '公園特色：位於札幌市中心狹長型綠地公園，西起札幌市資料館，東至札幌電視塔。四季風情：冬天為聞名世界的札幌雪祭會場。交通便利：可搭乘札幌市營地鐵南北線或東豐線，在大通站下車，步行約2分鐘即可抵達。', 
+                        location: '大通公園', 
+                        travelTime: '步行約 5 分鐘' 
+                    },
+                    { 
+                        id: 106, 
+                        title: '札幌電視塔', 
+                        time: '9:00-22:00', 
+                        ticket: '登塔票 TBD', 
+                        feature: '電視塔資訊：是大通公園最東側的地標性建築，高度為147.2公尺。觀景台景觀：從離地90.38公尺高的觀景台，夜晚能欣賞札幌市璀璨夜景，尤其冬季燈樹節期間景色更迷人。塔內設有販賣部，可購買電視塔吉祥物「電視老爹」周邊商品。', 
+                        location: '札幌電視塔', 
+                        travelTime: '步行約 3 分鐘' 
+                    },
+                    { 
+                        id: 107, 
+                        title: '貍小路商店街', 
+                        time: '購物', 
+                        ticket: '無', 
+                        feature: '特色：1～3丁目聚集伴手禮店和藥妝店。4～5丁目是藥妝店最密集的區域。6～7丁目較偏向當地居民消費的居酒屋和特色餐廳。', 
+                        location: '貍小路商店街', 
+                        travelTime: '步行約 5 分鐘' 
+                    },
+                    { 
+                        id: 108, 
+                        title: '晚餐選項：北海道ジンギスカンMASAJIN すすきの本店 (羊肉)', 
+                        time: '17:00–23:00', 
+                        ticket: '無', 
+                        feature: '營業時間：17:00–23:00。', 
+                        location: '北海道ジンギスカンMASAJIN すすきの本店', 
+                        travelTime: '步行約 10 分鐘' 
+                    },
+                    { 
+                        id: 109, 
+                        title: '晚餐選項：成吉思汗烤肉YUHI 薄野本店 (羊肉)', 
+                        time: '17:00–23:00', 
+                        ticket: '無', 
+                        feature: '營業時間：平日 17:00–23:00；週末及假日 午餐 13:00–15:00, 晚餐 17:00–00:00 (週六) / 23:00 (週日)。', 
+                        location: '成吉思汗烤肉YUHI 薄野本店', 
+                        travelTime: '步行約 10 分鐘' 
+                    },
+                    { 
+                        id: 110, 
+                        title: '業務超市', 
+                        time: '採買 (09:00–22:00)', 
+                        ticket: '無', 
+                        feature: '特色：主要販售業務用大份量包裝商品，價格實惠。進口商品多，冷凍食品齊全，從肉類、海鮮到各種調理好的食品應有盡有。', 
+                        location: '業務スーパー 札幌店', 
+                        travelTime: '步行約 10 分鐘' 
                     },
                 ]
             },
             // 3/7
             {
-                date: '3/7', day: 'Sat', title: 'Day 2: 小樽運河與海港', icon: '🚢', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                date: '3/7', day: 'Sat', title: 'Day 2: 小樽', icon: '🚢', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 details: [
-                    { time: '上午', desc: '❶🐧 小樽水族館', location: '小樽水族館', travelTime: '酒店出發約 55 分鐘',
-                        details: ['海獸表演：11:00、13:00、15:00', '企鵝散步：冬季限定 11:30、12:40、13:30、14:40', '門票：成人 1,800日圓'] },
                     { 
-                        time: '午餐', desc: '❷🍽️ cafe BAAL カフェバール', location: 'cafe BAAL カフェバール', travelTime: '約 15 分鐘', 
-                        details: ['營業時間：11:30-14:30（週一公休）', '必點：牛排飯', '備註：店內油煙味重'],
-                        alt: { desc: '或 三角市場', location: '三角市場' }
+                        id: 201, 
+                        title: '小樽水族館', 
+                        time: '9:00-16:00', 
+                        ticket: '成人 ¥1800', 
+                        feature: '園區特色：海獸表演（海豚、海獅、企鵝）。冬季限定企鵝散步（11:30/12:40/13:30/14:40）。海獅海豚表演11:00/13:00/15:00。海豹餵食（14:30）。設有海星觸摸體驗區。附近有「鰊御殿」等歷史建築。', 
+                        location: '小樽水族館', 
+                        travelTime: '酒店出發約 55 分鐘' 
                     },
-                    { time: '下午', desc: '❸📷🛍️ 小樽堺町通り商店街', location: '小樽堺町通り商店街', 
-                        details: ['必逛：北一硝子、小樽音樂盒堂、LeTAO 總店、六花亭、北菓樓、SNOOPY茶屋'] },
-                    { time: '約 15:00', desc: '❹🚠 天狗山纜車 (賞景)', location: '小樽天狗山纜車', travelTime: '約 10 分鐘', 
-                        details: ['特色：北海道三大夜景之一', '門票：成人 1,800日圓', '營業時間：9:00-21:00'] },
-                    { time: '晚上', desc: '❺🏨 返回札幌大通東急STAY酒店', location: '札幌大通東急STAY酒店', travelTime: '約 50 分鐘返回札幌' },
+                    { 
+                        id: 202, 
+                        title: 'cafe BAAL カフェバール', 
+                        time: '11:30-14:30', 
+                        ticket: '無', 
+                        feature: '週一公休。必點：牛排飯。注意：店內油煙味可能較重。', 
+                        location: 'cafe BAAL カフェバール', 
+                        travelTime: '約 15 分鐘' 
+                    },
+                    { 
+                        id: 203, 
+                        title: '三角市場', 
+                        time: '8:00-17:00 (各店不同)', 
+                        ticket: '無', 
+                        feature: '市場資訊：位於JR小樽車站旁，步行約1分鐘。特色：新鮮海產（帝王蟹、海膽等），可購買後請店家代為烹煮。許多食堂提供豐盛的海鮮丼飯。知名食堂：滝波食堂（豪華海鮮丼）、惠比壽櫻。', 
+                        location: '三角市場', 
+                        travelTime: '步行約 5 分鐘' 
+                    },
+                    { 
+                        id: 204, 
+                        title: '小樽堺町通り商店街', 
+                        time: '下午', 
+                        ticket: '無', 
+                        feature: '必逛商店：北一硝子（三號館有167盞煤油燈）、小樽音樂盒堂本館（蒸汽鐘每15分鐘報時）、LeTAO 總店（雙層起司蛋糕）、六花亭、北菓樓（夢不思議大泡芙/年輪蛋糕）、SNOOPY茶屋。', 
+                        location: '小樽堺町通り商店街', 
+                        travelTime: '步行約 10 分鐘' 
+                    },
+                    { 
+                        id: 205, 
+                        title: '天狗山纜車', 
+                        time: '9:00-21:00 (約15:00上山)', 
+                        ticket: '成人 ¥1800', 
+                        feature: '景點特色：北海道三大夜景之一。冬天是滑雪場。山頂設有「天狗之館」和「天狗神社」，有長鼻天狗可摸鼻子祈福。', 
+                        location: '小樽天狗山纜車', 
+                        travelTime: '約 10 分鐘' 
+                    },
+                    { 
+                        id: 206, 
+                        title: '返回札幌大通東急STAY酒店', 
+                        time: '晚上', 
+                        ticket: '無', 
+                        feature: '休息', 
+                        location: '札幌大通東急STAY酒店', 
+                        travelTime: '約 50 分鐘返回札幌' 
+                    },
                 ]
             },
             // 3/8
             {
                 date: '3/8', day: 'Sun', title: 'Day 3: 旭川&美瑛&富良野', icon: '🌲', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 details: [
-                    { time: '早餐', desc: '🥪 Sandria三明治 (車程約 2hr)', location: 'Sandria', details: ['特色：24小時營業，多樣化選擇，平價實惠。'] },
-                    { time: '上午', desc: '❶🐧 旭山動物園', location: '旭山動物園', travelTime: '札幌出發約 2 小時',
-                        details: ['特色：冬季限定企鵝散步、行動展示 (北極熊、海豹)', '冬季時間：10:30–15:30', '門票：成人 ¥1000'] },
-                    { time: '午餐', desc: '❷🍜 山頭火拉麵', location: '山頭火本店', details: ['旭川發源，經典豚骨拉麵'] },
-                    { time: '下午', desc: '❸📷 美瑛聖誕樹', location: '美瑛聖誕樹', details: ['周邊景點：白鬚瀑布、四季彩之丘 (冬季部分關閉)'] },
-                    { time: '傍晚', desc: '❹📷 森林精靈露台', location: '森林精靈露台', travelTime: '約 1 小時', 
-                        details: ['特色：童話氛圍，木製小屋販售手工藝品，夜間點燈浪漫', '營業時間:10:00-20:45', '免費入場'] },
-                    { time: '晚上', desc: '❺🏪 COOP超市 & Seicomart', location: 'COOP supermarket Furano', 
-                        details: ['Seicomart：必買Hot Chef現做熟食、Secoma自有品牌。'] },
-                    { time: '住宿', desc: '❻🏨 富良野ホテル FURANO HOTEL', location: '富良野ホテル' },
+                    { 
+                        id: 301, 
+                        title: 'Sandria三明治 (24H)', 
+                        time: '早餐', 
+                        ticket: '無', 
+                        feature: '特色：每日提供約40種口味的三明治，平價實惠（¥200-¥350）。人氣商品：雙倍蛋沙拉（ダブルエッグ）、炸蝦三明治、水果三明治。', 
+                        location: 'Sandria', 
+                        travelTime: '車程約 2 小時' 
+                    },
+                    { 
+                        id: 302, 
+                        title: '旭山動物園', 
+                        time: '10:30–15:30', 
+                        ticket: '成人 ¥1000', 
+                        feature: '特色亮點：冬季限定企鵝散步（約12月中旬至隔年3月中旬）。行動展示：北極熊館透明圓頂、海豹館圓柱通道。多樣動物：黑猩猩、長頸鹿、河馬等。', 
+                        location: '旭山動物園', 
+                        travelTime: '約 15 分鐘' 
+                    },
+                    { 
+                        id: 303, 
+                        title: '山頭火本店 (午餐)', 
+                        time: '午餐', 
+                        ticket: '無', 
+                        feature: '旭川發源的經典豚骨拉麵店。', 
+                        location: '山頭火本店', 
+                        travelTime: '約 20 分鐘' 
+                    },
+                    { 
+                        id: 304, 
+                        title: '美瑛：聖誕樹 & 白鬚瀑布 & 四季彩之丘', 
+                        time: '下午', 
+                        ticket: '無', 
+                        feature: '戶外打卡點，冬季雪景。', 
+                        location: '美瑛聖誕樹', 
+                        travelTime: '約 30 分鐘' 
+                    },
+                    { 
+                        id: 305, 
+                        title: '森林精靈露台', 
+                        time: '傍晚 (10:00-20:45)', 
+                        ticket: '免費', 
+                        feature: '景點特色：露台由木製小屋組成，販售當地藝術家的原創手工藝品（約15間）。冬季的雪景和夜晚的溫暖燈光最浪漫。部分商店提供手作體驗。', 
+                        location: '森林精靈露台', 
+                        travelTime: '約 1 小時' 
+                    },
+                    { 
+                        id: 306, 
+                        title: 'COOP超市 & Seicomart', 
+                        time: '晚上', 
+                        ticket: '無', 
+                        feature: 'COOP: 販售北海道當地生鮮，自有品牌性價比高。Seicomart: 必買「Hot Chef」現做熟食（炸豬排丼、炸雞），「Secoma」自有品牌強調使用在地食材，酒類選擇豐富。', 
+                        location: 'COOP supermarket Furano', 
+                        travelTime: '約 10 分鐘' 
+                    },
+                    { 
+                        id: 307, 
+                        title: '富良野ホテル FURANO HOTEL', 
+                        time: '住宿', 
+                        ticket: '無', 
+                        feature: '休息', 
+                        location: '富良野ホテル FURANO HOTEL', 
+                        travelTime: null 
+                    },
                 ]
             },
             // 3/9 
             {
                 date: '3/9', day: 'Mon', title: 'Day 4: 富良野 → 登別溫泉', icon: '♨️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 details: [
-                    { time: '上午', desc: '❶🍫 白色戀人工廠', location: '白色戀人工廠', travelTime: '富良野出發約 2 小時 30 分鐘',
-                        details: ['特色：夢幻歐式建築，工廠參觀，甜點DIY體驗', '門票：成人 800日圓', '營業時間：10:00-19:00'] },
-                    { time: '中午', desc: '❷❄️ 國營瀧野鈴蘭丘陵公園', location: '國營瀧野鈴蘭丘陵公園', travelTime: '約 45 分鐘',
-                        details: ['冬季：化身為瀧野雪之世界，雪上活動，免費入園', '夏季：成人 450日圓', '營業時間：9:00-17:00'] },
-                    { time: '傍晚', desc: '❸🚗 驅車前往登別溫泉街', location: '登別溫泉街', travelTime: '約 1 小時 20 分鐘',
-                        details: ['特色：溫泉街有許多鬼雕像，閻魔堂地獄審判變臉秀，免費足湯'] },
-                    { time: '晚上', desc: '❹🏨 登別溫泉第一瀧本館', location: '登別溫泉第一瀧本館' },
+                    { 
+                        id: 401, 
+                        title: '白色戀人工廠', 
+                        time: '10:00-19:00', 
+                        ticket: '成人 ¥800 (兒童免費)', 
+                        feature: '景點特色：夢幻歐式建築與庭園，冬季有浪漫點燈。可參觀餅乾生產線。提供甜點DIY體驗（¥1,400~¥1,800）。「牛津巧克力酒廊」有獨家甜點，整點有鐘樓表演。', 
+                        location: '白色戀人工廠', 
+                        travelTime: '富良野出發約 2 小時 30 分鐘' 
+                    },
+                    { 
+                        id: 402, 
+                        title: '國營瀧野鈴蘭丘陵公園 (瀧野雪之世界)', 
+                        time: '9:00-17:00', 
+                        ticket: '冬季免費入園', 
+                        feature: '四季特色：冬季化身為「瀧野雪之世界」，提供雪上橡皮艇、滑雪、雪鞋漫步等雪上活動。春季有鬱金香、夏季有薰衣草。', 
+                        location: '國營瀧野鈴蘭丘陵公園', 
+                        travelTime: '約 45 分鐘' 
+                    },
+                    { 
+                        id: 403, 
+                        title: '登別溫泉街', 
+                        time: '傍晚', 
+                        ticket: '無', 
+                        feature: '溫泉街特色：以「鬼」的元素為主題，設有可愛的鬼雕像與路燈。有「閻魔堂地獄審判」變臉秀。可品嚐當地特色美食，設有免費足湯。', 
+                        location: '登別溫泉街', 
+                        travelTime: '約 1 小時 20 分鐘' 
+                    },
+                    { 
+                        id: 404, 
+                        title: '登別溫泉第一瀧本館', 
+                        time: '住宿', 
+                        ticket: '無', 
+                        feature: '休息', 
+                        location: '登別溫泉第一瀧本館', 
+                        travelTime: null 
+                    },
                 ]
             },
             // 3/10
             {
                 date: '3/10', day: 'Tue', title: 'Day 5: 登別主題樂園', icon: '🐻', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 details: [
-                    { time: '上午', desc: '❶🐧 尼克斯海洋公園', location: '登別尼克斯海洋公園', travelTime: '約 10 分鐘', 
-                        details: ['特色：歐式城堡水族館，企鵝遊行 11:00/14:15', '門票：成人 3,000日圓', '表演：海豚/海獅表演'] },
-                    { time: '中午', desc: '❷🐻 登別熊牧場', location: '登別熊牧場',
-                        details: ['特色：纜車體驗，人之籠近距離觀察棕熊，餵食互動', '門票：成人 3,000日圓 (含纜車)', '營業時間：9:30-16:30'] },
-                    { time: '下午', desc: '❸🔥 登別地獄谷', location: '登別地獄谷', 
-                        details: ['特色：爆裂火山口地貌，晚上有鬼火之路 (夜間點燈)', '免費參觀', '周邊景點：鐵泉池間歇泉'] },
-                    { time: '晚上', desc: '❹🏨 登別溫泉第一瀧本館', location: '登別溫泉第一瀧本館' },
+                    { 
+                        id: 501, 
+                        title: '尼克斯海洋公園', 
+                        time: '9:00-17:00', 
+                        ticket: '成人 ¥3000', 
+                        feature: '園區特色：主體建築是歐式城堡水族館。長達8公尺的「銀河水槽」。企鵝遊行 11:00/14:15。海豚表演、海獅表演。有金魚萬花筒及觸摸體驗區。', 
+                        location: '登別尼克斯海洋公園', 
+                        travelTime: '約 10 分鐘' 
+                    },
+                    { 
+                        id: 502, 
+                        title: '登別熊牧場', 
+                        time: '9:30-16:30', 
+                        ticket: '成人 ¥3000 (含纜車)', 
+                        feature: '園區特色：需搭乘纜車。有「人之籠」近距離觀察大公熊。可購買飼料餵食。有世界唯一的「棕熊博物館」，可眺望火山湖「俱多樂湖」。', 
+                        location: '登別熊牧場', 
+                        travelTime: '約 10 分鐘' 
+                    },
+                    { 
+                        id: 503, 
+                        title: '登別地獄谷', 
+                        time: '下午', 
+                        ticket: '免費', 
+                        feature: '景點特色：壯麗地貌，可觀賞爆裂火山口、噴氣孔。夜間有「鬼火之路」點燈。步道盡頭有間歇泉「鐵泉池」。提供多達11種不同礦物質的泉水。', 
+                        location: '登別地獄谷', 
+                        travelTime: '步行約 15 分鐘' 
+                    },
+                    { 
+                        id: 504, 
+                        title: '登別溫泉第一瀧本館', 
+                        time: '晚上', 
+                        ticket: '無', 
+                        feature: '休息', 
+                        location: '登別溫泉第一瀧本館', 
+                        travelTime: null 
+                    },
                 ]
             },
             // 3/11
             {
                 date: '3/11', day: 'Wed', title: 'Day 6: 札幌回歸 & 購物', icon: '🛍️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 details: [
-                    { time: '上午', desc: '❶❄️ 羊之丘展望台', location: '羊之丘展望台', travelTime: '登別出發約 1 小時 30 分鐘',
-                        details: ['特色：克拉克博士雕像，冬季雪上樂園', '門票：成人 1,000日圓'] },
-                    { time: '中午', desc: '❷🛍️ 三井OUTLET PARK 札幌北廣島', location: '三井アウトレットパーク 札幌北広島', 
-                        details: ['營業時間：10:00-20:00'] },
-                    { time: '晚餐', desc: '❸🍽️ 串鳥 札幌駅北口店', location: '串鳥 札幌駅北口店', 
-                        details: ['人氣餐點：雞肉串、豬五花蘆筍捲', '營業時間：16:30–23:30 (平日)'] },
-                    { time: '住宿', desc: '❹🏨 札幌西三井花園飯店', location: '札幌西三井花園飯店' },
+                    { 
+                        id: 601, 
+                        title: '羊之丘展望台', 
+                        time: '上午', 
+                        ticket: '成人 ¥1000', 
+                        feature: '景點特色：冬季變成「羊之丘雪上樂園」。有克拉克博士雕像。館內展示札幌雪祭歷史資料。可在「羊丘休息屋」品嚐成吉思汗烤肉。', 
+                        location: '羊之丘展望台', 
+                        travelTime: '登別出發約 1 小時 30 分鐘' 
+                    },
+                    { 
+                        id: 602, 
+                        title: '三井OUTLET PARK 札幌北廣島', 
+                        time: '10:00-20:00', 
+                        ticket: '無', 
+                        feature: '營業時間：10:00-20:00。', 
+                        location: '三井アウトレットパーク 札幌北広島', 
+                        travelTime: '約 30 分鐘' 
+                    },
+                    { 
+                        id: 603, 
+                        title: '串鳥 札幌駅北口店 (晚餐)', 
+                        time: '16:30–23:30', 
+                        ticket: '無', 
+                        feature: '營業時間：週一至週五 16:30–23:30; 週六、週日 15:30–23:30。人氣餐點：雞肉串（鳥精肉）、雞翅、豬肉串（豚精肉）及豬五花蘆筍捲（豚アスパラ巻）。', 
+                        location: '串鳥 札幌駅北口店', 
+                        travelTime: '約 45 分鐘' 
+                    },
+                    { 
+                        id: 604, 
+                        title: '札幌西三井花園飯店', 
+                        time: '住宿', 
+                        ticket: '無', 
+                        feature: '休息', 
+                        location: '札幌西三井花園飯店', 
+                        travelTime: null 
+                    },
                 ]
             },
             // 3/12
             {
                 date: '3/12', day: 'Thu', title: 'Day 7: 賦歸', icon: '✈️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 details: [
-                    { time: '上午', desc: '❶🍽️ 一幻拉麵', location: '一幻拉麵', 
-                        details: ['地點：新千歲機場國內線航廈', '特色：濃厚蝦湯頭', '營業時間：9:00-21:00'] },
-                    { time: '11:30', desc: '❷✈️ 機場報到 (新千歲機場 CTS)', location: '新千歲機場',
-                        details: ['國內線航廈有許多伴手禮店、多啦A夢樂園'] },
-                    { time: '14:30', desc: '❸✈️ 班機起飛' },
+                    { 
+                        id: 701, 
+                        title: '一幻拉麵 (新千歲機場店)', 
+                        time: '9:00-21:00', 
+                        ticket: '無', 
+                        feature: '菜單特色：濃郁蝦湯頭。提供三種湯頭基底（適量/濃厚/清淡）及細麵或粗麵選擇。位於新千歲機場國內線航廈。', 
+                        location: '一幻拉麵', 
+                        travelTime: '約 45 分鐘' 
+                    },
+                    { 
+                        id: 702, 
+                        title: '新千歲機場報到 (CTS)', 
+                        time: '11:30', 
+                        ticket: '無', 
+                        feature: '國內線航廈有伴手禮店、兒童遊樂區（多啦A夢、Royce\' Chocolate World）。', 
+                        location: '新千歲機場', 
+                        travelTime: '約 10 分鐘' 
+                    },
+                    { 
+                        id: 703, 
+                        title: '班機起飛', 
+                        time: '14:30', 
+                        ticket: '無', 
+                        feature: 'CI0131。', 
+                        location: '桃園機場', 
+                        travelTime: null 
+                    },
                 ]
             },
         ];
@@ -163,116 +520,108 @@
                 { type: '回程', flight: 'CI0131', route: '新千歲機場 14:40 ⮕ 桃園機場 第二航廈 18:15' }
             ],
             hotels: [
-                { dates: '3/6-3/8', name: '札幌東急大通酒店', location: '札幌大通東急STAY酒店' },
-                { dates: '3/8-3/9', name: '富良野ホテル', location: '富良野ホテル FURANO HOTEL' },
+                { dates: '3/6-3/8', name: '札幌大通東急STAY酒店', location: '札幌大通東急STAY酒店' },
+                { dates: '3/8-3/9', name: '富良野ホテル FURANO HOTEL', location: '富良野ホテル FURANO HOTEL' },
                 { dates: '3/9-3/11', name: '登別溫泉第一瀧本館', location: '登別溫泉第一瀧本館' },
                 { dates: '3/11-3/12', name: '札幌西三井花園飯店', location: '札幌西三井花園飯店' }
             ]
         };
 
-        // --- 核心狀態管理與渲染 (Part 2: 邏輯重構) ---
+        // --- 核心狀態管理與渲染 (Part 2: 邏輯) ---
 
         let currentState = {
-            currentTab: 'trip', // 'trip', 'info', 'expense'
+            currentTab: 'trip',
             currentDay: 0,
             trip: tripData,
-            // 模擬花費數據 (未來可透過互動新增/刪除)
+            // 範例花費
             expenses: [
                 { id: 1, price: 5000, currency: 'JPY', method: '現金', category: '交通', note: '機場巴士' },
                 { id: 2, price: 1500, currency: 'JPY', method: '刷卡', category: '餐飲', note: 'Soup Curry GARAKU' },
+                { id: 3, price: 3600, currency: 'JPY', method: '現金', category: '門票', note: '水族館+天狗山' },
             ],
-            // 狀態用於控制細節展開
-            expandedDetails: {} // { '0-2': true, '1-1': false, ... }
+            expandedDetails: {},
+            editingItem: null
         };
 
-        // appContainer 變數現在引用的是 #app 元素
         const appContainer = document.getElementById('app');
-        
-        // 輔助函式：生成 Google Maps 連結 (已修正：修復語法錯誤)
-        function getMapLink(locationName) {
-            if (!locationName) return null;
-            // 修正為標準 Google Maps 搜尋 URL，確保 JavaScript 語法正確
-            return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName + ', 北海道')}`;
-        }
+        const modalContainer = document.getElementById('modal-container');
+        const activityForm = document.getElementById('activity-form');
         
         // --- 渲染子函式 ---
 
-        // 渲染單一活動細節
         function renderActivityDetails(item, dayIndex, itemIndex) {
             const detailKey = `${dayIndex}-${itemIndex}`;
             const isExpanded = currentState.expandedDetails[detailKey];
             
-            // 提取地點名稱並確保它不是空字符串
-            let mainLocation = extractLocationName(item.desc);
-            // 如果提取失敗，使用 item.location 作為備用
-            if (!mainLocation || mainLocation.trim() === '') {
-                mainLocation = item.location;
-            }
+            const mapLink = getMapLink(item.location);
             
-            const mapLink = getMapLink(mainLocation);
-            
-            // 點擊地點名稱時導航
+            // 如果 location 存在，將 title 渲染為可導航的連結
             const locationLink = mapLink 
-                ? `<a href="${mapLink}" target="_blank" rel="noopener noreferrer" class="location-link">${mainLocation}</a>`
-                : mainLocation;
+                ? `<a href="${mapLink}" target="_blank" rel="noopener noreferrer" class="location-link">${item.title} 📍</a>`
+                : item.title;
             
-            // 替換描述中的第一個地點名稱為連結
-            let descriptiveText = item.desc;
-            if (mainLocation) {
-                // 替換描述中的第一個地點名稱為超連結，同時保留前面的編號/符號
-                const regex = new RegExp(`(${item.desc.split(mainLocation)[0].match(/^[❶-❼✈️🏨🍽️📷🛍️🚗🐧🍜🚠🍫❄️🐻🔥🏪]*\s*/)?.[0] || ''})?${mainLocation}`);
-                descriptiveText = item.desc.replace(regex, `$1${locationLink}`);
-            }
+            // 行程詳細資訊 (完整地將 feature 資訊拆分/呈現)
+            const detailsList = [
+                { label: '⏰ 時間/營業時間', value: item.time },
+                { label: '🎫 門票', value: item.ticket },
+                { label: '🌟 完整特色/備註', value: item.feature },
+            ].filter(d => d.value && d.value !== '無'); 
 
+            // 將 feature 內容中的分號替換為換行符，使文字更易閱讀
+            const formattedFeature = item.feature ? item.feature.replace(/：/g, ': ').replace(/。/g, '。\n').replace(/；/g, '；\n') : '';
 
-            const travelTimeHtml = item.travelTime 
-                ? `<p class="travel-time"><span class="icon">🚗 </span>車程：${item.travelTime}</p>`
-                : '';
-            
-            const detailsHtml = item.details && isExpanded
-                ? `<ul class="detail-list">${item.details.map(d => `<li>${d}</li>`).join('')}</ul>`
+            const detailsHtml = detailsList.length > 0 && isExpanded
+                ? `<ul class="detail-list">
+                    <li>**⏰ 時間/營業時間**: ${item.time}</li>
+                    <li>**🎫 門票**: ${item.ticket}</li>
+                    <li class="feature-item">**🌟 完整特色/備註**: <pre>${formattedFeature}</pre></li>
+                   </ul>`
                 : '';
                 
-            const expandButton = item.details
-                ? `<button class="expand-btn" onclick="toggleDetails('${detailKey}')">${isExpanded ? '▲ 收起' : '▼ 特色'}</button>`
+            const expandButton = detailsList.length > 0
+                ? `<button class="expand-btn" onclick="toggleDetails('${detailKey}')">${isExpanded ? '▲ 收起細節' : '▼ 詳細資訊'}</button>`
                 : '';
             
-            // 替換方案 (Alt Option) 渲染
-            const altOptionHtml = item.alt
-                ? `
-                <div class="alt-option">
-                    或 <a href="${getMapLink(item.alt.location)}" target="_blank" rel="noopener noreferrer">${item.alt.desc}</a>
-                    ${item.alt.details ? `<ul class="alt-detail-list">${item.alt.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
+            // 行程排序與編輯按鈕
+            const controls = `
+                <div class="activity-controls">
+                    ${expandButton}
+                    <button class="menu-btn edit-btn" onclick="openModalForEdit(${dayIndex}, ${itemIndex})">⚙️</button>
+                    ${itemIndex > 0 ? `<button class="menu-btn sort-btn" onclick="moveActivity(${dayIndex}, ${itemIndex}, -1)">⬆️</button>` : ''}
+                    ${itemIndex < currentState.trip[dayIndex].details.length - 1 ? `<button class="menu-btn sort-btn" onclick="moveActivity(${dayIndex}, ${itemIndex}, 1)">⬇️</button>` : ''}
                 </div>
-                `
-                : '';
-            
+            `;
+
             return `
-                <li class="activity-item">
+                <li class="activity-item" data-id="${item.id}">
                     <div class="activity-content">
-                        <span class="time">${item.time ? `${item.time} | ` : ''}</span>
                         <div class="description-wrap">
-                            ${descriptiveText}
-                            ${travelTimeHtml}
-                            ${altOptionHtml}
+                            ${locationLink}
                         </div>
                     </div>
-                    <div class="activity-controls">
-                        ${expandButton}
-                        <button class="menu-btn" onclick="alert('TODO: 實現編輯/刪除功能')">⚙️</button>
-                    </div>
+                    ${controls}
                     ${detailsHtml}
                 </li>
             `;
         }
 
-        // 渲染單一日的卡片
+
         function renderDayCard(day, dayIndex) {
-            const activitiesHtml = day.details.map((item, itemIndex) => renderActivityDetails(item, dayIndex, itemIndex)).join('');
+            let activitiesHtml = '';
+            day.details.forEach((item, itemIndex) => {
+                
+                activitiesHtml += renderActivityDetails(item, dayIndex, itemIndex);
+                
+                // 渲染點對點車程時間
+                if (item.travelTime && itemIndex < day.details.length - 1) {
+                    activitiesHtml += `<p class="travel-time"><span class="icon">🚗</span> ${item.travelTime}</p>`;
+                }
+            });
 
             return `
                 <div class="day-card">
-                    <h2 class="card-title">${day.icon} ${day.title}</h2>
+                    <h2 class="card-title">${day.title}</h2>
+                    
                     <div class="weather-box">
                         <span class="weather-icon">${day.weather.icon}</span>
                         <div class="weather-info">
@@ -280,27 +629,28 @@
                             <p>溫度: ${day.weather.temp}</p>
                         </div>
                     </div>
+
                     <ul class="activity-list">
                         ${activitiesHtml}
                     </ul>
-                    <button class="add-item-btn" onclick="alert('TODO: 實現新增行程項目功能')">+ 新增行程項目</button>
+                    <button class="add-item-btn" onclick="openModalForNew(${dayIndex})">+ 新增行程項目</button>
                 </div>
             `;
         }
-
-        // 渲染資訊分頁
+        
         function renderInfoTab() {
             const flightsHtml = infoData.flights.map(f => `
                 <div class="info-item">
-                    <span class="info-label">${f.type}</span>
-                    <p class="info-value">${f.flight} | ${f.route}</p>
+                    <span class="info-label">航班編號</span>
+                    <p class="info-value">✈️ **${f.flight}** (${f.type})</p>
+                    <p class="info-route">${f.route}</p>
                 </div>
             `).join('');
 
             const hotelsHtml = infoData.hotels.map(h => `
                 <div class="info-item">
-                    <span class="info-label">${h.dates}</span>
-                    <p class="info-value"><a href="${getMapLink(h.location)}" target="_blank" rel="noopener noreferrer">${h.name}</a></p>
+                    <span class="info-label">入住期間：${h.dates}</span>
+                    <p class="info-value">🏨 <a href="${getMapLink(h.location)}" target="_blank" rel="noopener noreferrer">${h.name}</a></p>
                 </div>
             `).join('');
 
@@ -318,8 +668,8 @@
             `;
         }
         
-        // 渲染花費分頁
         function renderExpenseTab() {
+            // 假設所有花費都是日圓，計算總和
             const totalJpy = currentState.expenses.reduce((sum, item) => sum + item.price, 0);
             
             const rowsHtml = currentState.expenses.map(e => `
@@ -328,7 +678,7 @@
                     <td>${e.method}</td>
                     <td>${e.category}</td>
                     <td>${e.note}</td>
-                    <td><button onclick="alert('TODO: 實現刪除花費 ${e.id}')" class="delete-btn">X</button></td>
+                    <td><button onclick="deleteExpense(${e.id})" class="delete-btn-sm">X</button></td>
                 </tr>
             `).join('');
 
@@ -336,14 +686,14 @@
                 <div class="expense-tab">
                     <div class="total-box">
                         <h3>總預估花費： ${totalJpy.toLocaleString('ja-JP')} JPY</h3>
-                        <button class="add-expense-btn" onclick="alert('TODO: 實現新增花費表單')">+ 新增花費</button>
+                        <button class="add-expense-btn" onclick="openExpenseModal()">+ 新增花費</button>
                     </div>
                     
-                    <table>
+                    <table class="expense-table">
                         <thead>
                             <tr>
-                                <th>價格 (日圓)</th>
-                                <th>支付方式</th>
+                                <th>價格</th>
+                                <th>支付</th>
                                 <th>分類</th>
                                 <th>備註</th>
                                 <th>操作</th>
@@ -372,10 +722,9 @@
                 
                 const navButtonsHtml = state.trip.map((day, index) => {
                     const isActive = state.currentDay === index ? 'active' : '';
-                    const dayString = day.day; // Fri, Sat, Sun...
-                    const dateString = day.date.split('/')[1]; // 6, 7, 8...
+                    const dayString = day.day; 
+                    const dateString = day.date.split('/')[1]; 
                     
-                    // 點擊時，切換當前日
                     return `<button class="nav-button ${isActive}" onclick="updateState({ currentDay: ${index} })">
                                 <span class="nav-day">${dayString}</span>
                                 <span class="nav-date">${dateString}</span>
@@ -394,7 +743,6 @@
                 `;
             }
             
-            // 將內容渲染到 #app 容器中
             appContainer.innerHTML = `
                 <nav class="main-tab-nav">
                     <button class="main-tab-btn ${state.currentTab === 'trip' ? 'active' : ''}" onclick="updateState({ currentTab: 'trip', currentDay: 0 })">🗺️ 行程</button>
@@ -408,23 +756,161 @@
             `;
         }
 
-        // --- 狀態更新與天氣載入 ---
+        // --- 狀態更新與互動邏輯 ---
 
         function updateState(newState) {
             currentState = { ...currentState, ...newState };
             renderApp();
         }
         
-        // 切換細節展開/收起
         function toggleDetails(key) {
             const expandedDetails = { ...currentState.expandedDetails };
             expandedDetails[key] = !expandedDetails[key];
             updateState({ expandedDetails });
         }
         
-        // 將 toggleDetails 暴露給 HTML onClick 事件
+        function moveActivity(dayIndex, itemIndex, direction) {
+            const dayDetails = currentState.trip[dayIndex].details;
+            const newIndex = itemIndex + direction;
+
+            if (newIndex >= 0 && newIndex < dayDetails.length) {
+                [dayDetails[itemIndex], dayDetails[newIndex]] = [dayDetails[newIndex], dayDetails[itemIndex]];
+                updateState({});
+            }
+        }
+
+        function closeModal() {
+            modalContainer.style.display = 'none';
+            currentState.editingItem = null;
+        }
+
+        function openModal(dayIndex, itemIndex, isNew) {
+            modalContainer.style.display = 'flex';
+            
+            let activity = isNew ? 
+                { id: Date.now(), title: '', time: '', ticket: '', feature: '', location: '', travelTime: '' } :
+                currentState.trip[dayIndex].details[itemIndex];
+
+            currentState.editingItem = { dayIndex, itemIndex, activity, isNew };
+
+            // 生成表單內容 (確保欄位對應)
+            const formFields = [
+                { id: 'title', label: '景點/餐廳名稱 (必填)', type: 'text', value: activity.title, required: true },
+                { id: 'time', label: '時間/營業時間', type: 'text', value: activity.time },
+                { id: 'ticket', label: '門票資訊 (e.g. 成人 ¥1800)', type: 'text', value: activity.ticket },
+                { id: 'feature', label: '特色/備註 (完整且詳細)', type: 'textarea', value: activity.feature },
+                { id: 'location', label: '地點 (地圖導航用)', type: 'text', value: activity.location, required: true },
+                { id: 'travelTime', label: '車程時間 (下一個點的車程)', type: 'text', value: activity.travelTime },
+            ];
+
+            const formHtml = formFields.map(field => `
+                <label for="${field.id}">${field.label}${field.required ? ' *' : ''}</label>
+                ${field.type === 'textarea' ? 
+                    `<textarea id="${field.id}" name="${field.id}" ${field.required ? 'required' : ''}>${field.value || ''}</textarea>` :
+                    `<input type="${field.type}" id="${field.id}" name="${field.id}" value="${field.value || ''}" ${field.required ? 'required' : ''}>`
+                }
+            `).join('');
+
+            const deleteButton = !isNew ? `<button type="button" class="delete-btn" onclick="deleteActivity(${dayIndex}, ${itemIndex})">刪除此行程</button>` : '';
+
+            activityForm.innerHTML = `
+                ${formHtml}
+                <div class="form-actions">
+                    ${deleteButton}
+                    <button type="submit" class="save-btn">儲存修改</button>
+                </div>
+            `;
+        }
+
+        function openModalForEdit(dayIndex, itemIndex) {
+            openModal(dayIndex, itemIndex, false);
+        }
+
+        function openModalForNew(dayIndex) {
+            openModal(dayIndex, -1, true);
+        }
+
+        activityForm.onsubmit = function(e) {
+            e.preventDefault();
+            
+            const item = currentState.editingItem;
+            const formData = new FormData(activityForm);
+            
+            const newActivity = {
+                id: item.activity.id,
+                title: formData.get('title'),
+                time: formData.get('time'),
+                ticket: formData.get('ticket'),
+                feature: formData.get('feature'),
+                location: formData.get('location'),
+                travelTime: formData.get('travelTime'),
+            };
+
+            const dayDetails = currentState.trip[item.dayIndex].details;
+
+            if (item.isNew) {
+                dayDetails.push(newActivity);
+            } else {
+                dayDetails[item.itemIndex] = newActivity;
+            }
+
+            closeModal();
+            updateState({});
+        };
+        
+        function deleteActivity(dayIndex, itemIndex) {
+            if (confirm('確定要刪除這個行程嗎？')) {
+                currentState.trip[dayIndex].details.splice(itemIndex, 1);
+                closeModal();
+                updateState({});
+            }
+        }
+        
+        // ------------------- 簡易花費管理功能 -------------------
+        
+        function openExpenseModal() {
+            // 這裡可以彈出一個新的模態視窗來新增花費
+            const newExpenseId = Date.now();
+            const newExpense = prompt("請輸入新增的花費資訊 (格式: 價格,幣別,方式,分類,備註)", "2500,JPY,現金,餐飲,早餐");
+            
+            if (newExpense) {
+                const parts = newExpense.split(',');
+                if (parts.length === 5) {
+                    const [price, currency, method, category, note] = parts;
+                    currentState.expenses.push({
+                        id: newExpenseId,
+                        price: parseInt(price, 10),
+                        currency: currency.trim(),
+                        method: method.trim(),
+                        category: category.trim(),
+                        note: note.trim()
+                    });
+                    updateState({ currentTab: 'expense' });
+                } else {
+                    alert("格式錯誤，請確保輸入五個欄位並以逗號分隔。");
+                }
+            }
+        }
+
+        function deleteExpense(expenseId) {
+            if (confirm('確定要刪除這筆花費記錄嗎？')) {
+                currentState.expenses = currentState.expenses.filter(e => e.id !== expenseId);
+                updateState({ currentTab: 'expense' });
+            }
+        }
+        
+        // ------------------------------------
+        // 將核心功能暴露給 HTML 事件
         window.toggleDetails = toggleDetails;
         window.updateState = updateState;
+        window.moveActivity = moveActivity;
+        window.openModalForEdit = openModalForEdit;
+        window.openModalForNew = openModalForNew;
+        window.closeModal = closeModal;
+        window.deleteActivity = deleteActivity;
+        window.openExpenseModal = openExpenseModal;
+        window.deleteExpense = deleteExpense;
+
 
         // 模擬 API 抓取函式 (使用模擬數據)
         async function fetchWeather(city, dateString) {
@@ -452,7 +938,6 @@
 
                 newStateTrip[i].weather = weather;
                 
-                // 更新狀態並重新渲染
                 currentState = { ...currentState, trip: newStateTrip };
                 renderApp();
             }
