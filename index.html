@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>森林家北海道七天六夜行程</title>
+    <title>❄️ 森林家北海道七天六夜行程 ❄️</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-size='20' fill='%23000'%3E%F0%9F%97%BA%EF%B8%8F%3C/text%3E%3C/svg%3E" type="image/svg+xml">
 </head>
 <body>
     <header>
-        <h1>❄️ 北海道親子遊 ❄️</h1>
+        <h1>🦌 北海道親子遊 🦌</h1>
+        <p class="subtitle">七天六夜行程規劃 & 花費記錄</p>
     </header>
     
     <div id="app">
@@ -27,7 +29,7 @@
     <div id="expense-modal-container" class="modal-container">
         <div class="modal-content">
             <span class="close-btn" onclick="closeExpenseModal()">×</span>
-            <h2>新增花費記錄</h2>
+            <h2>💰 新增花費記錄</h2>
             <form id="expense-form">
                 </form>
         </div>
@@ -38,7 +40,7 @@
         // *** Vanilla JavaScript 行程應用程式 V3.8 邏輯 ***
         // ******************************************************
 
-        // --- 核心數據結構 ---
+        // --- 核心數據結構 (保持不變) ---
         
         // 輔助函式：生成 Google Maps 連結 (確保地點名稱被正確編碼)
         function getMapLink(locationName) {
@@ -51,7 +53,7 @@
         const tripData = [
             // 3/6
             {
-                date: '3/6', day: 'Fri', title: 'Day 1: 札幌市區遊', icon: '🏙️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                date: '3/6', day: '五', title: 'Day 1: 札幌市區遊', icon: '🏙️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 dailyTollEstimate: '¥0 (尚未取車)',
                 details: [
                     { id: 101, title: '桃園機場 (TPE) ⮕ 新千歲機場 (CTS)', time: '6:00 - 13:15', ticket: '無', feature: 'CI0130 華航。', location: '新千歲機場', travelTime: null },
@@ -140,7 +142,7 @@
             },
             // 3/7
             {
-                date: '3/7', day: 'Sat', title: 'Day 2: 小樽', icon: '🚢', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                date: '3/7', day: '六', title: 'Day 2: 小樽', icon: '🚢', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 dailyTollEstimate: '約 ¥2,000 (札幌 ⬌ 小樽)',
                 details: [
                     {
@@ -210,7 +212,7 @@
             },
             // 3/8
             {
-                date: '3/8', day: 'Sun', title: 'Day 3: 旭川&美瑛&富良野', icon: '🌲', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                date: '3/8', day: '日', title: 'Day 3: 旭川&美瑛&富良野', icon: '🌲', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 dailyTollEstimate: '約 ¥3,010 (札幌 ⮕ 旭川)',
                 details: [
                     { 
@@ -280,7 +282,7 @@
             },
             // 3/9 
             {
-                date: '3/9', day: 'Mon', title: 'Day 4: 富良野 → 登別溫泉', icon: '♨️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                date: '3/9', day: '一', title: 'Day 4: 富良野 → 登別溫泉', icon: '♨️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 dailyTollEstimate: '約 ¥4,800 (富良野 ⮕ 札幌 ⮕ 登別)',
                 details: [
                     { 
@@ -323,7 +325,7 @@
             },
             // 3/10
             {
-                date: '3/10', day: 'Tue', title: 'Day 5: 登別主題樂園', icon: '🐻', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                date: '3/10', day: '二', title: 'Day 5: 登別主題樂園', icon: '🐻', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 dailyTollEstimate: '¥0 (區域內移動)',
                 details: [
                     { 
@@ -366,7 +368,7 @@
             },
             // 3/11
             {
-                date: '3/11', day: 'Wed', title: 'Day 6: 札幌回歸 & 購物', icon: '🛍️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                date: '3/11', day: '三', title: 'Day 6: 札幌回歸 & 購物', icon: '🛍️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 dailyTollEstimate: '約 ¥2,600 (登別 ⮕ 札幌)',
                 details: [
                     { 
@@ -409,7 +411,7 @@
             },
             // 3/12
             {
-                date: '3/12', day: 'Thu', title: 'Day 7: 賦歸', icon: '✈️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                date: '3/12', day: '四', title: 'Day 7: 賦歸', icon: '✈️', weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
                 dailyTollEstimate: '¥0 (無開車行程)',
                 details: [
                     { 
@@ -520,7 +522,7 @@
                     }).join('')}
                    </ul>`
                 : '';
-                
+            
             const expandButton = detailsList.length > 0
                 ? `<button class="expand-btn" onclick="toggleDetails('${detailKey}')">${isExpanded ? '▲ 收起細節' : '▼ 詳細資訊'}</button>`
                 : '';
@@ -595,7 +597,7 @@
         
         function renderInfoTab() {
             const flightsHtml = infoData.flights.map(f => `
-                <div class="info-item">
+                <div class="info-item flight-item">
                     <span class="info-label">航班編號</span>
                     <p class="info-value">✈️ ${f.flight} (${f.type})</p>
                     <p class="info-route">${f.route}</p>
@@ -603,7 +605,7 @@
             `).join('');
 
             const hotelsHtml = infoData.hotels.map(h => `
-                <div class="info-item">
+                <div class="info-item hotel-item">
                     <span class="info-label">入住期間：${h.dates}</span>
                     <p class="info-value">🏨 <a href="${getMapLink(h.location)}" target="_blank" rel="noopener noreferrer">${h.name}</a></p>
                 </div>
@@ -612,7 +614,7 @@
             // 渲染租車資訊
             const carRentalHtml = `
                 <div class="info-group car-group">
-                    <div class="info-item">
+                    <div class="info-item car-item">
                         <span class="info-label">租車公司：Nissan Rent a car</span>
                         <p class="info-value">🚗 取車：${infoData.carRental.pickup}</p>
                         <p class="info-value">🗝️ 還車：${infoData.carRental.dropoff}</p>
@@ -644,44 +646,47 @@
             
             // 確保 expenses 根據日期排序，最新的在前面
             const sortedExpenses = [...currentState.expenses].sort((a, b) => {
+                // 為了排序，假設年份為 2024
                 const dateA = new Date('2024-' + a.date);
-                const dateB = new Date('2024-' + a.date);
+                const dateB = new Date('2024-' + b.date);
                 return dateA - dateB; // 升序排列
             }).reverse(); // 反轉為降序 (最新在最上面)
 
             const rowsHtml = sortedExpenses.map(e => `
                 <tr>
                     <td>${e.date || 'N/A'}</td> 
-                    <td>${e.price.toLocaleString('ja-JP')} ${e.currency}</td>
+                    <td class="expense-price">${e.price.toLocaleString('ja-JP')} ${e.currency}</td>
                     <td>${e.method}</td>
                     <td>${e.category}</td>
                     <td>${e.note}</td>
-                    <td><button onclick="deleteExpense(${e.id})" class="delete-btn-sm">X</button></td>
+                    <td><button onclick="deleteExpense(${e.id})" class="delete-btn-sm">× 刪除</button></td>
                 </tr>
             `).join('');
 
             return `
                 <div class="expense-tab">
                     <div class="total-box">
-                        <h3>總預估花費： ${totalJpy.toLocaleString('ja-JP')} JPY</h3>
+                        <h3>總記錄花費： <span class="total-jpy-amount">${totalJpy.toLocaleString('ja-JP')} JPY</span></h3>
                         <button class="add-expense-btn" onclick="openExpenseModal()">+ 新增花費</button>
                     </div>
                     
-                    <table class="expense-table">
-                        <thead>
-                            <tr>
-                                <th>日期</th>
-                                <th>價格</th>
-                                <th>支付</th>
-                                <th>分類</th>
-                                <th>備註</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${rowsHtml}
-                        </tbody>
-                    </table>
+                    <div class="table-scroll-wrapper">
+                        <table class="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>價格</th>
+                                    <th>支付</th>
+                                    <th>分類</th>
+                                    <th>備註</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rowsHtml}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             `;
         }
@@ -739,254 +744,279 @@
                     ${mainContent}
                 </div>
             `;
+            
+            // 每次渲染後確保天氣資訊的載入
+            // loadWeather(); 
         }
 
-        // --- 狀態更新與互動邏輯 ---
-
+        // 狀態更新函式 (重新渲染頁面)
         function updateState(newState) {
             currentState = { ...currentState, ...newState };
             renderApp();
+            // 在狀態變更後，如果切換回行程頁面，確保滾動到當前日期
+            if (currentState.currentTab === 'trip' && newState.currentDay !== undefined) {
+                scrollToActiveDay(newState.currentDay);
+            }
         }
         
-        function toggleDetails(key) {
-            const expandedDetails = { ...currentState.expandedDetails };
-            expandedDetails[key] = !expandedDetails[key];
-            updateState({ expandedDetails });
-        }
+        // --- 行程細節控制函式 ---
         
-        function moveActivity(dayIndex, itemIndex, direction) {
-            const dayDetails = currentState.trip[dayIndex].details;
-            const newIndex = itemIndex + direction;
+        function toggleDetails(detailKey) {
+            // 複製 expandedDetails 物件
+            const newExpandedDetails = { ...currentState.expandedDetails };
 
-            if (newIndex >= 0 && newIndex < dayDetails.length) {
-                [dayDetails[itemIndex], dayDetails[newIndex]] = [dayDetails[newIndex], dayDetails[itemIndex]];
-                updateState({});
+            // 切換狀態
+            if (newExpandedDetails[detailKey]) {
+                delete newExpandedDetails[detailKey];
+            } else {
+                newExpandedDetails[detailKey] = true;
+            }
+
+            // 更新狀態並重新渲染
+            updateState({ expandedDetails: newExpandedDetails });
+        }
+        
+        function scrollToActiveDay(dayIndex) {
+            const dayNav = document.querySelector('.day-nav');
+            const activeDayButton = document.querySelector(`.day-nav .nav-button:nth-child(${dayIndex + 1})`);
+            
+            if (dayNav && activeDayButton) {
+                // 計算需要滾動到的位置：按鈕左邊緣 - 導航欄寬度的一半 + 按鈕寬度的一半
+                const scrollPosition = activeDayButton.offsetLeft - (dayNav.offsetWidth / 2) + (activeDayButton.offsetWidth / 2);
+                
+                dayNav.scrollTo({
+                    left: scrollPosition,
+                    behavior: 'smooth'
+                });
             }
         }
 
-        // 行程編輯模態窗 (Modal for Activity)
+        // --- 行程編輯 Modal 邏輯 ---
+
+        function openModalForEdit(dayIndex, itemIndex) {
+            const day = currentState.trip[dayIndex];
+            const item = day.details[itemIndex];
+            
+            currentState.editingItem = { dayIndex, itemIndex, isNew: false };
+            
+            // 填充表單 HTML
+            activityForm.innerHTML = `
+                <input type="hidden" name="id" value="${item.id}">
+                
+                <label for="title">活動名稱:</label>
+                <input type="text" id="title" name="title" value="${item.title}" required>
+
+                <label for="time">時間/時段:</label>
+                <input type="text" id="time" name="time" value="${item.time || ''}">
+
+                <label for="location">地點名稱 (地圖搜尋):</label>
+                <input type="text" id="location" name="location" value="${item.location || ''}">
+                
+                <label for="travelTime">交通時間 (來自前一站):</label>
+                <input type="text" id="travelTime" name="travelTime" value="${item.travelTime || ''}">
+
+                <label for="ticket">門票/費用:</label>
+                <input type="text" id="ticket" name="ticket" value="${item.ticket || '無'}">
+
+                <label for="feature">特色/備註:</label>
+                <textarea id="feature" name="feature">${item.feature || ''}</textarea>
+                
+                <div class="form-actions">
+                    <button type="submit" class="save-btn">儲存修改</button>
+                    <button type="button" class="delete-btn" onclick="deleteActivity(${dayIndex}, ${itemIndex})">刪除此項目</button>
+                </div>
+            `;
+            
+            modalContainer.style.display = 'flex';
+        }
+        
+        function openModalForNew(dayIndex) {
+            currentState.editingItem = { dayIndex, itemIndex: null, isNew: true };
+            
+            activityForm.innerHTML = `
+                <h2>新增行程項目 (Day ${dayIndex + 1})</h2>
+                
+                <label for="title">活動名稱:</label>
+                <input type="text" id="title" name="title" value="" required>
+
+                <label for="time">時間/時段:</label>
+                <input type="text" id="time" name="time" value="TBD">
+
+                <label for="location">地點名稱 (地圖搜尋):</label>
+                <input type="text" id="location" name="location" value="">
+                
+                <label for="travelTime">交通時間 (來自前一站):</label>
+                <input type="text" id="travelTime" name="travelTime" value="">
+
+                <label for="ticket">門票/費用:</label>
+                <input type="text" id="ticket" name="ticket" value="無">
+
+                <label for="feature">特色/備註:</label>
+                <textarea id="feature" name="feature"></textarea>
+                
+                <div class="form-actions">
+                    <button type="submit" class="save-btn">新增項目</button>
+                </div>
+            `;
+            
+            modalContainer.style.display = 'flex';
+        }
+
         function closeModal() {
             modalContainer.style.display = 'none';
             currentState.editingItem = null;
         }
 
-        function openModal(dayIndex, itemIndex, isNew) {
-            modalContainer.style.display = 'flex';
+        activityForm.onsubmit = function(event) {
+            event.preventDefault();
             
-            let activity = isNew ? 
-                { id: Date.now(), title: '', time: '', ticket: '', feature: '', location: '', travelTime: '' } :
-                currentState.trip[dayIndex].details[itemIndex];
-
-            currentState.editingItem = { dayIndex, itemIndex, activity, isNew };
-
-            // 生成表單內容 (確保欄位對應)
-            const formFields = [
-                { id: 'title', label: '景點/餐廳名稱 (必填)', type: 'text', value: activity.title, required: true },
-                { id: 'time', label: '營業時間', type: 'text', value: activity.time },
-                { id: 'ticket', label: '門票資訊', type: 'text', value: activity.ticket },
-                { id: 'feature', label: '特色/備註', type: 'textarea', value: activity.feature },
-                { id: 'location', label: '地點', type: 'text', value: activity.location, required: true },
-                { id: 'travelTime', label: '車程時間 (從上一個景點到此景點的時間)', type: 'text', value: activity.travelTime },
-            ];
-
-            const formHtml = formFields.map(field => `
-                <label for="${field.id}">${field.label}${field.required ? ' *' : ''}</label>
-                ${field.type === 'textarea' ? 
-                    `<textarea id="${field.id}" name="${field.id}" ${field.required ? 'required' : ''}>${field.value || ''}</textarea>` :
-                    `<input type="${field.type}" id="${field.id}" name="${field.id}" value="${field.value || ''}" ${field.required ? 'required' : ''}>`
-                }
-            `).join('');
-
-            const deleteButton = !isNew ? `<button type="button" class="delete-btn" onclick="deleteActivity(${dayIndex}, ${itemIndex})">刪除此行程</button>` : '';
-
-            activityForm.innerHTML = `
-                <h2>${isNew ? '新增' : '編輯'}行程項目</h2>
-                ${formHtml}
-                <div class="form-actions">
-                    ${deleteButton}
-                    <button type="submit" class="save-btn">儲存修改</button>
-                </div>
-            `;
-        }
-
-        function openModalForEdit(dayIndex, itemIndex) {
-            openModal(dayIndex, itemIndex, false);
-        }
-
-        function openModalForNew(dayIndex) {
-            openModal(dayIndex, -1, true);
-        }
-
-        activityForm.onsubmit = function(e) {
-            e.preventDefault();
-            
-            const item = currentState.editingItem;
             const formData = new FormData(activityForm);
-            
-            const newActivity = {
-                id: item.activity.id,
-                title: formData.get('title'),
-                time: formData.get('time'),
-                ticket: formData.get('ticket'),
-                feature: formData.get('feature'),
-                location: formData.get('location'),
-                travelTime: formData.get('travelTime'),
-            };
-
-            const dayDetails = currentState.trip[item.dayIndex].details;
-
-            if (item.isNew) {
-                dayDetails.push(newActivity);
-            } else {
-                dayDetails[item.itemIndex] = newActivity;
+            const newItem = {};
+            for (let [key, value] of formData.entries()) {
+                newItem[key] = value.trim();
             }
-
+            
+            const { dayIndex, itemIndex, isNew } = currentState.editingItem;
+            
+            if (isNew) {
+                // 產生一個新的 ID (簡單的隨機 ID)
+                newItem.id = Date.now() + Math.floor(Math.random() * 1000);
+                currentState.trip[dayIndex].details.push(newItem);
+            } else {
+                // 編輯現有項目
+                // 確保 id 被正確轉換成數字
+                newItem.id = Number(newItem.id); 
+                currentState.trip[dayIndex].details[itemIndex] = newItem;
+            }
+            
             closeModal();
-            updateState({});
+            updateState({}); // 重新渲染
         };
         
         function deleteActivity(dayIndex, itemIndex) {
-            if (confirm('確定要刪除這個行程嗎？')) {
+            if (confirm('確定要刪除此行程項目嗎？')) {
                 currentState.trip[dayIndex].details.splice(itemIndex, 1);
                 closeModal();
-                updateState({});
+                updateState({}); // 重新渲染
             }
         }
         
-        // 花費新增模態窗邏輯
-        function openExpenseModal() {
-            expenseModalContainer.style.display = 'flex';
+        function moveActivity(dayIndex, itemIndex, direction) {
+            const dayDetails = currentState.trip[dayIndex].details;
+            const newIndex = itemIndex + direction;
             
-            // 嘗試取得當前日期 (使用 03-06 格式)
+            if (newIndex >= 0 && newIndex < dayDetails.length) {
+                // 執行移動操作
+                const itemToMove = dayDetails.splice(itemIndex, 1)[0];
+                dayDetails.splice(newIndex, 0, itemToMove);
+                updateState({}); // 重新渲染
+            }
+        }
+
+        // --- 花費 Modal 邏輯 ---
+        
+        function openExpenseModal() {
+            // 取得今日日期 YYYY-MM-DD 格式
             const today = new Date();
+            const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
-            const defaultDate = `${month}-${day}`;
+            const todayDate = `${year}-${month}-${day}`;
             
-            // 渲染花費表單
             expenseForm.innerHTML = `
-                <label for="expense-date">日期 (MM-DD) *</label>
-                <input type="text" id="expense-date" name="date" value="${defaultDate}" placeholder="例如: 03-06" required>
-                
-                <label for="expense-price">金額 (日幣 JPY) *</label>
-                <input type="number" id="expense-price" name="price" required min="1" step="1" placeholder="例如: 1500">
-                
-                <label for="expense-method">支付方式 *</label>
-                <select id="expense-method" name="method" required>
-                    <option value="現金">現金</option>
-                    <option value="刷卡">刷卡</option>
-                    <option value="其他">其他</option>
-                </select>
-                
-                <label for="expense-category">分類 *</label>
-                <select id="expense-category" name="category" required>
-                    <option value="飲食">飲食</option>
-                    <option value="購物">購物</option>
-                    <option value="交通">交通</option>
-                    <option value="門票">門票</option>
-                    <option value="住宿">住宿</option>
-                    <option value="其他">其他</option>
-                </select>
+                <div class="form-group">
+                    <label for="expense-date">日期:</label>
+                    <input type="date" id="expense-date" name="date" value="${todayDate}" required>
+                </div>
 
-                <label for="expense-note">備註</label>
-                <input type="text" id="expense-note" name="note" placeholder="例如：Soup Curry GARAKU / 機場巴士">
+                <div class="form-group">
+                    <label for="price">價格 (JPY):</label>
+                    <input type="number" id="price" name="price" required min="1" placeholder="輸入日圓價格">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">分類:</label>
+                    <select id="category" name="category" required>
+                        <option value="餐飲">餐飲 🍜</option>
+                        <option value="交通">交通 🚗</option>
+                        <option value="門票">門票 🎫</option>
+                        <option value="購物">購物 🛍️</option>
+                        <option value="住宿">住宿 🏨</option>
+                        <option value="雜項">雜項 💡</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="method">支付方式:</label>
+                    <select id="method" name="method" required>
+                        <option value="現金">現金 💵</option>
+                        <option value="刷卡">刷卡 💳</option>
+                        <option value="電子支付">電子支付 📲</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="note">備註/品項:</label>
+                    <input type="text" id="note" name="note" placeholder="例如：拉麵、水族館門票">
+                </div>
                 
                 <div class="form-actions">
-                    <button type="submit" class="save-btn">儲存花費</button>
+                    <button type="submit" class="save-btn">記錄花費</button>
                 </div>
             `;
+            
+            expenseModalContainer.style.display = 'flex';
         }
-
+        
         function closeExpenseModal() {
             expenseModalContainer.style.display = 'none';
-            expenseForm.reset();
         }
-
-        expenseForm.onsubmit = function(e) {
-            e.preventDefault();
+        
+        expenseForm.onsubmit = function(event) {
+            event.preventDefault();
             
             const formData = new FormData(expenseForm);
-            const priceValue = parseInt(formData.get('price'), 10);
-            
-            if (isNaN(priceValue) || priceValue <= 0) {
-                alert("請輸入有效的金額。");
-                return;
-            }
-
             const newExpense = {
-                id: Date.now(),
-                date: formData.get('date').trim(), 
-                price: priceValue,
-                currency: 'JPY', 
-                method: formData.get('method'),
-                category: formData.get('category'),
-                note: formData.get('note')
+                id: Date.now() + Math.floor(Math.random() * 1000),
+                currency: 'JPY'
             };
 
-            currentState.expenses.push(newExpense);
-            
-            closeExpenseModal();
-            updateState({ currentTab: 'expense' }); 
-        };
+            for (let [key, value] of formData.entries()) {
+                if (key === 'date') {
+                    // 將 YYYY-MM-DD 轉為 MM-DD 儲存
+                    newExpense[key] = value.substring(5); 
+                } else if (key === 'price') {
+                    newExpense[key] = parseInt(value);
+                } else {
+                    newExpense[key] = value.trim();
+                }
+            }
 
-        function deleteExpense(expenseId) {
+            currentState.expenses.push(newExpense);
+            closeExpenseModal();
+            updateState({ currentTab: 'expense' }); // 確保切換到花費頁面並重新渲染
+        };
+        
+        function deleteExpense(id) {
             if (confirm('確定要刪除這筆花費記錄嗎？')) {
-                currentState.expenses = currentState.expenses.filter(e => e.id !== expenseId);
-                updateState({ currentTab: 'expense' });
+                currentState.expenses = currentState.expenses.filter(e => e.id !== id);
+                updateState({ currentTab: 'expense' }); // 重新渲染花費頁面
             }
         }
         
-        // 將核心功能暴露給 HTML 事件
-        window.toggleDetails = toggleDetails;
+        // --- 初始化 ---
+        renderApp();
+        // 將核心函式暴露給全域環境，以便 HTML 中的 onclick 事件可以調用
         window.updateState = updateState;
-        window.moveActivity = moveActivity;
+        window.toggleDetails = toggleDetails;
         window.openModalForEdit = openModalForEdit;
         window.openModalForNew = openModalForNew;
         window.closeModal = closeModal;
         window.deleteActivity = deleteActivity;
-        
-        // V3.5 新增的花費功能
+        window.moveActivity = moveActivity;
         window.openExpenseModal = openExpenseModal;
         window.closeExpenseModal = closeExpenseModal;
         window.deleteExpense = deleteExpense;
-
-
-        // 模擬 API 抓取函式 (使用模擬數據)
-        async function fetchWeather(city, dateString) {
-            const mockWeather = {
-                '3/6': { temp: '-2°C / 2°C', desc: '晴時多雲', icon: '☁️' },
-                '3/7': { temp: '-5°C / 0°C', desc: '大雪', icon: '🌨️' },
-                '3/8': { temp: '-8°C / -3°C', desc: '晴朗寒冷', icon: '☀️' },
-                '3/9': { temp: '-1°C / 4°C', desc: '雨夾雪', icon: '🌧️' },
-                '3/10': { temp: '-3°C / 2°C', desc: '多雲', icon: '🌥️' },
-                '3/11': { temp: '-4°C / 1°C', desc: '零星降雪', icon: '❄️' },
-                '3/12': { temp: '-1°C / 3°C', desc: '多雲', icon: '☁️' },
-            };
-            await new Promise(resolve => setTimeout(resolve, 500)); 
-            return mockWeather[dateString] || { temp: 'N/A', desc: '無法取得預報', icon: '❌' };
-        }
-
-        // 載入所有天氣數據
-        async function loadAllWeather() {
-            const primaryCity = 'Sapporo, JP';
-            const newStateTrip = [...currentState.trip];
-
-            for (let i = 0; i < newStateTrip.length; i++) {
-                const day = newStateTrip[i];
-                const weather = await fetchWeather(primaryCity, day.date);
-
-                newStateTrip[i].weather = weather;
-                
-                currentState = { ...currentState, trip: newStateTrip };
-                renderApp();
-            }
-        }
-
-        // 應用程式啟動
-        window.onload = () => {
-            renderApp(); // 第一次渲染初始狀態
-            loadAllWeather(); // 異步載入天氣
-        };
 
     </script>
 </body>
