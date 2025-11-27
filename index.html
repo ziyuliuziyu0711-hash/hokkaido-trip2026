@@ -3,145 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>❄️ 2026 北海道七日雪國親子旅 🍜</title>
+    <title>❄️ 2025 北海道七日雪國之旅 🍜</title>
+    
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.example.com/vibe-coding/vibe.js"></script>
-    <style>
-        /* 這裡可以放一些基礎樣式，或全部連結到 style.css */
-    </style>
-</head>
+    
+    </head>
 <body>
 
     <div id="app"></div>
 
     <script>
-        // *** 這裡將是主要的 Vibe Coding JavaScript 邏輯部分 ***
-        // A. 行程數據定義 (更新版)
-const tripData = [
-    {
-        date: '3/6', day: '五', title: 'Day 1: 市區遊', icon: '🏙️',
-        weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
-        details: [
-            // 由於 Day 1 主要是步行或短程移動，主要關注地點
-            { time: '6:00 - 13:15', desc: '✈️ 桃園機場 (TPE) ⮕ 新千歲機場 (CTS)', location: '新千歲機場' },
-            { time: '下午', desc: '🏨 札幌東急大通酒店 (搭機場巴士)', location: '札幌大通東急STAY酒店', travelTime: '機場巴士約 60-80 分鐘' },
-            { time: '晚餐', desc: '🍽️ Soup Curry GARAKU & 奧芝商店 (蝦湯咖哩)', location: 'Soup Curry GARAKU' },
-            { time: '晚上', desc: '📷 大通公園 & 札幌電視塔 & 札幌市時計台', location: '札幌市時計台' },
-            { time: '購物', desc: '🛍️ 博野 & 貍小路商店街', location: '貍小路商店街' },
-            { time: '宵夜', desc: '🍽️ 成吉思汗羊肉 & 🛍️ 業務超市', location: '成吉思汗だるま 本店' },
-        ]
-    },
-    {
-        date: '3/7', day: '六', title: 'Day 2: 小樽', icon: '🚢',
-        weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
-        details: [
-            { time: '上午', desc: '🐧 小樽水族館', location: '小樽水族館', travelTime: '酒店出發約 55 分鐘' },
-            { time: '午餐', desc: '🍽️ cafe BAAL カフェバール', location: 'cafe BAAL カフェバール', travelTime: '約 15 分鐘' },
-            { time: '或', desc: '❷ 三角市場', location: '三角市場' },
-            { time: '下午', desc: '📷🛍️ 小樽運河 & 小樽堺町通り商店街', location: '小樽運河' },
-            { time: '約 15:00', desc: '🚠 天狗山纜車 (賞景)', location: '小樽天狗山纜車', travelTime: '約 10 分鐘' },
-            { time: '晚上', desc: '🏨 住宿：大通東急STAY酒店', travelTime: '約 50 分鐘返回札幌' },
-        ]
-    },
-    {
-        date: '3/8', day: '日', title: 'Day 3: 旭川&美瑛&富良野', icon: '🌲',
-        weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
-        details: [
-            { time: '早餐', desc: '🥪 Sandria三明治 (車程約 2hr)', location: 'Sandria' },
-            { time: '上午', desc: '🐧 旭山動物園', location: '旭山動物園', travelTime: '札幌出發約 2 小時' },
-            { time: '午餐', desc: '🍜 山頭火拉麵', location: '山頭火本店' },
-            { time: '下午', desc: '📷 美瑛聖誕樹 & 白鬚瀑布 & 四季彩之丘', location: '白鬚瀑布', travelTime: '約 40 分鐘' },
-            { time: '傍晚', desc: '📷 森林精靈露台', location: '森林精靈露台', travelTime: '約 1 小時' },
-            { time: '晚上', desc: '🏨 住宿：富良野ホテル FURANO HOTEL', location: '富良野ホテル' },
-        ]
-    },
-    {
-        date: '3/9', day: '一', title: 'Day 4: 富良野 → 登別', icon: '♨️',
-        weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
-        details: [
-            { time: '上午', desc: '🍫 白色戀人工廠', location: '白色戀人工廠', travelTime: '富良野出發約 2 小時 30 分鐘' },
-            { time: '中午', desc: '❄️ 國營瀧野鈴蘭丘陵公園', location: '國營瀧野鈴蘭丘陵公園', travelTime: '約 45 分鐘' },
-            { time: '傍晚', desc: '🚗 驅車前往登別溫泉街', travelTime: '約 1 小時 20 分鐘' },
-            { time: '晚上', desc: '🏨 住宿：登別溫泉第一瀧本館', location: '登別溫泉第一瀧本館' },
-        ]
-    },
-    {
-        date: '3/10', day: '二', title: 'Day 5: 登別主題樂園', icon: '🐻',
-        weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
-        details: [
-            { time: '上午', desc: '🐧 尼克斯海洋公園', location: '登別尼克斯海洋公園', travelTime: '約 10 分鐘' },
-            { time: '中午', desc: '🐻 登別熊牧場', location: '登別熊牧場' },
-            { time: '下午', desc: '🔥 登別地獄谷', location: '登別地獄谷' },
-            { time: '晚上', desc: '🏨 住宿：登別溫泉第一瀧本館', location: '登別溫泉第一瀧本館' },
-        ]
-    },
-    {
-        date: '3/11', day: '三', title: 'Day 6: 札幌回歸 & 購物', icon: '🛍️',
-        weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
-        details: [
-            { time: '上午', desc: '❄️ 羊之丘展望台', location: '羊之丘展望台', travelTime: '登別出發約 1 小時 30 分鐘' },
-            { time: '中午', desc: '🛍️ 北廣島Outlet', location: '三井アウトレットパーク 札幌北広島' },
-            { time: '晚餐', desc: '🍽️ 串鳥', location: '串鳥 時計台店' },
-            { time: '晚上', desc: '🛍️ 最後採購', location: '札幌狸小路商店街' },
-            { time: '住宿', desc: '🏨 札幌西三井花園飯店', location: '札幌西三井花園飯店' },
-        ]
-    },
-    {
-        date: '3/12', day: '四', title: 'Day 7: 賦歸', icon: '✈️',
-        weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
-        details: [
-            { time: '上午', desc: '🍜 新千歲機場國內線：一幻拉麵', location: '新千歲機場' },
-            { time: '11:30', desc: '機場報到 (新千歲機場 CTS)' },
-            { time: '14:30', desc: '✈️ 班機起飛' },
-        ]
-    },
-];
+        // ******************************************************
+        // *** 這是轉換為 Vanilla JavaScript (標準 JS) 的邏輯部分 ***
+        // ******************************************************
 
-// ... 其餘 appState 和 Vibe.init 保持不變 ...
+        // A. 行程數據定義 (含地圖與車程時間數據)
+        const tripData = [
+            {
+                date: '3/6', day: '五', title: 'Day 1: 市區遊', icon: '🏙️',
+                weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                details: [
+                    { time: '6:00 - 13:15', desc: '✈️ 桃園機場 (TPE) ⮕ 新千歲機場 (CTS)', location: '新千歲機場' },
+                    { time: '下午', desc: '🏨 札幌東急大通酒店 (搭機場巴士)', location: '札幌大通東急STAY酒店', travelTime: '機場巴士約 60-80 分鐘' },
+                    { time: '晚餐', desc: '🍽️ Soup Curry GARAKU & 奧芝商店 (蝦湯咖哩)', location: 'Soup Curry GARAKU' },
+                    { time: '晚上', desc: '📷 大通公園 & 札幌電視塔 & 札幌市時計台', location: '札幌市時計台' },
+                    { time: '購物', desc: '🛍️ 博野 & 貍小路商店街', location: '貍小路商店街' },
+                    { time: '宵夜', desc: '🍽️ 成吉思汗羊肉 & 🛍️ 業務超市', location: '成吉思汗だるま 本店' },
+                ]
+            },
+            {
+                date: '3/7', day: '六', title: 'Day 2: 小樽', icon: '🚢',
+                weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                details: [
+                    { time: '上午', desc: '🐧 小樽水族館', location: '小樽水族館', travelTime: '酒店出發約 55 分鐘' },
+                    { time: '午餐', desc: '🍽️ cafe BAAL カフェバール', location: 'cafe BAAL カフェバール', travelTime: '約 15 分鐘' },
+                    { time: '或', desc: '❷ 三角市場', location: '三角市場' },
+                    { time: '下午', desc: '📷🛍️ 小樽運河 & 小樽堺町通り商店街', location: '小樽運河' },
+                    { time: '約 15:00', desc: '🚠 天狗山纜車 (賞景)', location: '小樽天狗山纜車', travelTime: '約 10 分鐘' },
+                    { time: '晚上', desc: '🏨 住宿：大通東急STAY酒店', travelTime: '約 50 分鐘返回札幌' },
+                ]
+            },
+            {
+                date: '3/8', day: '日', title: 'Day 3: 旭川&美瑛&富良野', icon: '🌲',
+                weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                details: [
+                    { time: '早餐', desc: '🥪 Sandria三明治 (車程約 2hr)', location: 'Sandria' },
+                    { time: '上午', desc: '🐧 旭山動物園', location: '旭山動物園', travelTime: '札幌出發約 2 小時' },
+                    { time: '午餐', desc: '🍜 山頭火拉麵', location: '山頭火本店' },
+                    { time: '下午', desc: '📷 美瑛聖誕樹 & 白鬚瀑布 & 四季彩之丘', location: '白鬚瀑布', travelTime: '約 40 分鐘' },
+                    { time: '傍晚', desc: '📷 森林精靈露台', location: '森林精靈露台', travelTime: '約 1 小時' },
+                    { time: '晚上', desc: '🏨 住宿：富良野ホテル FURANO HOTEL', location: '富良野ホテル' },
+                ]
+            },
+            {
+                date: '3/9', day: '一', title: 'Day 4: 富良野 → 登別', icon: '♨️',
+                weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                details: [
+                    { time: '上午', desc: '🍫 白色戀人工廠', location: '白色戀人工廠', travelTime: '富良野出發約 2 小時 30 分鐘' },
+                    { time: '中午', desc: '❄️ 國營瀧野鈴蘭丘陵公園', location: '國營瀧野鈴蘭丘陵公園', travelTime: '約 45 分鐘' },
+                    { time: '傍晚', desc: '🚗 驅車前往登別溫泉街', travelTime: '約 1 小時 20 分鐘' },
+                    { time: '晚上', desc: '🏨 住宿：登別溫泉第一瀧本館', location: '登別溫泉第一瀧本館' },
+                ]
+            },
+            {
+                date: '3/10', day: '二', title: 'Day 5: 登別主題樂園', icon: '🐻',
+                weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                details: [
+                    { time: '上午', desc: '🐧 尼克斯海洋公園', location: '登別尼克斯海洋公園', travelTime: '約 10 分鐘' },
+                    { time: '中午', desc: '🐻 登別熊牧場', location: '登別熊牧場' },
+                    { time: '下午', desc: '🔥 登別地獄谷', location: '登別地獄谷' },
+                    { time: '晚上', desc: '🏨 住宿：登別溫泉第一瀧本館', location: '登別溫泉第一瀧本館' },
+                ]
+            },
+            {
+                date: '3/11', day: '三', title: 'Day 6: 札幌回歸 & 購物', icon: '🛍️',
+                weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                details: [
+                    { time: '上午', desc: '❄️ 羊之丘展望台', location: '羊之丘展望台', travelTime: '登別出發約 1 小時 30 分鐘' },
+                    { time: '中午', desc: '🛍️ 北廣島Outlet', location: '三井アウトレットパーク 札幌北広島' },
+                    { time: '晚餐', desc: '🍽️ 串鳥', location: '串鳥 時計台店' },
+                    { time: '晚上', desc: '🛍️ 最後採購', location: '札幌狸小路商店街' },
+                    { time: '住宿', desc: '🏨 札幌西三井花園飯店', location: '札幌西三井花園飯店' },
+                ]
+            },
+            {
+                date: '3/12', day: '四', title: 'Day 7: 賦歸', icon: '✈️',
+                weather: { temp: 'TBD', desc: '載入中...', icon: '❓' },
+                details: [
+                    { time: '上午', desc: '🍜 新千歲機場國內線：一幻拉麵', location: '新千歲機場' },
+                    { time: '11:30', desc: '機場報到 (新千歲機場 CTS)' },
+                    { time: '14:30', desc: '✈️ 班機起飛' },
+                ]
+            },
+        ];
 
+        // 核心狀態管理 (取代 Vibe.updateState)
+        let currentState = {
+            currentDay: 0,
+            trip: tripData
+        };
 
-// 輔助函式：生成 Google Maps 連結
-function getMapLink(locationName) {
-    if (!locationName) return null;
-    // 使用 q 參數進行地點名稱搜尋
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName + ', 北海道')}`;
-}
+        // DOM 渲染目標
+        const appContainer = document.getElementById('app');
+        
+        // 輔助函式：生成 Google Maps 連結 (已修正)
+        function getMapLink(locationName) {
+            if (!locationName) return null;
+            // 使用正確的 Google Maps 搜尋 URL 格式
+            return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName + ', 北海道')}`;
+        }
+        
+        // --- 核心渲染邏輯 ---
 
-
-// 輔助函式：渲染單一日的卡片 (更新版)
-function renderDayCard(day) {
-    return Vibe.createElement('div', { className: 'day-card' },
-        // ... (省略標題和天氣部分，保持不變) ...
-
-        // 行程列表
-        Vibe.createElement('ul', { className: 'activity-list' },
-            day.details.map(item => {
+        // 輔助函式：渲染單一日的卡片 (使用標準 HTML 字串)
+        function renderDayCard(day) {
+            const activitiesHtml = day.details.map(item => {
                 const mapLink = getMapLink(item.location);
-                return Vibe.createElement('li', { className: 'activity-item' },
-                    Vibe.createElement('div', { className: 'activity-content' },
-                        Vibe.createElement('span', { className: 'time' }, item.time ? `${item.time} | ` : ''),
-                        item.desc,
-                        // 新增：車程時間 (如果存在)
-                        item.travelTime && Vibe.createElement('p', { className: 'travel-time' },
-                            Vibe.createElement('span', { className: 'icon' }, '🚗 '),
-                            `車程：${item.travelTime}`
-                        )
-                    ),
-                    // 新增：地圖連結按鈕 (如果 location 存在)
-                    mapLink && Vibe.createElement('a', {
-                        className: 'map-link-btn',
-                        href: mapLink,
-                        target: '_blank', // 在新視窗開啟
-                        rel: 'noopener noreferrer'
-                    }, '🗺️ 地圖')
-                );
-            })
-        )
-    );
-}
+                const travelTimeHtml = item.travelTime 
+                    ? `<p class="travel-time"><span class="icon">🚗 </span>車程：${item.travelTime}</p>`
+                    : '';
+                const mapButtonHtml = mapLink 
+                    ? `<a class="map-link-btn" href="${mapLink}" target="_blank" rel="noopener noreferrer">🗺️ 地圖</a>`
+                    : '';
 
-// ... Vibe.init 和 loadAllWeather 保持不變 ...
+                return `
+                    <li class="activity-item">
+                        <div class="activity-content">
+                            <span class="time">${item.time ? `${item.time} | ` : ''}</span>
+                            ${item.desc}
+                            ${travelTimeHtml}
+                        </div>
+                        ${mapButtonHtml}
+                    </li>
+                `;
+            }).join('');
 
+            return `
+                <div class="day-card">
+                    <h2 class="card-title">${day.icon} ${day.title}</h2>
+                    <div class="weather-box">
+                        <span class="weather-icon">${day.weather.icon}</span>
+                        <div class="weather-info">
+                            <p>天氣: ${day.weather.desc}</p>
+                            <p>溫度: ${day.weather.temp}</p>
+                        </div>
+                    </div>
+                    <ul class="activity-list">
+                        ${activitiesHtml}
+                    </ul>
+                </div>
+            `;
+        }
+
+        // 核心渲染函式 (取代 appView)
+        function renderApp() {
+            const state = currentState;
+            const currentDayData = state.trip[state.currentDay];
+            
+            const navButtonsHtml = state.trip.map((day, index) => {
+                const isActive = state.currentDay === index ? 'active' : '';
+                // 點擊時，呼叫 updateState 並重新渲染
+                return `<button class="nav-button ${isActive}" onclick="updateState({ currentDay: ${index} })">
+                            ${day.date} (${day.day})
+                        </button>`;
+            }).join('');
+            
+            const dayDetailHtml = renderDayCard(currentDayData);
+
+            appContainer.innerHTML = `
+                <div class="app-container">
+                    <header class="app-header">
+                        <h1>❄️ 北海道雪國七日旅 2025</h1>
+                    </header>
+                    <nav class="day-nav">
+                        ${navButtonsHtml}
+                    </nav>
+                    <main class="trip-detail-card">
+                        ${dayDetailHtml}
+                    </main>
+                </div>
+            `;
+        }
+
+        // 取代 Vibe.updateState
+        function updateState(newState) {
+            currentState = { ...currentState, ...newState };
+            renderApp();
+        }
+
+        // ------------------------------------------------------------------
+        // C. 天氣預報整合 (模擬數據)
+        // ------------------------------------------------------------------
+
+        // 假設 API 抓取函式 (使用模擬數據)
+        async function fetchWeather(city, dateString) {
+            const mockWeather = {
+                '3/6': { temp: '-2°C / 2°C', desc: '晴時多雲，偶有降雪', icon: '☁️' },
+                '3/7': { temp: '-5°C / 0°C', desc: '大雪', icon: '🌨️' },
+                '3/8': { temp: '-8°C / -3°C', desc: '晴朗寒冷', icon: '☀️' },
+                '3/9': { temp: '-1°C / 4°C', desc: '雨夾雪', icon: '🌧️' },
+                '3/10': { temp: '-3°C / 2°C', desc: '多雲', icon: '🌥️' },
+                '3/11': { temp: '-4°C / 1°C', desc: '零星降雪', icon: '❄️' },
+                '3/12': { temp: '-1°C / 3°C', desc: '多雲', icon: '☁️' },
+            };
+            await new Promise(resolve => setTimeout(resolve, 500)); 
+            return mockWeather[dateString] || { temp: 'N/A', desc: '無法取得預報', icon: '❌' };
+        }
+
+        // 載入所有天氣數據
+        async function loadAllWeather() {
+            const primaryCity = 'Sapporo, JP';
+            const newStateTrip = [...currentState.trip];
+
+            for (let i = 0; i < newStateTrip.length; i++) {
+                const day = newStateTrip[i];
+                const weather = await fetchWeather(primaryCity, day.date);
+
+                newStateTrip[i].weather = weather;
+                
+                // 更新狀態並重新渲染
+                updateState({ trip: newStateTrip });
+            }
+        }
+
+        // 應用程式啟動
+        window.onload = () => {
+            renderApp(); // 第一次渲染初始狀態
+            loadAllWeather(); // 異步載入天氣
+        };
 
     </script>
 </body>
