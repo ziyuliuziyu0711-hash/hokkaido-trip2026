@@ -1,5 +1,5 @@
 /*
- * 北海道七天六夜行程應用程式樣式 (V3.2)
+ * 北海道七天六夜行程應用程式樣式 (V3.3)
  * 專為手機介面優化，提供清晰、美觀、易用的排版。
  */
 
@@ -239,9 +239,10 @@ header h1 {
     margin-bottom: 5px;
 }
 
-.detail-list li strong {
-    color: var(--primary-color);
+/* 新增的樣式，用於細節標籤，避免使用** */
+.detail-list .detail-label {
     font-weight: bold;
+    color: #1abc9c;
 }
 
 .feature-item pre {
