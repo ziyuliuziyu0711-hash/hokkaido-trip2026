@@ -1,216 +1,433 @@
-/* style.css - 2025 北海道行程 App 樣式表 V3.0 (深色主題/新排版) */
+/*
+ * 北海道七天六夜行程應用程式樣式 (V3.2)
+ * 專為手機介面優化，提供清晰、美觀、易用的排版。
+ */
 
-/* 1. 變數與基礎設定 */
 :root {
-    --primary-color: #3b82f6;     /* 主色調：質感藍 */
-    --accent-color: #10b981;      /* 強調色：綠色 (例如地圖連結/特色按鈕) */
-    --background-dark: #f0f4f8;   /* 淺灰藍背景 */
-    --card-bg: #ffffff;           /* 卡片背景色 */
-    --text-color-dark: #1f2937;   /* 主要文字顏色 */
-    --text-color-light: #4b5563;  /* 次要文字顏色 */
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --primary-color: #3498db; /* 藍色 */
+    --secondary-color: #2ecc71; /* 綠色 */
+    --background-color: #f5f7fa; /* 淺灰色背景 */
+    --card-background: #ffffff; /* 卡片白色背景 */
+    --text-color: #333333;
+    --border-color: #dddddd;
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
+
+/* --- 基礎排版與響應式設計 --- */
 
 body {
-    font-family: 'Noto Sans TC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--background-dark); /* 解決太白的問題 */
-    color: var(--text-color-dark);
+    font-family: 'Helvetica Neue', Arial, 'Noto Sans TC', sans-serif;
+    background-color: var(--background-color);
     margin: 0;
     padding: 0;
+    color: var(--text-color);
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
-.app-container {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 30px;
-    background-color: var(--card-bg);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 500;
 }
 
-/* --- 2. Header (森林一家主題) --- */
-.app-header {
+header h1 {
+    font-size: 1.5em;
+    margin: 0;
     text-align: center;
-    margin-bottom: 30px;
-    padding: 25px 0 15px; /* 移除底部線條，改用下方 branding 區塊的設計 */
 }
 
-.header-branding {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 15px 25px;
-    margin: 0 auto 15px;
-    max-width: 600px;
-    border: 3px solid var(--primary-color); /* 主題色邊框 */
-    border-radius: 12px;
-    background: linear-gradient(135deg, #f0f8ff, #e5f2ff); /* 淺色漸變背景 */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+#app {
+    padding-bottom: 80px; /* 為底部導航留空間 */
 }
 
-.title-group {
-    line-height: 1.1;
-}
+/* --- 主要導航列 (Tab) --- */
 
-.main-title {
-    font-weight: 700;
-    color: #0c4a6e; /* 深藍色 */
-    margin: 0;
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-}
-
-.sub-title {
-    font-weight: 500;
-    color: var(--primary-color);
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-.family-icon {
-    font-size: 3rem;
-    line-height: 1;
-    opacity: 0.8;
-}
-
-.header-slogan {
-    color: var(--text-color-light);
-    font-style: italic;
-    font-size: 1rem;
-    margin-top: 10px;
-}
-
-/* --- 3. Main Tabs (新增分頁導覽) --- */
 .main-tab-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #e5e7eb;
+    justify-content: space-around;
+    background-color: var(--card-background);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 5px 0;
+    border-top: 1px solid var(--border-color);
 }
 
 .main-tab-btn {
-    background-color: transparent;
+    flex-grow: 1;
+    padding: 10px 0;
     border: none;
-    padding: 10px 20px;
+    background: none;
     cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-color-light);
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s;
-}
-
-.main-tab-btn:hover {
-    color: var(--primary-color);
+    font-size: 14px;
+    color: #777;
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
 .main-tab-btn.active {
     color: var(--primary-color);
+    font-weight: bold;
     border-bottom: 3px solid var(--primary-color);
 }
 
-/* --- 4. Date Navigation (日期縮寫上下擺放) --- */
+/* --- 日期導航列 (Day Nav) --- */
+
 .day-nav {
     display: flex;
-    overflow-x: auto;
-    padding-bottom: 15px;
-    margin-bottom: 25px;
-    /* 隱藏滾動條 */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-.day-nav::-webkit-scrollbar {
-    display: none;
+    overflow-x: auto; /* 允許水平滾動 */
+    padding: 10px 0;
+    background-color: var(--card-background);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 59px; /* 緊貼 header */
+    z-index: 400;
+    box-shadow: var(--shadow-light);
 }
 
 .nav-button {
-    flex-shrink: 0;
-    background-color: var(--background-dark);
-    color: var(--text-color-dark);
-    border: 1px solid #d1d5db;
+    flex-shrink: 0; /* 防止按鈕被壓縮 */
     padding: 8px 15px;
-    margin-right: 10px;
-    border-radius: 8px;
+    margin: 0 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background-color: transparent;
     cursor: pointer;
-    transition: all 0.3s ease;
-    outline: none;
-    
-    /* 實現日期縮寫上下擺放 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1.2;
-}
-
-.nav-button:hover {
-    background-color: #e5e7eb;
-    border-color: var(--primary-color);
+    color: #555;
+    font-size: 12px;
+    text-align: center;
+    transition: all 0.2s;
 }
 
 .nav-button.active {
     background-color: var(--primary-color);
     color: white;
-    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
     border-color: var(--primary-color);
+    font-weight: bold;
 }
 
 .nav-day {
-    font-size: 0.9rem;
-    font-weight: 300;
+    display: block;
+    font-weight: bold;
 }
+
 .nav-date {
-    font-size: 1.4rem;
-    font-weight: 700;
+    display: block;
+    font-size: 10px;
 }
 
-/* --- 5. Trip Detail Card --- */
-.card-title {
-    color: var(--primary-color);
-    margin-top: 0;
+/* --- 行程內容卡片 (Trip Detail Card) --- */
+
+.trip-detail-card {
+    padding: 15px;
+}
+
+.day-card {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    padding: 20px;
     margin-bottom: 20px;
-    font-size: 2rem;
-    padding-bottom: 5px;
-    border-bottom: 1px dashed #e5e7eb;
-    font-weight: 700;
 }
 
-/* --- 6. Activity List (修正地圖連結樣式) --- */
+.card-title {
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    color: var(--primary-color);
+}
+
+/* --- 天氣資訊區塊 --- */
+
+.weather-box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #e9f7ef; /* 淺綠色背景 */
+    border-radius: 8px;
+    border: 1px solid #d4edda;
+}
+
+.weather-icon {
+    font-size: 2.2em;
+    margin-right: 15px;
+}
+
+.weather-info p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* --- 行程列表 --- */
+
 .activity-list {
     list-style: none;
     padding: 0;
 }
 
 .activity-item {
-    display: flex;
-    flex-wrap: wrap; /* 允許換行以容納細節 */
-    justify-content: space-between;
-    background-color: var(--secondary-color);
-    padding: 18px 20px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    border-left: 6px solid var(--primary-color);
-    transition: box-shadow 0.2s;
-}
-
-.activity-item:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 3px solid var(--primary-color);
+    padding-left: 15px;
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .activity-content {
-    flex-grow: 1;
-    margin-right: 20px;
     display: flex;
-    flex-direction: column;
-    width: 75%; /* 確保描述佔用足夠空間 */
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 5px;
 }
 
 .description-wrap {
-    font-size: 1.1rem;
-    margin-top: 5px;
+    flex-grow: 1;
+    font-size: 1.1em;
+    font-weight: 600;
 }
 
-.activity-item .time {
-    font
+.location-link {
+    color: var(--text-color);
+    text-decoration: none;
+    border-bottom: 2px dashed #99999950;
+    padding-bottom: 2px;
+}
+
+.location-link:hover {
+    color: var(--primary-color);
+}
+
+
+.travel-time {
+    display: flex;
+    align-items: center;
+    font-size: 0.85em;
+    color: #777;
+    margin: -10px 0 15px 15px; /* 上移對齊 */
+    padding-left: 10px;
+    border-left: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.travel-time .icon {
+    margin-right: 5px;
+    font-size: 1.1em;
+}
+
+/* --- 詳細資訊區塊 --- */
+
+.detail-list {
+    list-style: none;
+    padding: 10px 0 0 0;
+    margin: 5px 0 0 0;
+    border-top: 1px dashed var(--border-color);
+    font-size: 0.9em;
+    color: #555;
+}
+
+.detail-list li {
+    margin-bottom: 5px;
+}
+
+.detail-list li strong {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.feature-item pre {
+    white-space: pre-wrap; /* 保持換行並處理長文字 */
+    font-family: inherit;
+    background-color: #f9f9f9;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    margin-top: 5px;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+/* --- 行程控制按鈕 --- */
+
+.activity-controls {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+    justify-content: flex-end;
+}
+
+.menu-btn, .expand-btn {
+    padding: 5px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.expand-btn {
+    background-color: #ecf0f1;
+    color: #555;
+    font-weight: 600;
+}
+
+.edit-btn {
+    background-color: #fcf8e3;
+}
+
+.sort-btn {
+    background-color: #e6f7ff;
+}
+
+.menu-btn:hover, .expand-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.add-item-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-item-btn:hover {
+    background-color: #27ae60;
+}
+
+/* --- 資訊分頁 (Info Tab) --- */
+
+.info-tab {
+    padding: 20px;
+}
+
+.info-tab h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.info-group {
+    margin-bottom: 30px;
+    background-color: var(--card-background);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-light);
+}
+
+.info-item {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #7f8c8d;
+    font-size: 0.85em;
+    display: block;
+}
+
+.info-value, .info-route {
+    margin: 5px 0 0 0;
+    font-size: 1.1em;
+}
+
+.info-value a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+/* --- 花費分頁 (Expense Tab) --- */
+
+.expense-tab {
+    padding: 20px 10px;
+}
+
+.total-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fcf3cf;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid #f9eac2;
+}
+
+.total-box h3 {
+    margin: 0;
+    color: #c0392b;
+    font-size: 1.2em;
+}
+
+.add-expense-btn {
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--card-background);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+}
+
+.expense-table th, .expense-table td {
+    padding: 10px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9em;
+}
+
+.expense-table th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+    color: #555;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.expense-table tr:hover {
+    background-color: #f0f0f0;
+}
+
+.delete-btn-sm {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+    cursor: pointer;
+}
