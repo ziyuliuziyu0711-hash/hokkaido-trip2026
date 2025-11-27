@@ -1,0 +1,51 @@
+/* style.css (新增/修改部分) */
+
+/* ... (省略原有樣式) ... */
+
+.activity-item {
+    display: flex; /* 讓內容和按鈕可以並排 */
+    justify-content: space-between; /* 推開內容和按鈕 */
+    align-items: center; /* 垂直置中 */
+    background-color: var(--secondary-color);
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border-left: 5px solid var(--primary-color);
+    line-height: 1.5;
+}
+
+.activity-content {
+    flex-grow: 1;
+    margin-right: 15px; /* 與地圖按鈕保持距離 */
+}
+
+/* 車程時間樣式 */
+.travel-time {
+    margin: 5px 0 0 0;
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+}
+
+.travel-time .icon {
+    margin-right: 5px;
+}
+
+/* 地圖按鈕樣式 */
+.map-link-btn {
+    flex-shrink: 0; /* 防止按鈕被壓縮 */
+    background-color: #28a745; /* 綠色按鈕 */
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.map-link-btn:hover {
+    background-color: #218838;
+}
