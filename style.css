@@ -63,3 +63,31 @@ body {
 .fab-shadow {
     box-shadow: 0 4px 15px rgba(253, 216, 53, 0.4);
 }
+
+/* 備註內容高度控制 */
+.note-content {
+    max-height: 2.5rem; /* 兩行文字高度 */
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.note-content.expanded {
+    max-height: 500px; /* 展開時高度 */
+}
+
+/* 支出紀錄項目顏色標籤 (取代圓點) */
+.expense-category-tag {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px; /* Full rounded */
+    font-size: 0.6rem; /* text-xs */
+    font-weight: 500;
+    line-height: 1;
+    transition: all 0.2s;
+}
+
+/* 花費頁 - 總額冰雪藍背景 */
+.expenses-banner {
+    background: linear-gradient(135deg, #0077B6 0%, #00B4D8 100%);
+    box-shadow: 0 10px 30px rgba(0, 180, 216, 0.4);
+}
