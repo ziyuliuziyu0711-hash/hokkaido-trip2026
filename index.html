@@ -48,21 +48,20 @@
 
         /* 恢復雪景背景與漸層 */
         .header-bg {
-            /* 調整為更簡單的背景，因為圖片會覆蓋大部分 */
             background: #B3E5FC; 
-            padding: 0; /* 移除 padding 讓圖片可以滿版 */
+            padding: 0; 
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(1, 87, 155, 0.15);
         }
         
-        /* 新增：圖片專用容器，用於控制圖片高度和滿版 */
+        /* 修正：圖片專用容器，用於控制圖片高度和滿版 */
         .header-image-container {
             width: 100%;
-            /* 調整圖片高度。您可以調整這個數值 (例如 h-40, h-48) 來控制頁首區域的高度 */
-            height: 120px; 
+            /* **修正**：增加圖片顯示高度，從 150px 調整為 400px */
+            height: 400px; 
             overflow: hidden;
-            background-color: #ffffff; /* 如果圖片載入失敗，顯示白色背景 */
+            background-color: #ffffff; 
         }
         
         .header-image-container img {
@@ -70,6 +69,8 @@
             height: 100%;
             /* 保持圖片比例並覆蓋整個容器 */
             object-fit: cover; 
+            /* 修正：確保圖片以塊級元素顯示，防止微小間隙 */
+            display: block; 
         }
         
         /* 恢復雪花圖層 */
@@ -169,6 +170,7 @@
         <div class="header-image-container">
             <img src="IMG_4330.PNG" alt="北海道家族旅行計畫">
         </div>
+        
         <div class="px-4 py-3 absolute top-0 right-0 z-10 text-deep-sea-blue">
             <div class="flex flex-col space-y-2 pt-2">
                 <button @click="currentTab = 'itinerary'" title="行程" :class="currentTab === 'itinerary' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
@@ -431,12 +433,10 @@ hover:text-white transition-all">
                 </div>
                 
                 <div v-if="shoppingList.length % 2 !== 0" class="h-0 invisible"></div>
-                <div v-if="shoppingList.length % 2 === 
-0 && shoppingList.length < 10" class="bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl p-3 flex flex-col items-center justify-center min-h-[150px] cursor-pointer hover:bg-slate-100 transition-colors" @click="handleAddClick">
-                    <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center mb-2 text-slate-400">
-                        <i class="fa-solid fa-list-check text-lg"></i>
-                    </div>
-                    <span class="text-xs font-bold text-slate-400">新增必買清單</span>
+                
+                <div v-if="shoppingList.length === 0" class="col-span-2 text-center py-16 text-slate-300">
+                    <i class="fa-solid fa-bag-shopping text-5xl mb-3 text-slate-200"></i>
+                    <p class="text-sm">購物清單空白<br>請點擊右下角新增</p>
                 </div>
             </div>
         </div>
@@ -559,294 +559,369 @@ rounded-xl p-3 text-sm text-slate-600 outline-none">
                 </select>
                 <input v-model="newItinerary.name" placeholder="名稱" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
                 <input v-model="newItinerary.address" placeholder="地址/地點 (Google Map 搜尋用)" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
-                <div class="grid grid-cols-2 gap-2">
-                    <input v-model="newItinerary.hours" placeholder="營業時間" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
-                    <input v-model="newItinerary.price" placeholder="門票/價格" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
+                <div class="grid grid-cols-2 gap-3">
+                    <input v-model="newItinerary.startTime" type="text" placeholder="時間 (e.g. 09:30)" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
+                    <select v-model="newItinerary.transportType" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
+                        <option value="walk">步行</option>
+                        <option value="car">自駕</option>
+                        <option value="bus">巴士</option>
+                        <option value="public">地鐵/JR</option>
+                        <option value="flight">飛機</option>
+                        <option value="other">其他</option>
+                    </select>
                 </div>
-                <input v-model="newItinerary.startTime" type="time" placeholder="時間點 (ex: 10:30)" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
-                <div class="bg-slate-50 rounded-xl p-3">
-                    <label class="text-xs text-slate-500 block mb-1">預計交通方式與時間</label>
-                    <div class="flex space-x-2 mb-2">
-                        <button @click="newItinerary.transportType='car'" :class="newItinerary.transportType==='car' ?
-'bg-deep-sea-blue text-white' : 'bg-slate-200 text-slate-600'" class="flex-1 py-2 rounded-lg text-sm transition-colors"><i class="fa-solid fa-car-side mr-1"></i> 開車</button>
-                        <button @click="newItinerary.transportType='walk'" :class="newItinerary.transportType==='walk' ?
-'bg-deep-sea-blue text-white' : 'bg-slate-200 text-slate-600'" class="flex-1 py-2 rounded-lg text-sm transition-colors"><i class="fa-solid fa-person-walking mr-1"></i> 步行</button>
-                        <button @click="newItinerary.transportType='public'" :class="newItinerary.transportType==='public' ?
-'bg-deep-sea-blue text-white' : 'bg-slate-200 text-slate-600'" class="flex-1 py-2 rounded-lg text-sm transition-colors"><i class="fa-solid fa-train-subway mr-1"></i> 大眾</button>
-                    </div>
-                    <input v-model="newItinerary.travelTime" placeholder="預計交通時間 (ex: 30分鐘)" class="w-full bg-white rounded-lg p-2 text-sm outline-none focus:ring-1 focus:ring-accent-yellow border border-slate-100">
+                <div class="grid grid-cols-2 gap-3">
+                    <input v-model="newItinerary.travelTime" type="text" placeholder="車程/移動時間" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
+                    <input v-model="newItinerary.hours" type="text" placeholder="營業時間" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
                 </div>
-                <textarea v-model="newItinerary.note" placeholder="備註/注意事項" rows="3" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue"></textarea>
+                <input v-model="newItinerary.price" type="text" placeholder="門票/費用" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
+                <textarea v-model="newItinerary.note" placeholder="備註/細節" rows="3" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue"></textarea>
             </div>
-
             <div class="flex space-x-3 mt-6">
-                <button @click="showItineraryModal = false; isEditMode = false;" class="flex-1 py-3 rounded-xl bg-slate-100 text-slate-500 font-bold text-sm">取消</button>
+                <button @click="showItineraryModal = false; isEditMode = false" class="flex-1 py-3 rounded-xl bg-slate-100 text-slate-500 font-bold text-sm">取消</button>
                 <button @click="saveItineraryItem" class="flex-1 py-3 rounded-xl bg-deep-sea-blue text-white font-bold text-sm shadow-lg shadow-deep-sea-blue/30">{{ isEditMode ? '儲存修改' : '新增行程' }}</button>
             </div>
         </div>
     </div>
 
-</div>
 
-<script>
-    const { createApp, ref, computed, onMounted } = Vue;
+</div> <script>
+    const { createApp, ref, computed, onMounted } = Vue
 
     createApp({
         setup() {
-            // 資料: Tab
+            // 匯率基準
+            const EXCHANGE_RATE = 0.215;
+
+            // 標籤顏色與圖示定義
+            const CATEGORY_MAP = {
+                sightseeing: { color: 'bg-green-500', icon: 'fa-solid fa-camera' },
+                food: { color: 'bg-red-500', icon: 'fa-solid fa-utensils' },
+                shopping: { color: 'bg-indigo-500', icon: 'fa-solid fa-bag-shopping' },
+                accommodation: { color: 'bg-purple-500', icon: 'fa-solid fa-bed' },
+                flight: { color: 'bg-blue-500', icon: 'fa-solid fa-plane-departure' },
+                transport: { color: 'bg-orange-500', icon: 'fa-solid fa-car' },
+                ticket: { color: 'bg-cyan-500', icon: 'fa-solid fa-ticket' },
+                other: { color: 'bg-slate-500', icon: 'fa-solid fa-circle-info' },
+                stay: { color: 'bg-purple-500', icon: 'fa-solid fa-hotel' }, 
+            };
+            const CATEGORY_LABEL_MAP = {
+                sightseeing: '景點', food: '飲食', shopping: '購物', accommodation: '住宿', flight: '航班', transport: '交通', ticket: '門票', other: '其他', stay: '住宿'
+            };
+
+            // 當前頁面
             const currentTab = ref('itinerary');
 
-            // 資料: 日期
-            const dates = [
-                { date: '3/6', weekday: 'FRI', fullDate: '2026-03-06', hasCar: false, tollFee: 0 },
-                { date: '3/7', weekday: 'SAT', fullDate: '2026-03-07', hasCar: true, tollFee: 500 },
-                { date: '3/8', weekday: 'SUN', fullDate: '2026-03-08', hasCar: true, tollFee: 0 },
-                { date: '3/9', weekday: 'MON', fullDate: '2026-03-09', hasCar: true, tollFee: 1200 },
-                { date: '3/10', weekday: 'TUE', fullDate: '2026-03-10', hasCar: true, tollFee: 800 },
-                { date: '3/11', weekday: 'WED', fullDate: '2026-03-11', hasCar: true, tollFee: 1000 },
-                { date: '3/12', weekday: 'THU', fullDate: '2026-03-12', hasCar: false, tollFee: 0 },
-            ];
-            const selectedDateIndex = ref(0);
-
-            // 資料: 天氣
-            const weatherData = ref([
-                { temp: '-2 / -6', feel: '-8', condition: 'Snow', description: '雪花飄飄，注意路面結冰。' },
-                { temp: '-3 / -8', feel: '-10', condition: 'Snow', description: '持續降雪，體感溫度極低。' },
-                { temp: '-5 / -10', feel: '-12', condition: 'Cloudy', description: '多雲間晴，但寒風刺骨。' },
-                { temp: '-4 / -9', feel: '-5', condition: 'Sunny', description: '陽光普照，適合戶外活動。' },
-                { temp: '-2 / -7', feel: '-8', condition: 'Snow', description: '間歇性降雪，保暖至上。' },
-                { temp: '0 / -5', feel: '-6', condition: 'Cloudy', description: '氣溫回升，但仍需注意保暖。' },
-                { temp: '1 / -4', feel: '0', condition: 'Sunny', description: '晴朗，是回國的好天氣。' }
+            // --- 資料定義：已根據使用者最新行程全部更新 ---
+            
+            const dates = ref([
+                { date: '3/6', weekday: '五', hasCar: false, tollFee: 0 },
+                { date: '3/7', weekday: '六', hasCar: true, tollFee: 0 }, // 3/7 租車日開始
+                { date: '3/8', weekday: '日', hasCar: true, tollFee: 0 },
+                { date: '3/9', weekday: '一', hasCar: true, tollFee: 0 },
+                { date: '3/10', weekday: '二', hasCar: true, tollFee: 0 },
+                { date: '3/11', weekday: '三', hasCar: true, tollFee: 0 }, // 3/11 還車
+                { date: '3/12', weekday: '四', hasCar: false, tollFee: 0 },
             ]);
 
-            // 資料: 飯店
-            const hotels = [
-                { name: '東急ステイ 札幌大通 (TOKYU STAY SAPPORO ODORI)', date: '3/6-3/8', phone: '+81-11-200-8888', address: '北海道札幌市中央區南二条西5丁目26-2' },
-                { name: '富良野ホテル FURANO HOTEL', date: '3/8-3/9', phone: '+81-167-22-1111', address: '北海道富良野市八幡丘' },
-                { name: '登別溫泉第一瀧本館', date: '3/9-3/11', phone: '+81-143-84-2205', address: '北海道登別市登別温泉町55' },
-                { name: '札幌西三井花園飯店', date: '3/11-3/12', phone: '+81-11-201-3311', address: '北海道札幌市中央區北5条西6丁目2-4' }
-            ];
-
-            // 資料: 行程
-            const itineraryData = ref({
-                0: [ // 3/6
-                    { id: 1, category: 'flight', name: '去程航班 CI0130', address: '新千歲機場', hours: '4小時飛行', price: '含在團費', travelTime: null, transportType: null, note: 'TPE 08:35 -> CTS 13:15。', isNoteExpanded: false, startTime: '08:35' },
-                    { id: 2, category: 'transport', name: '搭乘 JR 到札幌', address: '札幌站', hours: null, price: '¥2250', travelTime: '約 40 分鐘', transportType: 'public', note: '在新千歲機場買票，指定席較舒適。', isNoteExpanded: false, startTime: '14:00' },
-                    { id: 3, category: 'accommodation', name: '東急ステイ 札幌大通 Check-in', address: '東急ステイ 札幌大通', hours: null, price: null, travelTime: '步行 10 分鐘', transportType: 'walk', note: '確認房間電器與備品是否充足。', isNoteExpanded: false, startTime: '16:00' },
-                    { id: 4, category: 'shopping', name: '狸小路商店街', address: '狸小路商店街', hours: '營業至 20:00', price: null, travelTime: '步行 5 分鐘', transportType: 'walk', note: '晚餐前可以先來晃晃，買點零食。', isNoteExpanded: false, startTime: '17:30' },
-                    { id: 5, category: 'food', name: 'Daruma 成吉思汗烤肉 (晚餐)', address: '達摩烤肉 6.4 店', hours: '17:00-01:00', price: '約 ¥4000/人', travelTime: '步行 10 分鐘', transportType: 'walk', note: '可能會排隊，建議早點去。', isNoteExpanded: false, startTime: '19:30' },
-                ],
-                1: [ // 3/7
-                    { id: 21, category: 'transport', name: '取車 Nissan Rent a Car', address: '札幌駅南口アスティ店', hours: '08:00', travelTime: '步行 15 分鐘', transportType: 'walk', note: '帶護照、譯本、信用卡，確認雪胎狀況。', isNoteExpanded: false, startTime: '08:00' },
-                    { id: 22, category: 'sightseeing', name: '小樽水族館', address: '小樽水族館', hours: '09:00-16:00', price: '¥1800', travelTime: '駕車約 50 分鐘', transportType: 'car', note: '企鵝散步 11:30 (不可錯過)；海豚表演 13:00。', isNoteExpanded: false, startTime: '09:00' },
-                    { id: 23, category: 'food', name: '三角市場 (午餐)', address: '三角市場', travelTime: '駕車約 10 分鐘', transportType: 'car', note: '滝波食堂 海鮮丼，市場內比較溫暖。', isNoteExpanded: false, startTime: '12:30' },
-                    { id: 24, category: 'shopping', name: '小樽堺町通り商店街', address: '小樽堺町通り商店街', travelTime: '步行 10 分鐘', transportType: 'walk', note: '六花亭、北一硝子、LeTAO (試吃)。', isNoteExpanded: false, startTime: '14:30' },
-                    { id: 25, category: 'sightseeing', name: '天狗山纜車', address: '天狗山纜車', price: '¥1800', travelTime: '駕車約 15 分鐘', transportType: 'car', note: '日落時看夜景最棒，纜車營運至 20:00。', isNoteExpanded: false, startTime: '17:00' }
-                ],
-                2: [ // 3/8
-                    { id: 31, category: 'food', name: 'Sandria 三明治 (早餐)', address: 'Sandria 三明治', travelTime: '駕車 5 分鐘', transportType: 'car', note: '外帶上車吃，奶油草莓必買。', isNoteExpanded: false, startTime: '08:00' },
-                    { id: 32, category: 'sightseeing', name: '旭山動物園', address: '旭山動物園', price: '¥1000', travelTime: '駕車約 2 小時', transportType: 'car', note: '企鵝遊行、北極熊館，注意保暖。', isNoteExpanded: false, startTime: '10:00' },
-                    { id: 33, category: 'food', name: '山頭火拉麵 (午餐)', address: '山頭火拉麵 旭川總店', travelTime: '駕車 15 分鐘', transportType: 'car', note: '經典鹽味拉麵。', isNoteExpanded: false, startTime: '12:30' },
-                    { id: 34, category: 'sightseeing', name: '青池 & 白金溫泉區', address: '白金青池', travelTime: '駕車 1 小時', transportType: 'car', note: '看結冰的青池 (需注意路面)。', isNoteExpanded: false, startTime: '15:00' },
-                    { id: 35, category: 'accommodation', name: '富良野酒店 (Check-in)', address: '富良野ホテル', travelTime: '駕車 1 小時', transportType: 'car', note: '酒店有溫泉。', isNoteExpanded: false, startTime: '18:00' }
-                ],
-                3: [ // 3/9
-                    { id: 41, category: 'sightseeing', name: '精靈露臺', address: '新富良野王子大飯店', travelTime: '駕車 10 分鐘', transportType: 'car', note: '早上逛逛商店，拍照。', isNoteExpanded: false, startTime: '09:00' },
-                    { id: 42, category: 'sightseeing', name: '富良野滑雪場 (戲雪)', address: '富良野滑雪場', price: '纜車 ¥3000', travelTime: '駕車 5 分鐘', transportType: 'car', note: '雪盆、堆雪人。', isNoteExpanded: false, startTime: '11:00' },
-                    { id: 43, category: 'food', name: '唯我獨尊 (午餐)', address: '唯我獨尊 咖哩', travelTime: '駕車 15 分鐘', transportType: 'car', note: '招牌咖哩蛋包飯。', isNoteExpanded: false, startTime: '13:30' },
-                    { id: 44, category: 'transport', name: '移動至登別溫泉區', address: '登別溫泉', travelTime: '駕車約 2.5 小時', transportType: 'car', note: '路途較遠，可安排休息站。', isNoteExpanded: false, startTime: '15:00' },
-                    { id: 45, category: 'accommodation', name: '登別溫泉第一瀧本館 (Check-in)', address: '登別溫泉第一瀧本館', travelTime: null, transportType: null, note: '晚上享受溫泉及會席料理。', isNoteExpanded: false, startTime: '18:00' }
-                ],
-                4: [ // 3/10
-                    { id: 51, category: 'sightseeing', name: '尼克斯海洋公園', address: '登別尼克斯海洋公園', travelTime: '駕車 30 分鐘', transportType: 'car', note: '企鵝遊行 11:00。', isNoteExpanded: false, startTime: '10:00' },
-                    { id: 52, category: 'sightseeing', name: '登別地獄谷', address: '登別地獄谷', travelTime: '駕車 5 分鐘', transportType: 'car', note: '必拍景點。', isNoteExpanded: false, startTime: '14:00' },
-                    { id: 53, category: 'food', name: '溫泉街美食', address: '登別溫泉街', travelTime: '步行 5 分鐘', transportType: 'walk', note: '晚餐在飯店內享用。', isNoteExpanded: false, startTime: '18:00' },
-                ],
-                5: [ // 3/11
-                    { id: 61, category: 'sightseeing', name: '羊之丘展望台', address: '羊之丘展望台', travelTime: '駕車 40 分鐘', transportType: 'car', note: '與克拉克博士合影。', isNoteExpanded: false, startTime: '09:00' },
-                    { id: 62, category: 'food', name: '札幌啤酒園 (午餐)', address: '札幌啤酒園', travelTime: '駕車 15 分鐘', transportType: 'car', note: '吃螃蟹與烤肉。', isNoteExpanded: false, startTime: '12:00' },
-                    { id: 63, category: 'accommodation', name: '札幌西三井花園飯店', address: '札幌西三井花園飯店', travelTime: '駕車 10 分鐘', transportType: 'car', note: '歸還租車。', isNoteExpanded: false, startTime: '16:00' },
-                ],
-                6: [ // 3/12
-                    { id: 71, category: 'food', name: '一幻拉麵', address: '新千歲機場', travelTime: '搭地鐵 40 分鐘', transportType: 'public', note: '機場店通常大排長龍，要提早。', isNoteExpanded: false, startTime: '12:00' },
-                    { id: 72, category: 'flight', name: '回程航班 CI0131', address: '新千歲機場', hours: '4小時飛行', price: '含在團費', travelTime: null, transportType: null, note: 'CTS 14:40 -> TPE 18:15。', isNoteExpanded: false, startTime: '14:40' },
-                ],
-            });
-
-            // 讓資料深度響應
-            Object.values(itineraryData.value).forEach(day => {
-                day.forEach(item => {
-                    item.isNoteExpanded = ref(false); // 確保每個項目的備註收合狀態是響應式的
-                });
-            });
-
-
-            // 資料: 購物清單
-            const shoppingList = ref([
-                { name: '六花亭 草莓巧克力', image: null },
-                { name: '白色戀人', image: null },
-                { name: '薯條三兄弟', image: null },
-                { name: '玉米巧克力', image: null },
+            const hotels = ref([
+                { name: '札幌大通東急STAY酒店', date: '3/6 - 3/7 (2晚)', phone: '+81-11-200-5109', address: '〒060-0042 北海道札幌市中央区大通西９丁目３−3' },
+                { name: '富良野ホテル (Furano Hotel)', date: '3/8 (1晚)', phone: '+81-167-22-1133', address: '〒076-0035 北海道富良野市学田三区' },
+                { name: '登別溫泉第一瀧本館', date: '3/9 - 3/10 (2晚)', phone: '+81-143-84-2111', address: '〒059-0551 北海道登別市登別温泉町５５' },
+                { name: '札幌西三井花園飯店', date: '3/11 (1晚)', phone: '+81-11-280-5531', address: '〒060-0004 北海道札幌市中央区北４条西７丁目１−2' },
             ]);
             
-            // 資料: 支出紀錄
-            const expenses = ref([
-                { date: '2026-03-07', category: 'food', name: '達摩烤肉晚餐', amount: 16000, payment: 'cash' },
-                { date: '2026-03-06', category: 'transport', name: 'JR 機場到札幌', amount: 2250, payment: 'card' },
-                { date: '2026-03-07', category: 'ticket', name: '小樽水族館門票', amount: 7200, payment: 'card' },
-                { date: '2026-03-08', category: 'food', name: '山頭火午餐', amount: 5500, payment: 'cash' },
+            // 使用者的完整行程資料 (已根據最新的排程更新)
+            const itineraryData = ref([
+                // Day 1: 3/6 (五) 札幌市區遊
+                [
+                    { id: 101, name: '桃園機場報到', category: 'flight', startTime: '06:00', address: '桃園國際機場 (TPE)', note: '中華航空 CI0130 08:35起飛', hours: null, price: null, transportType: 'flight', travelTime: null, isNoteExpanded: false },
+                    { id: 102, name: '新千歲機場 (CTS) 抵達', category: 'flight', startTime: '13:15', address: '新千歲機場', note: '領取行李與確認巴士站牌', hours: null, price: null, transportType: 'flight', travelTime: '4h40m', isNoteExpanded: false },
+                    { id: 103, name: '搭乘機場巴士至札幌', category: 'transport', startTime: '~14:30', address: '札幌大通東急STAY酒店', note: '國內線14, 22站台搭車，分直達/全達，車程約60-80分鐘。', hours: null, price: '約 ¥1,400/人', transportType: 'bus', travelTime: '1h30m', isNoteExpanded: false },
+                    { id: 104, name: '札幌大通東急STAY酒店 Check-in', category: 'accommodation', startTime: '~16:00', address: '札幌東急大通酒店', note: '完成住宿手續並稍作休息', hours: null, price: null, transportType: 'walk', travelTime: '10m', isNoteExpanded: false },
+                    { id: 105, name: '晚餐 (湯咖哩)', category: 'food', startTime: '~17:00', address: 'Soup Curry GARAKU 或 奥芝商店 実家', note: '人氣：燉豬肉湯咖哩、嫩雞腿和蔬菜湯咖哩', hours: '17:00-20:30', price: null, transportType: 'walk', travelTime: '15m', isNoteExpanded: false },
+                    { id: 106, name: '大通公園 & 札幌電視塔', category: 'sightseeing', startTime: '~19:00', address: '大通公園 & 札幌電視塔', note: '欣賞夜景，電視塔觀景台高 90.38m。冬季有燈飾。', hours: '9:00-22:00 (電視塔)', price: '觀景台門票', transportType: 'walk', travelTime: '5m', isNoteExpanded: false },
+                    { id: 107, name: '貍小路商店街', category: 'shopping', startTime: '~20:30', address: '貍小路商店街 (4-5丁目)', note: '藥妝、伴手禮採購。', hours: null, price: null, transportType: 'walk', travelTime: '15m', isNoteExpanded: false },
+                    { id: 108, name: '成吉思汗烤肉 (宵夜/晚餐)', category: 'food', startTime: '~21:30', address: '成吉思汗烤肉YUHI 薄野本店', note: '或是北海道ジンギスカンMASAJINすすきの本店', hours: '17:00–23:00/00:00', price: null, transportType: 'walk', travelTime: '15m', isNoteExpanded: false },
+                    { id: 109, name: '業務超市', category: 'shopping', startTime: '~22:30', address: '業務スーパー (大通西17条店)', note: '大份量、價格實惠，採購零食或隔日早餐', hours: '9:00–22:00', price: null, transportType: 'walk', travelTime: '20m', isNoteExpanded: false },
+                ],
+                // Day 2: 3/7 (六) 小樽
+                [
+                    { id: 201, name: '札幌市區取車', category: 'transport', startTime: '08:00', address: 'Nissan Rent a Car 札幌駅南口アスティ店', note: '租車日開始！', hours: null, price: null, transportType: 'walk', travelTime: '20m', isNoteExpanded: false },
+                    { id: 202, name: '小樽水族館', category: 'sightseeing', startTime: '09:00', address: '小樽水族館', note: '海獸樂園表演 (海豚/海獅) 11:00、企鵝散步 11:30 (冬季限定)。', hours: '9:00-16:00', price: '¥1,800/成人', transportType: 'car', travelTime: '55m', isNoteExpanded: false },
+                    { id: 203, name: '小樽水族館企鵝散步', category: 'sightseeing', startTime: '11:30', address: '小樽水族館', note: '冬季限定，企鵝會在雪地上散步。', hours: null, price: null, transportType: 'walk', travelTime: '0m', isNoteExpanded: false },
+                    { id: 204, name: '午餐 (三角市場)', category: 'food', startTime: '~12:45', address: '三角市場 (滝波食堂/惠比壽櫻)', note: '新鮮海鮮丼飯，近 JR 小樽車站。 (備選: cafe BAAL 牛排飯)', hours: '8:00-17:00', price: null, transportType: 'car', travelTime: '15m', isNoteExpanded: false },
+                    { id: 205, name: '小樽堺町通り商店街', category: 'shopping', startTime: '~14:30', address: '小樽音樂盒堂本館/北一硝子/LeTAO總店', note: '北一硝子三號館煤油燈、蒸汽鐘報時、LeTAO雙層起司蛋糕。', hours: null, price: null, transportType: 'walk', travelTime: '10m', isNoteExpanded: false },
+                    { id: 206, name: '天狗山纜車', category: 'sightseeing', startTime: '~16:30', address: '天狗山纜車', note: '觀賞小樽夜景的最佳地點 (北海道三大夜景之一)。約 15:00 上山', hours: '9:00-21:00', price: '¥1,800/成人', transportType: 'car', travelTime: '15m', isNoteExpanded: false },
+                    { id: 207, name: '晚餐', category: 'food', startTime: '~19:00', address: '小樽運河周邊餐廳', note: '在小樽用餐後再開車回札幌', hours: null, price: null, transportType: 'car', travelTime: '15m', isNoteExpanded: false },
+                    { id: 208, name: '返回札幌大通東急STAY酒店', category: 'accommodation', startTime: '~20:30', address: '札幌東急大通酒店', note: '休息準備隔日退房', hours: null, price: null, transportType: 'car', travelTime: '1h', isNoteExpanded: false },
+                ],
+                // Day 3: 3/8 (日) 旭川 & 美瑛 & 富良野
+                [
+                    { id: 301, name: '早餐 (Sandria三明治)', category: 'food', startTime: '08:00', address: 'Sandria三明治 (札幌市區)', note: '雙倍蛋沙拉、炸蝦三明治，外帶車上享用。', hours: '24小時', price: null, transportType: 'car', travelTime: '15m', isNoteExpanded: false },
+                    { id: 302, name: '旭山動物園', category: 'sightseeing', startTime: '09:30', address: '旭山動物園', note: '冬季營業時間 10:30-15:30。必看冬季限定企鵝散步、北極熊館。', hours: '10:30-15:30 (冬季)', price: '¥1,000/成人', transportType: 'car', travelTime: '2h', isNoteExpanded: false },
+                    { id: 303, name: '午餐', category: 'food', startTime: '~13:00', address: '山頭火拉麵 或 動物園內餐廳', note: '可在旭川市區或動物園附近用餐', hours: null, price: null, transportType: 'car', travelTime: '15m', isNoteExpanded: false },
+                    { id: 304, name: '美瑛景點 (聖誕樹 & 白鬚瀑布)', category: 'sightseeing', startTime: '~15:00', address: '美瑛聖誕樹 & 白鬚瀑布', note: '欣賞美瑛著名的冬季雪景', hours: null, price: null, transportType: 'car', travelTime: '30m', isNoteExpanded: false },
+                    { id: 305, name: '富良野 森林精靈露台', category: 'sightseeing', startTime: '~17:00', address: '森林精靈露台', note: '手工藝品小木屋，晚上點燈很美，免費入場。', hours: '10:00-20:45', price: '免費', transportType: 'car', travelTime: '1h', isNoteExpanded: false },
+                    { id: 306, name: '晚餐', category: 'food', startTime: '~19:00', address: '富良野周邊餐廳', note: '富良野當地特色餐廳', hours: null, price: null, transportType: 'car', travelTime: '15m', isNoteExpanded: false },
+                    { id: 307, name: 'COOP超市 & Seicomart', category: 'shopping', startTime: '~20:30', address: 'COOP超市 / Seicomart', note: 'Seicomart 的 Hot Chef 熟食和 Secoma 自有品牌。', hours: null, price: null, transportType: 'car', travelTime: '10m', isNoteExpanded: false },
+                    { id: 308, name: '富良野ホテル Check-in', category: 'accommodation', startTime: '~21:30', address: '富良野ホテル (Furano Hotel)', note: '本日住宿：富良野', hours: null, price: null, transportType: 'car', travelTime: '10m', isNoteExpanded: false },
+                ],
+                // Day 4: 3/9 (一) 登別溫泉
+                [
+                    { id: 401, name: '白色戀人工廠', category: 'sightseeing', startTime: '09:00', address: '白い恋人パーク', note: '歐式庭園，參觀餅乾生產線，可 DIY 體驗。', hours: '10:00-19:00', price: '¥800/成人', transportType: 'car', travelTime: '2h30m', isNoteExpanded: false },
+                    { id: 402, name: '午餐', category: 'food', startTime: '~12:00', address: '白色戀人工廠內 (牛津巧克力酒廊)', note: '或在前往下一個景點途中用餐', hours: null, price: null, transportType: 'walk', travelTime: '10m', isNoteExpanded: false },
+                    { id: 403, name: '國營瀧野鈴蘭丘陵公園', category: 'sightseeing', startTime: '~14:00', address: '國営滝野すずらん公園', note: '冬季免費入園 (瀧野雪之世界)，玩雪、雪上橡皮艇。', hours: '9:00-17:00 (冬季免費)', price: '冬季免費', transportType: 'car', travelTime: '45m', isNoteExpanded: false },
+                    { id: 404, name: '登別溫泉第一瀧本館 Check-in', category: 'accommodation', startTime: '~16:30', address: '登別溫泉第一瀧本館', note: '本日住宿：登別溫泉 (本日車程較長)', hours: null, price: null, transportType: 'car', travelTime: '1h20m', isNoteExpanded: false },
+                    { id: 405, name: '晚餐 (旅館內)', category: 'food', startTime: '~18:00', address: '登別溫泉第一瀧本館', note: '享用溫泉旅館豐盛的晚餐', hours: null, price: null, transportType: 'walk', travelTime: '5m', isNoteExpanded: false },
+                    { id: 406, name: '閻魔堂地獄審判', category: 'sightseeing', startTime: '~19:30', address: '閻魔堂', note: '溫泉街上的閻羅王變臉秀表演。', hours: null, price: null, transportType: 'walk', travelTime: '5m', isNoteExpanded: false },
+                    { id: 407, name: '登別溫泉街', category: 'shopping', startTime: '~20:30', address: '登別溫泉街', note: '逛街、買伴手禮、免費足湯。', hours: null, price: null, transportType: 'walk', travelTime: '5m', isNoteExpanded: false },
+                ],
+                // Day 5: 3/10 (二) 登別
+                [
+                    { id: 501, name: '尼克斯海洋公園', category: 'sightseeing', startTime: '09:30', address: '登別尼克斯海洋公園', note: '歐洲城堡水族館、企鵝遊行、海豚海獅表演。', hours: '9:00-17:00', price: '¥3,000/成人', transportType: 'car', travelTime: '10m', isNoteExpanded: false },
+                    { id: 502, name: '尼克斯海洋公園 企鵝遊行', category: 'sightseeing', startTime: '11:00', address: '登別尼克斯海洋公園', note: '企鵝會在園區內大搖大擺散步。', hours: null, price: null, transportType: 'walk', travelTime: '0m', isNoteExpanded: false },
+                    { id: 503, name: '午餐', category: 'food', startTime: '~12:30', address: '尼克斯海洋公園內或登別溫泉街', note: '可選擇回到溫泉街用餐', hours: null, price: null, transportType: 'car', travelTime: '10m', isNoteExpanded: false },
+                    { id: 504, name: '登別熊牧場', category: 'sightseeing', startTime: '~14:00', address: '登別熊牧場', note: '搭纜車上山，人之籠看熊，俱多樂湖展望台。', hours: '9:30-16:30', price: '¥3,000/成人 (含纜車)', transportType: 'car', travelTime: '10m', isNoteExpanded: false },
+                    { id: 505, name: '登別地獄谷', category: 'sightseeing', startTime: '~16:00', address: '登別地獄谷', note: '壯麗地貌，爆裂火山口、鐵泉池間歇泉，免費參觀。', hours: '全天', price: '免費', transportType: 'car', travelTime: '5m', isNoteExpanded: false },
+                    { id: 506, name: '晚餐 (旅館內) / 溫泉休息', category: 'food', startTime: '~18:00', address: '登別溫泉第一瀧本館', note: '本日繼續享受溫泉', hours: null, price: null, transportType: 'walk', travelTime: '5m', isNoteExpanded: false },
+                    { id: 507, name: '鬼火之路', category: 'sightseeing', startTime: '~20:00', address: '登別地獄谷', note: '夜晚步道兩側點燈，營造奇幻氛圍', hours: null, price: '免費', transportType: 'walk', travelTime: '5m', isNoteExpanded: false },
+                ],
+                // Day 6: 3/11 (三) 札幌
+                [
+                    { id: 601, name: '羊之丘展望台', category: 'sightseeing', startTime: '09:00', address: 'さっぽろ羊ヶ丘展望台', note: '與克拉克博士雕像合影。冬季可玩雪。', hours: null, price: '¥1,000/成人', transportType: 'car', travelTime: '1h', isNoteExpanded: false },
+                    { id: 602, name: '午餐 (羊之丘)', category: 'food', startTime: '~12:00', address: '羊之丘休息屋', note: '可品嚐成吉思汗烤肉或白色戀人冰淇淋。', hours: null, price: null, transportType: 'walk', travelTime: '0m', isNoteExpanded: false },
+                    { id: 603, name: '三井OUTLET PARK 札幌北廣島', category: 'shopping', startTime: '~14:00', address: '三井アウトレットパーク 札幌北広島', note: '購物血拼。', hours: '10:00-20:00', price: null, transportType: 'car', travelTime: '30m', isNoteExpanded: false },
+                    { id: 604, name: '歸還租車', category: 'transport', startTime: '~19:00', address: 'Nissan Rent a Car 札幌駅南口アスティ店', note: '本日晚上歸還租車。', hours: null, price: null, transportType: 'car', travelTime: '1h', isNoteExpanded: false },
+                    { id: 605, name: '札幌西三井花園飯店 Check-in', category: 'accommodation', startTime: '~20:00', address: '札幌西三井花園飯店', note: '本日住宿：札幌', hours: null, price: null, transportType: 'walk', travelTime: '10m', isNoteExpanded: false },
+                    { id: 606, name: '晚餐 (串鳥)', category: 'food', startTime: '~20:30', address: '串鳥 札幌駅北口店', note: '人氣餐點：雞肉串、豬肉串、豬五花蘆筍捲。', hours: '16:30–23:30', price: null, transportType: 'walk', travelTime: '5m', isNoteExpanded: false },
+                ],
+                // Day 7: 3/12 (四) 回家
+                [
+                    { id: 701, name: '早餐 (飯店/札幌車站周邊)', category: 'food', startTime: '08:00', address: '札幌車站周邊', note: '享用早餐', hours: null, price: null, transportType: 'walk', travelTime: '10m', isNoteExpanded: false },
+                    { id: 702, name: '前往新千歲機場 (JR/巴士)', category: 'transport', startTime: '09:30', address: '新千歲機場', note: '搭乘 JR 或機場巴士，預計 11:30 報到。', hours: null, price: null, transportType: 'public', travelTime: '40m-1h', isNoteExpanded: false },
+                    { id: 703, name: '機場報到/托運行李', category: 'flight', startTime: '11:30', address: '新千歲機場 (CTS)', note: '預計 11:30 報到', hours: null, price: null, transportType: 'walk', travelTime: '0m', isNoteExpanded: false },
+                    { id: 704, name: '午餐 (一幻拉麵)', category: 'food', startTime: '~12:30', address: '一幻拉麵 (國內線航廈)', note: '推薦濃厚蝦湯頭搭配粗麵。', hours: '9:00-21:00', price: null, transportType: 'walk', travelTime: '10m', isNoteExpanded: false },
+                    { id: 705, name: '機場購物/候機', category: 'shopping', startTime: '~13:30', address: '新千歲機場', note: '國內線航廈伴手禮店、多啦A夢樂園、Royce\' Chocolate World。', hours: null, price: null, transportType: 'walk', travelTime: '0m', isNoteExpanded: false },
+                    { id: 706, name: '新千歲機場起飛 (CI0131)', category: 'flight', startTime: '14:30', address: '桃園國際機場 (TPE)', note: '預計 18:15 抵達桃園', hours: null, price: null, transportType: 'flight', travelTime: '3h45m', isNoteExpanded: false },
+                ],
             ]);
 
-            // 模組狀態
+            // 預設天氣資訊
+            const weatherData = ref([
+                { condition: 'snow', temp: '0/-5', feel: '-8' },
+                { condition: 'snow', temp: '-1/-7', feel: '-10' },
+                { condition: 'snow', temp: '-2/-10', feel: '-12' },
+                { condition: 'snow', temp: '-3/-8', feel: '-11' },
+                { condition: 'snow', temp: '1/-4', feel: '-6' },
+                { condition: 'snow', temp: '2/-3', feel: '-5' },
+                { condition: 'cloudy', temp: '3/-2', feel: '-3' },
+            ]);
+            
+            // 購物清單 (範例資料)
+            const shoppingList = ref([
+                { name: '六花亭 奶油葡萄乾夾心餅乾', image: 'https://via.placeholder.com/100/f0f9ff/005e8a?text=Rokkatei' },
+                { name: 'LeTAO 雙層起司蛋糕', image: 'https://via.placeholder.com/100/f0f9ff/005e8a?text=LeTAO' },
+                { name: '薯條三兄弟', image: 'https://via.placeholder.com/100/f0f9ff/005e8a?text=JagaPockle' },
+            ]);
+
+            // 花費紀錄 (範例資料)
+            const expenses = ref([
+                { name: '機票費用', amount: 35000, category: 'flight', date: '2026-01-15', payment: 'card' },
+                { name: '札幌湯咖哩', amount: 4500, category: 'food', date: '2026-03-06', payment: 'cash' },
+                { name: '小樽水族館門票', amount: 3600, category: 'ticket', date: '2026-03-07', payment: 'card' },
+                { name: '登別溫泉飯店', amount: 80000, category: 'stay', date: '2026-03-09', payment: 'card' },
+            ]);
+
+            // --- 狀態控制 ---
+            const selectedDateIndex = ref(0);
             const showShoppingModal = ref(false);
             const showExpenseModal = ref(false);
             const showItineraryModal = ref(false);
-            const isEditMode = ref(false);
-
-            // 新增/編輯物件
-            const newShoppingItem = ref({ name: '', image: null });
-            const newExpense = ref({ date: dates[selectedDateIndex.value]?.fullDate || '2026-03-06', category: 'food', name: '', amount: '', payment: 'cash' });
-            const newItinerary = ref({ id: null, category: 'sightseeing', name: '', address: '', hours: '', price: '', travelTime: '', transportType: 'car', note: '', startTime: '' });
+            const isEditMode = ref(false); 
             
-            // 貨幣換算
-            const currencyInput = ref(1000);
-            const currencyResult = ref(0);
-            const exchangeRate = 0.215;
+            // 新增/編輯行程狀態
+            const newItinerary = ref({
+                id: null, name: '', category: 'sightseeing', startTime: '', hours: '', address: '', price: '', note: '', transportType: 'car', travelTime: '', isNoteExpanded: false
+            });
+            // 新增購物狀態
+            const newShoppingItem = ref({
+                name: '', image: null
+            });
+            // 新增花費狀態
+            const newExpense = ref({
+                name: '', amount: null, category: 'food', date: new Date().toISOString().substring(0, 10), payment: 'cash'
+            });
 
-            // Computed
+            // 貨幣轉換
+            const currencyInput = ref(50000);
+            const currencyResult = ref(0);
+            
+            // --- Computed Properties ---
+            
             const currentItinerary = computed(() => {
-                // 修正: 移除 startTime 自動排序，讓手動調整的順序生效
-                const list = itineraryData.value[selectedDateIndex.value] || [];
-                return list; // 直接返回原始陣列，順序由用戶手動調整決定。
+                if (!itineraryData.value[selectedDateIndex.value]) {
+                    itineraryData.value[selectedDateIndex.value] = [];
+                }
+                return itineraryData.value[selectedDateIndex.value];
             });
 
             const totalExpensesJPY = computed(() => {
-                return expenses.value.reduce((sum, item) => sum + Number(item.amount), 0);
+                return expenses.value.reduce((sum, exp) => sum + exp.amount, 0);
             });
 
             const totalExpensesTWD = computed(() => {
-                return Math.round(totalExpensesJPY.value * exchangeRate); // 匯率 0.215
+                return Math.round(totalExpensesJPY.value * EXCHANGE_RATE);
             });
 
-            // 方法
-            const getCategoryColor = (cat) => {
-                const map = {
-                    sightseeing: 'bg-green-400',
-                    food: 'bg-orange-400',
-                    shopping: 'bg-pink-400',
-                    accommodation: 'bg-indigo-400',
-                    flight: 'bg-blue-500',
-                    transport: 'bg-gray-500',
-                    ticket: 'bg-red-400',
-                    other: 'bg-slate-400',
-                    stay: 'bg-indigo-400' // expense 用
-                };
-                return map[cat] || map.other;
-            };
-            const getCategoryIcon = (cat) => {
-                const map = {
-                    sightseeing: 'fa-solid fa-camera',
-                    food: 'fa-solid fa-bowl-food',
-                    shopping: 'fa-solid fa-bag-shopping',
-                    accommodation: 'fa-solid fa-bed',
-                    flight: 'fa-solid fa-plane',
-                    transport: 'fa-solid fa-car-side',
-                    ticket: 'fa-solid fa-ticket',
-                    other: 'fa-solid fa-circle'
-                };
-                return map[cat] || map.other;
-            };
-
-            const getCategoryLabel = (cat) => {
-                const map = {
-                    sightseeing:'景點',
-                    food:'飲食',
-                    shopping:'購物',
-                    accommodation:'住宿',
-                    flight:'航班',
-                    transport:'交通',
-                    ticket: '門票',
-                    stay:'住宿',
-                    other:'其他'
-                };
-                return map[cat] || cat;
-            };
-            const getWeatherIcon = (condition) => {
-                const map = {
-                    'Snow': 'fa-regular fa-snowflake',
-                    'Cloudy': 'fa-solid fa-cloud',
-                    'Sunny': 'fa-solid fa-sun',
-                    'Clear': 'fa-solid fa-sun',
-                    'Rain': 'fa-solid fa-cloud-rain'
-                };
-                return map[condition] || 'fa-solid fa-temperature-half';
-            } // 天氣概述
-            const getWeatherDescription = (condition) => {
-                const map = {
-                    'Snow': '大雪注意！',
-                    'Cloudy': '多雲低溫。',
-                    'Sunny': '晴朗低溫。',
-                    'Clear': '晴朗低溫。',
-                    'Rain': '雨夾雪。'
-                };
-                return map[condition] || '氣溫變化大';
-            }
-
-            const getTransportIcon = (type) => {
-                const map = {
-                    'car': 'fa-solid fa-car-side',
-                    'walk': 'fa-solid fa-person-walking',
-                    'public': 'fa-solid fa-train-subway'
-                };
-                return map[type] || 'fa-solid fa-circle';
-            }
+            // --- Methods ---
 
             const calculateCurrency = () => {
-                currencyResult.value = formatNumber(Math.round(Number(currencyInput.value) * exchangeRate));
+                currencyResult.value = Math.round(currencyInput.value * EXCHANGE_RATE);
             };
 
-            // openMap 函式: 直接跳轉到 Google Maps 的導航頁面 (從當前位置到目的地)
-            const openMap = (destination) => {
-                if (destination) {
-                    // 使用 Google Maps URL Scheme 進行導航 (daddr=destination address)
-                    // 這會開啟 Google Maps app (如果安裝) 或網頁版，並自動從使用者當前位置開始導航
-                    const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
+            const formatNumber = (num) => {
+                if (num === 0 || num === null || num === undefined) return '0';
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            };
+
+            // 取得顏色/圖示/描述
+            const getCategoryColor = (category) => CATEGORY_MAP[category]?.color || CATEGORY_MAP.other.color;
+            const getCategoryIcon = (category) => CATEGORY_MAP[category]?.icon || CATEGORY_MAP.other.icon;
+            const getCategoryLabel = (category) => CATEGORY_LABEL_MAP[category] || '其他';
+            const getWeatherIcon = (condition) => {
+                const map = {
+                    snow: 'fa-solid fa-snowflake',
+                    sunny: 'fa-solid fa-sun',
+                    cloudy: 'fa-solid fa-cloud',
+                    rain: 'fa-solid fa-cloud-showers-heavy'
+                };
+                return map[condition] || 'fa-solid fa-cloud-question';
+            };
+            const getWeatherDescription = (condition) => {
+                const map = {
+                    snow: '大雪/降雪',
+                    sunny: '晴朗',
+                    cloudy: '多雲/陰天',
+                    rain: '降雨'
+                };
+                return map[condition] || '天氣資訊未定';
+            };
+            const getTransportIcon = (type) => {
+                const map = {
+                    walk: 'fa-solid fa-shoe-prints',
+                    car: 'fa-solid fa-car-side',
+                    bus: 'fa-solid fa-bus-simple',
+                    public: 'fa-solid fa-train-subway',
+                    flight: 'fa-solid fa-plane',
+                    other: 'fa-solid fa-solid fa-arrow-right-long'
+                };
+                return map[type] || 'fa-solid fa-arrow-right-long';
+            };
+
+            // 地圖功能
+            const openMap = (query) => {
+                if (query) {
+                    // 使用 Google Maps 搜尋或導航
+                    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
                     window.open(url, '_blank');
                 }
             };
 
-            // openMapDirections 函式: 用於兩個地點之間的導航 (例如從 A 到 B)
-            const openMapDirections = (fromItem, toItem) => {
-                const start = fromItem.address || fromItem.name;
-                const end = toItem.address || toItem.name;
-
-                if (start && end) {
-                    // 使用 /maps/dir/start/end 格式進行兩個地點的導航
-                    const url = `https://www.google.com/maps/dir/${encodeURIComponent(start)}/${encodeURIComponent(end)}`;
+            const openMapDirections = (startItem, endItem) => {
+                const origin = startItem.address || startItem.name;
+                const destination = endItem.address || endItem.name;
+                
+                if (origin && destination) {
+                    const url = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=${endItem.transportType === 'car' ? 'driving' : 'transit'}`;
                     window.open(url, '_blank');
                 } else {
-                    // 如果資訊不足，則退回單點導航 (從當前位置到終點)
-                    openMap(end);
+                    alert('移動兩點間至少需要一個地點名稱或地址。');
                 }
             };
-
+            
+            // 浮動按鈕點擊處理
             const handleAddClick = () => {
                 if (currentTab.value === 'itinerary') {
-                    // 重置行程資料
-                    newItinerary.value = {
-                        id: null, category: 'sightseeing', name: '', address: '', hours: '', price: '', travelTime: '', transportType: 'car', note: '', startTime: ''
-                    };
-                    isEditMode.value = false;
+                    resetItineraryForm();
                     showItineraryModal.value = true;
                 } else if (currentTab.value === 'shopping') {
-                    newShoppingItem.value = { name: '', image: null };
+                    resetShoppingForm();
                     showShoppingModal.value = true;
                 } else if (currentTab.value === 'expenses') {
-                    newExpense.value = { date: dates[selectedDateIndex.value]?.fullDate || '2026-03-06', category: 'food', name: '', amount: '', payment: 'cash' };
+                    resetExpenseForm();
                     showExpenseModal.value = true;
                 }
             };
+            
+            // --- 行程管理 ---
+            const resetItineraryForm = () => {
+                isEditMode.value = false;
+                newItinerary.value = {
+                    id: Date.now(), name: '', category: 'sightseeing', startTime: '', hours: '', address: '', price: '', note: '', transportType: 'car', travelTime: '', isNoteExpanded: false
+                };
+            };
 
+            const editItem = (item) => {
+                isEditMode.value = true;
+                // 深拷貝，防止直接修改原始資料
+                newItinerary.value = JSON.parse(JSON.stringify(item)); 
+                showItineraryModal.value = true;
+            };
+
+            const saveItineraryItem = () => {
+                if (!newItinerary.value.name) {
+                    alert('行程名稱不能為空');
+                    return;
+                }
+                
+                if (isEditMode.value) {
+                    // 編輯模式：替換舊項目
+                    const index = currentItinerary.value.findIndex(item => item.id === newItinerary.value.id);
+                    if (index !== -1) {
+                        currentItinerary.value[index] = { ...newItinerary.value };
+                    }
+                } else {
+                    // 新增模式：推入新項目
+                    const newItem = { ...newItinerary.value };
+                    // 確保 ID 是最新的
+                    newItem.id = Date.now();
+                    itineraryData.value[selectedDateIndex.value].push(newItem);
+                }
+                
+                // 重新賦值以確保 Vue 響應式更新
+                itineraryData.value[selectedDateIndex.value] = [...currentItinerary.value];
+                
+                showItineraryModal.value = false;
+                isEditMode.value = false;
+            };
+            
+            // 行程上下移動
+            const moveItinerary = (id, direction) => {
+                const currentList = currentItinerary.value;
+                const index = currentList.findIndex(item => item.id === id);
+
+                if (index === -1) return;
+
+                const newIndex = index + direction;
+                if (newIndex >= 0 && newIndex < currentList.length) {
+                    // 執行交換
+                    const item = currentList.splice(index, 1)[0];
+                    currentList.splice(newIndex, 0, item);
+                    // 重新賦值以確保 Vue 響應式更新
+                    itineraryData.value[selectedDateIndex.value] = [...currentList];
+                }
+            };
+
+            const moveItineraryUp = (id) => moveItinerary(id, -1);
+            const moveItineraryDown = (id) => moveItinerary(id, 1);
+
+
+            // --- 購物清單管理 ---
+            const resetShoppingForm = () => {
+                newShoppingItem.value = { name: '', image: null };
+            };
+            
             const handleImageUpload = (event) => {
                 const file = event.target.files[0];
                 if (file) {
@@ -857,86 +932,42 @@ rounded-xl p-3 text-sm text-slate-600 outline-none">
                     reader.readAsDataURL(file);
                 }
             };
+
             const addShoppingItem = () => {
-                if(newShoppingItem.value.name) {
-                    shoppingList.value.push({ ...newShoppingItem.value });
-                    newShoppingItem.value = { name: '', image: null };
-                    showShoppingModal.value = false;
+                if (newShoppingItem.value.name.trim() === '') {
+                    alert('商品名稱不能為空！');
+                    return;
                 }
+                shoppingList.value.push({ ...newShoppingItem.value });
+                showShoppingModal.value = false;
+                resetShoppingForm();
             };
 
-            const removeShoppingItem = (idx) => {
-                shoppingList.value.splice(idx, 1);
+            const removeShoppingItem = (index) => {
+                shoppingList.value.splice(index, 1);
+            };
+
+            // --- 花費管理 ---
+            const resetExpenseForm = () => {
+                newExpense.value = { name: '', amount: null, category: 'food', date: new Date().toISOString().substring(0, 10), payment: 'cash' };
             };
 
             const addExpense = () => {
-                if(newExpense.value.name && newExpense.value.amount) {
-                    expenses.value.unshift({ ...newExpense.value });
-                    // 將支出紀錄按日期倒序排列
-                    expenses.value.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    
-                    newExpense.value = { date: dates[selectedDateIndex.value]?.fullDate ||
-                        '2026-03-06', category: 'food', name: '', amount: '', payment: 'cash' };
-                    showExpenseModal.value = false;
+                if (newExpense.value.name.trim() === '' || newExpense.value.amount === null || newExpense.value.amount <= 0) {
+                    alert('請輸入有效名稱和金額！');
+                    return;
                 }
-            };
-            const removeExpense = (idx) => {
-                expenses.value.splice(idx, 1);
-            };
-
-            const editItem = (item) => {
-                isEditMode.value = true;
-                newItinerary.value = { ...item };
-                showItineraryModal.value = true;
+                expenses.value.push({ ...newExpense.value });
+                // 排序 (最新到最舊)
+                expenses.value.sort((a, b) => new Date(b.date) - new Date(a.date)); 
+                showExpenseModal.value = false;
+                resetExpenseForm();
             };
 
-            const saveItineraryItem = () => {
-                if (!newItinerary.value.name) return;
-
-                if (isEditMode.value) {
-                    // 編輯模式: 找到並替換項目
-                    const dayList = itineraryData.value[selectedDateIndex.value];
-                    const index = dayList.findIndex(item => item.id === newItinerary.value.id);
-                    if (index !== -1) {
-                        dayList[index] = { ...newItinerary.value };
-                    }
-                } else {
-                    // 新增模式: 產生新 ID 並加入列表
-                    const newId = Date.now();
-                    const dayList = itineraryData.value[selectedDateIndex.value] || [];
-                    dayList.push({ ...newItinerary.value, id: newId, isNoteExpanded: false });
-                    itineraryData.value[selectedDateIndex.value] = dayList;
-                }
-                
-                showItineraryModal.value = false;
-                isEditMode.value = false;
+            const removeExpense = (index) => {
+                expenses.value.splice(index, 1);
             };
 
-            // 行程上下移動
-            const moveItineraryUp = (id) => {
-                const currentList = itineraryData.value[selectedDateIndex.value];
-                const index = currentList.findIndex(item => item.id === id);
-                if (index > 0) {
-                    [currentList[index], currentList[index - 1]] = [currentList[index - 1], currentList[index]];
-                    // 重新賦值以確保 Vue 響應式更新
-                    itineraryData.value[selectedDateIndex.value] = [...currentList];
-                }
-            };
-
-            const moveItineraryDown = (id) => {
-                const currentList = itineraryData.value[selectedDateIndex.value];
-                const index = currentList.findIndex(item => item.id === id);
-                if (index < currentList.length - 1) {
-                    [currentList[index], currentList[index + 1]] = [currentList[index + 1], currentList[index]];
-                    // 重新賦值以確保 Vue 響應式更新
-                    itineraryData.value[selectedDateIndex.value] = [...currentList];
-                }
-            };
-
-            const formatNumber = (num) => {
-                if (num === 0 || num === null || num === undefined) return '0';
-                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            };
 
             // 載入時執行
             onMounted(() => {
