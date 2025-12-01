@@ -47,27 +47,27 @@
             padding-bottom: 90px;
         }
 
-        /* ****** 修正 1 & 2: 移除多餘的藍色背景和底部內距，只保留圓弧陰影 ****** */
+        /* ****** 修正 1: 確保頁首背景為白色，完全消除多餘的藍色區塊 ****** */
         .header-bg {
-            background-color: transparent; 
+            /* 關鍵修正: 設置為白色以確保沒有藍色殘留 */
+            background-color: #ffffff; 
             padding: 0; 
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
-            /* --- 圓弧銜接 (保留，用於主內容區塊) --- */
+            /* --- 圓弧銜接 --- */
             border-bottom-left-radius: 35px; 
             border-bottom-right-radius: 35px;
             z-index: 10; 
-            padding-bottom: 0px; /* 移除底部內距 */
+            padding-bottom: 0px; 
         }
         
-        /* ****** 修正 1: 圖片專用容器 - 高度改為 250px，並應用圓弧邊框 ****** */
+        /* 圖片專用容器 */
         .header-image-container {
             width: 100%;
-            height: 250px; /* 圖片高度調整為 250px */
+            height: 250px; 
             overflow: hidden;
             background-color: transparent; 
-            /* 讓圖片容器本身有圓弧，完美銜接白色內容區 */
             border-bottom-left-radius: 35px; 
             border-bottom-right-radius: 35px;
         }
@@ -79,14 +79,14 @@
             display: block; 
         }
         
-        /* 恢復雪花圖層 (保持) */
+        /* 雪花圖層 (保持透明度，讓圖片更柔和) */
         .snow-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* 讓雪花背景使用冰川藍，確保按鈕在藍色背景上可見 */
+            /* 背景圖案只有白色雪花點 */
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%23fff" opacity="0.8"/><circle cx="20" cy="80" r="0.5" fill="%23fff" opacity="0.6"/><circle cx="70" cy="30" r="1.5" fill="%23fff" opacity="0.9"/></svg>');
             background-size: 100px 100px;
             opacity: 0.7;
@@ -100,11 +100,11 @@
             }
         }
         
-        /* ****** 修正 3: Tab 按鈕容器樣式 (向上移動，並確保在圖片內) ****** */
+        /* ****** 修正 2: Tab 按鈕容器樣式 (向上大移動) ****** */
         .side-tab-bar {
             position: absolute;
-            /* 關鍵調整: bottom: 20px 會讓按鈕位於圖片底部向上 20px 的位置 */
-            bottom: 20px; 
+            /* 關鍵調整: 將底邊距向上拉至 45px，確保按鈕完全位於圖片區內 */
+            bottom: 45px; 
             right: 16px;
             z-index: 30; /* 確保它在最上層 */
             
@@ -144,8 +144,7 @@
 
         /* --- 圓弧銜接的主內容區域 --- */
         .app-main {
-            /* 調整間距，讓它從 header-bg 的圓弧下方開始 */
-            padding-top: 25px !important; /* 減少頂部內距 */
+            padding-top: 25px !important; 
             position: relative;
             z-index: 5;
         }
@@ -741,7 +740,7 @@ rounded-xl p-3 text-sm text-slate-600 outline-none">
                 // Day 4: 3/9 (一) 登別溫泉
                 [
                     { id: 401, name: '白色戀人工廠', category: 'sightseeing', startTime: '09:00', address: '白い恋人パーク', note: '歐式庭園，參觀餅乾生產線，可 DIY 體驗。', hours: '10:00-19:00', price: '¥800/成人', transportType: 'car', travelTime: '2h30m', isNoteExpanded: false },
-                    { id: 402, name: '午餐', category: 'food', startTime: '~12:00', address: '白色戀人工廠內 (牛津巧克力酒廊)', note: '或在前往下一個景點途中用餐', hours: null, price: null, transportType: 'walk', travelTime: '10m', isNoteExpanded: false },
+                    { id: 402, name: '午餐 (牛津巧克力酒廊)', category: 'food', startTime: '~12:00', address: '白色戀人工廠內', note: '或在前往下一個景點途中用餐', hours: null, price: null, transportType: 'walk', travelTime: '10m', isNoteExpanded: false },
                     { id: 403, name: '國營瀧野鈴蘭丘陵公園', category: 'sightseeing', startTime: '~14:00', address: '國営滝野すずらん公園', note: '冬季免費入園 (瀧野雪之世界)，玩雪、雪上橡皮艇。', hours: '9:00-17:00 (冬季免費)', price: '冬季免費', transportType: 'car', travelTime: '45m', isNoteExpanded: false },
                     { id: 404, name: '登別溫泉第一瀧本館 Check-in', category: 'accommodation', startTime: '~16:30', address: '登別溫泉第一瀧本館', note: '本日住宿：登別溫泉 (本日車程較長)', hours: null, price: null, transportType: 'car', travelTime: '1h20m', isNoteExpanded: false },
                     { id: 405, name: '晚餐 (旅館內)', category: 'food', startTime: '~18:00', address: '登別溫泉第一瀧本館', note: '享用溫泉旅館豐盛的晚餐', hours: null, price: null, transportType: 'walk', travelTime: '5m', isNoteExpanded: false },
