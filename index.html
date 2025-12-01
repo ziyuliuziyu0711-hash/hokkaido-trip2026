@@ -99,18 +99,18 @@
         }
         
         /* --- 修正：側邊/橫向 Tab 容器樣式 (現在是橫向右下角) --- */
-        .side-tab-bar {
-            position: absolute;
-            /* 讓它位於圖片區域的右下角，並稍微超出圓弧，更有層次感 */
-            bottom: -20px; 
-            right: 16px;
-            z-index: 30; /* 確保它在最上層 */
-            
-            /* 橫向排列 */
-            display: flex;
-            flex-direction: row;
-            gap: 8px; /* 元素之間的間距 */
-        }
+.side-tab-bar {
+    position: absolute;
+    /* ****** 關鍵調整：將底邊距向上拉，從 -20px 改為 -5px，讓按鈕底端與圓弧對齊 ****** */
+    bottom: -5px; 
+    right: 16px;
+    z-index: 30; /* 確保它在最上層 */
+    
+    /* 橫向排列 */
+    display: flex;
+    flex-direction: row;
+    gap: 8px; /* 元素之間的間距 */
+}
         
         /* 單一按鈕樣式 */
         .tab-button {
