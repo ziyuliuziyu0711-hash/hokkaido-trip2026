@@ -31,7 +31,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
         body {
-            /* 修正：將整體背景替換為更柔和的淺藍色 */
             background-color: #E5F3F7; 
             -webkit-tap-highlight-color: transparent;
             font-family: 'Noto Sans TC', sans-serif;
@@ -42,33 +41,35 @@
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
-            /* 內容區域保持白色 */
             background-color: #ffffff; 
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
             position: relative;
-            /* 調整底部內距以容納浮動按鈕 */
             padding-bottom: 90px;
         }
 
+        /* ****** 修正 1 & 2: 移除多餘的藍色背景和底部內距，只保留圓弧陰影 ****** */
         .header-bg {
-            background: #B3E5FC; 
+            background-color: transparent; 
             padding: 0; 
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(1, 87, 155, 0.15);
-            /* --- 圓弧銜接 --- */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
+            /* --- 圓弧銜接 (保留，用於主內容區塊) --- */
             border-bottom-left-radius: 35px; 
             border-bottom-right-radius: 35px;
             z-index: 10; 
-            padding-bottom: 25px; /* 增加底部內距以容納按鈕佔用的空間 */
+            padding-bottom: 0px; /* 移除底部內距 */
         }
         
-        /* 圖片專用容器 */
+        /* ****** 修正 1: 圖片專用容器 - 高度改為 250px，並應用圓弧邊框 ****** */
         .header-image-container {
             width: 100%;
-            height: 250px; 
+            height: 250px; /* 圖片高度調整為 250px */
             overflow: hidden;
-            background-color: #ffffff; 
+            background-color: transparent; 
+            /* 讓圖片容器本身有圓弧，完美銜接白色內容區 */
+            border-bottom-left-radius: 35px; 
+            border-bottom-right-radius: 35px;
         }
         
         .header-image-container img {
@@ -78,13 +79,14 @@
             display: block; 
         }
         
-        /* 恢復雪花圖層 */
+        /* 恢復雪花圖層 (保持) */
         .snow-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            /* 讓雪花背景使用冰川藍，確保按鈕在藍色背景上可見 */
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%23fff" opacity="0.8"/><circle cx="20" cy="80" r="0.5" fill="%23fff" opacity="0.6"/><circle cx="70" cy="30" r="1.5" fill="%23fff" opacity="0.9"/></svg>');
             background-size: 100px 100px;
             opacity: 0.7;
@@ -98,30 +100,30 @@
             }
         }
         
-        /* --- 修正：側邊/橫向 Tab 容器樣式 (現在是橫向右下角) --- */
-.side-tab-bar {
-    position: absolute;
-    /* ****** 關鍵調整：將底邊距向上拉，從 -20px 改為 -5px，讓按鈕底端與圓弧對齊 ****** */
-    bottom: -5px; 
-    right: 16px;
-    z-index: 30; /* 確保它在最上層 */
-    
-    /* 橫向排列 */
-    display: flex;
-    flex-direction: row;
-    gap: 8px; /* 元素之間的間距 */
-}
+        /* ****** 修正 3: Tab 按鈕容器樣式 (向上移動，並確保在圖片內) ****** */
+        .side-tab-bar {
+            position: absolute;
+            /* 關鍵調整: bottom: 20px 會讓按鈕位於圖片底部向上 20px 的位置 */
+            bottom: 20px; 
+            right: 16px;
+            z-index: 30; /* 確保它在最上層 */
+            
+            /* 橫向排列 */
+            display: flex;
+            flex-direction: row;
+            gap: 8px; 
+        }
         
         /* 單一按鈕樣式 */
         .tab-button {
-            width: 40px; /* 圓形按鈕寬高 */
+            width: 40px; 
             height: 40px;
-            border-radius: 9999px; /* 圓形 */
+            border-radius: 9999px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.125rem; /* Icon 大小 */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 柔和陰影 */
+            font-size: 1.125rem; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
             transition: all 0.2s ease;
         }
         
@@ -142,8 +144,8 @@
 
         /* --- 圓弧銜接的主內容區域 --- */
         .app-main {
-            /* 調整間距，讓它從橫向 Tab Bar 下方開始，減去 header-bg 裡新增的 padding-bottom */
-            padding-top: 45px !important; 
+            /* 調整間距，讓它從 header-bg 的圓弧下方開始 */
+            padding-top: 25px !important; /* 減少頂部內距 */
             position: relative;
             z-index: 5;
         }
