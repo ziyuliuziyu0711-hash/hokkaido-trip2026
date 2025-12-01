@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Family Trip to Hokkaido 2026</title>
     
-    <link rel="stylesheet" href="style.css">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,6 +26,100 @@
             }
         }
     </script>
+    
+    <style>
+        /* 引入 Google Fonts: Noto Sans TC */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+        body {
+            background-color: #f0f4f8; /* 淺灰藍底色 */
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #334155; /* Slate-700 */
+        }
+
+        /* 模擬手機 App 的容器設定 */
+        .app-container {
+            max-width: 480px; /* 限制最大寬度，像手機一樣 */
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #ffffff;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+            position: relative;
+            padding-bottom: 90px; /* 避開底部按鈕與安全區域 */
+        }
+
+        /* 隱藏捲軸但保持滑動功能 (橫向日期選單用) */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        /* 頂部導航列的毛玻璃效果 */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* 卡片柔和陰影 */
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(178, 235, 242, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* 卡片點擊效果 */
+        .card-shadow:active {
+            transform: scale(0.98);
+        }
+
+        /* 頁面淡入動畫 */
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 自定義浮動按鈕陰影 */
+        .fab-shadow {
+            box-shadow: 0 4px 15px rgba(253, 216, 53, 0.4);
+        }
+
+        /* 備註內容高度控制 */
+        .note-content {
+            max-height: 2.5rem; /* 兩行文字高度 */
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .note-content.expanded {
+            max-height: 500px; /* 展開時高度 */
+        }
+
+        /* 支出紀錄項目顏色標籤 (取代圓點) */
+        .expense-category-tag {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px; /* Full rounded */
+            font-size: 0.6rem; /* text-xs */
+            font-weight: 500;
+            line-height: 1;
+            transition: all 0.2s;
+        }
+
+        /* 花費頁 - 總額冰雪藍背景 */
+        .expenses-banner {
+            background: linear-gradient(135deg, #0077B6 0%, #00B4D8 100%);
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.4);
+        }
+    </style>
 </head>
 <body>
 
@@ -98,8 +190,7 @@
                             <div class="p-2 rounded-full text-white shadow-md text-base mb-1" :class="getCategoryColor(item.category)">
                                 <i :class="getCategoryIcon(item.category)"></i>
                             </div>
-                            <div v-if="item.time" class="text-xs text-slate-500 font-medium opacity-80">{{ item.time }}</div>
-                        </div>
+                            </div>
 
                         <div class="flex-1 pb-1">
                             <h3 class="text-lg font-bold text-slate-800 mb-1 leading-tight pr-8">{{ item.name }}</h3>
@@ -411,11 +502,11 @@
             const currencyResult = ref(0);
             
             // Modal 控制開關 & 編輯模式
-            const showShoppingModal = ref(false);
+            const showShoppingModal = ref(false); 
             const showExpenseModal = ref(false);
             const showItineraryModal = ref(false);
-            const isEditMode = ref(false); // 新增編輯模式標記
-            const editingItemIndex = ref(-1); // 正在編輯的行程索引
+            const isEditMode = ref(false); 
+            const editingItemIndex = ref(-1); 
 
             // 新增/編輯項目暫存
             const newShoppingItem = ref({ name: '', image: null });
@@ -477,11 +568,26 @@
                     { id: 35, category: 'sightseeing', name: '森林精靈露台', address: '森林精靈露台', travelTime: '駕車 60 分鐘', note: '傍晚點燈時間最美，小心路滑。', isNoteExpanded: false },
                     { id: 36, category: 'accommodation', name: 'Check-in 富良野 Hotel', address: '富良野ホテル FURANO HOTEL', travelTime: '駕車 10 分鐘', note: '飯店有溫泉可以泡。', isNoteExpanded: false }
                 ],
-                // 3/9 - 3/12 的行程資料... (為保持簡潔，這裡僅展示前兩天的完整資料，其餘使用原結構但已移除時間欄位)
-                3: [ { id: 41, category: 'sightseeing', name: '白色戀人工廠', address: '白色戀人公園', travelTime: '駕車 1.5 小時', note: '參觀製程與買伴手禮。', isNoteExpanded: false }, /* ... */ ],
-                4: [ { id: 51, category: 'sightseeing', name: '尼克斯海洋公園', address: '登別尼克斯海洋公園', travelTime: '駕車 30 分鐘', note: '企鵝遊行 11:00。', isNoteExpanded: false }, /* ... */ ],
-                5: [ { id: 61, category: 'sightseeing', name: '羊之丘展望台', address: '羊之丘展望台', travelTime: '駕車 40 分鐘', note: '與克拉克博士合影。', isNoteExpanded: false }, /* ... */ ],
-                6: [ { id: 71, category: 'food', name: '一幻拉麵', address: '新千歲機場', travelTime: '搭地鐵 40 分鐘', note: '機場店通常大排長龍，要提早。', isNoteExpanded: false }, /* ... */ ],
+                // 為了簡潔性，其餘日期只列出部分行程
+                3: [ 
+                    { id: 41, category: 'sightseeing', name: '白色戀人工廠', address: '白色戀人公園', travelTime: '駕車 1.5 小時', note: '參觀製程與買伴手禮。', isNoteExpanded: false },
+                    { id: 42, category: 'food', name: '成吉思汗烤肉 (午餐)', address: '達摩烤肉', travelTime: '駕車 20 分鐘', note: '必吃烤肉。', isNoteExpanded: false },
+                    { id: 43, category: 'accommodation', name: '登別溫泉第一瀧本館', address: '登別溫泉第一瀧本館', travelTime: '駕車 1.5 小時', note: 'check-in。', isNoteExpanded: false },
+                ],
+                4: [ 
+                    { id: 51, category: 'sightseeing', name: '尼克斯海洋公園', address: '登別尼克斯海洋公園', travelTime: '駕車 30 分鐘', note: '企鵝遊行 11:00。', isNoteExpanded: false },
+                    { id: 52, category: 'sightseeing', name: '登別地獄谷', address: '登別地獄谷', travelTime: '駕車 5 分鐘', note: '必拍景點。', isNoteExpanded: false },
+                    { id: 53, category: 'food', name: '溫泉街美食', address: '登別溫泉街', travelTime: '步行 5 分鐘', note: '晚餐在飯店內享用。', isNoteExpanded: false },
+                ],
+                5: [ 
+                    { id: 61, category: 'sightseeing', name: '羊之丘展望台', address: '羊之丘展望台', travelTime: '駕車 40 分鐘', note: '與克拉克博士合影。', isNoteExpanded: false },
+                    { id: 62, category: 'food', name: '札幌啤酒園 (午餐)', address: '札幌啤酒園', travelTime: '駕車 15 分鐘', note: '吃螃蟹與烤肉。', isNoteExpanded: false },
+                    { id: 63, category: 'accommodation', name: '札幌西三井花園飯店', address: '札幌西三井花園飯店', travelTime: '駕車 10 分鐘', note: '歸還租車。', isNoteExpanded: false },
+                ],
+                6: [ 
+                    { id: 71, category: 'food', name: '一幻拉麵', address: '新千歲機場', travelTime: '搭地鐵 40 分鐘', note: '機場店通常大排長龍，要提早。', isNoteExpanded: false },
+                    { id: 72, category: 'flight', name: '回程航班 CI0131', address: '新千歲機場', time: '14:40', hours: '4小時飛行', price: '含在團費', travelTime: null, note: 'CTS 14:40 -> TPE 18:15。', isNoteExpanded: false },
+                ],
             });
             // 讓資料深度響應 (讓備註展開/收合狀態能被 Vue 追蹤)
             Object.values(itineraryData.value).forEach(day => {
@@ -529,6 +635,7 @@
                     accommodation: 'bg-indigo-400', // 飯店
                     flight: 'bg-blue-500', // 藍天
                     transport: 'bg-gray-500', // 交通
+                    ticket: 'bg-red-400', // 門票 (新增)
                     other: 'bg-slate-400'
                 };
                 return map[cat] || map.other;
@@ -542,6 +649,7 @@
                     accommodation: 'fa-solid fa-bed',
                     flight: 'fa-solid fa-plane',
                     transport: 'fa-solid fa-car-side',
+                    ticket: 'fa-solid fa-ticket',
                     other: 'fa-solid fa-circle'
                 };
                 return map[cat] || map.other;
@@ -565,12 +673,14 @@
 
 
             const calculateCurrency = () => {
-                currencyResult.value = (currencyInput.value * 0.215).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                const inputVal = Number(currencyInput.value) || 0;
+                currencyResult.value = (inputVal * 0.215).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             };
 
             const openMap = (query) => {
                 // 開啟 Google 地圖並自動搜尋地點
-                window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + ' 北海道')}`, '_blank');
+                // 注意：這裡使用 Google Maps 網站的 URL，不是導航 API
+                window.open(`https://www.google.com/maps/search/${encodeURIComponent(query + ' 北海道')}`, '_blank');
             };
             
             const openMapDirections = (startItem, endItem) => {
@@ -579,7 +689,8 @@
                 const destination = endItem.address || endItem.name;
                 
                 // 開啟 Google 地圖導航模式
-                window.open(`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`, '_blank');
+                // 注意：這裡使用 Google Maps 網站的導航 URL
+                window.open(`https://www.google.com/maps/dir/${encodeURIComponent(origin)}/${encodeURIComponent(destination)}`, '_blank');
             };
 
             const handleAddClick = () => {
@@ -588,9 +699,13 @@
                     newItinerary.value = { id: Date.now(), category: 'sightseeing', name: '', address: '', time: '', hours: '', price: '', note: '', travelTime: '' };
                     showItineraryModal.value = true;
                 }
-                else if(currentTab.value === 'shopping') showShoppingModal.value = true;
+                else if(currentTab.value === 'shopping') {
+                    newShoppingItem.value = { name: '', image: null };
+                    showShoppingModal.value = true;
+                }
                 else if(currentTab.value === 'expenses') {
-                    newExpense.value = { date: dates[selectedDateIndex.value].fullDate, category: 'food', name: '', amount: '', payment: 'cash' };
+                    // 設置預設日期為當前選擇日期的完整日期
+                    newExpense.value = { date: dates[selectedDateIndex.value]?.fullDate || '2026-03-06', category: 'food', name: '', amount: '', payment: 'cash' };
                     showExpenseModal.value = true;
                 }
             };
@@ -621,7 +736,7 @@
             const addExpense = () => {
                 if(newExpense.value.name && newExpense.value.amount) {
                     expenses.value.unshift({ ...newExpense.value });
-                    newExpense.value = { date: dates[selectedDateIndex.value].fullDate, category: 'food', name: '', amount: '', payment: 'cash' };
+                    newExpense.value = { date: dates[selectedDateIndex.value]?.fullDate || '2026-03-06', category: 'food', name: '', amount: '', payment: 'cash' }; 
                     showExpenseModal.value = false;
                 }
             };
@@ -633,7 +748,6 @@
             const editItem = (item) => {
                 isEditMode.value = true;
                 editingItemIndex.value = currentItinerary.value.findIndex(i => i.id === item.id);
-                // 使用 JSON 深度複製，避免直接修改原始資料
                 newItinerary.value = JSON.parse(JSON.stringify(item));
                 showItineraryModal.value = true;
             };
@@ -644,18 +758,13 @@
                 const currentList = itineraryData.value[selectedDateIndex.value] || [];
 
                 if(isEditMode.value) {
-                    // 編輯模式：替換舊資料
                     Object.assign(currentList[editingItemIndex.value], newItinerary.value);
                 } else {
-                    // 新增模式：加入新資料
                     currentList.push({ ...newItinerary.value, id: Date.now(), isNoteExpanded: false });
                 }
                 
-                // 這裡我們不強制依時間排序，只保留新增/移動功能，讓行程更自由
-
                 itineraryData.value[selectedDateIndex.value] = currentList;
                 
-                // 重設狀態
                 newItinerary.value = { id: null, category: 'sightseeing', name: '', address: '', time: '', hours: '', price: '', note: '', travelTime: '' };
                 showItineraryModal.value = false;
                 isEditMode.value = false;
@@ -677,7 +786,6 @@
 
             // 載入時執行
             onMounted(() => {
-                // 初始化匯率換算
                 calculateCurrency();
             });
 
