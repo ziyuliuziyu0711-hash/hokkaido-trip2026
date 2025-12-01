@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>我是小森林|Family Trip to Hokkaido 2026</title>
+    <title>Family Trip to Hokkaido 2026</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -87,31 +87,6 @@
         .note-content.expanded {
             max-height: 500px; 
         }
-
-        /* 頂部標題/雪景背景 */
-        .header-bg {
-            background: linear-gradient(135deg, #B3E5FC 0%, #E3F2FD 100%);
-            position: relative;
-            overflow: hidden;
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }
-        .snow-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='90' font-size='100' fill='rgba(255,255,255,0.2)'%3E❅%3C/text%3E%3C/svg%3E");
-            background-size: 35px;
-            opacity: 0.8;
-            pointer-events: none;
-            animation: snowdrift 20s linear infinite;
-        }
-        @keyframes snowdrift {
-            0% { background-position: 0 0; }
-            100% { background-position: 100px 100px; }
-        }
         
         /* 支出圓形分類標籤 */
         .expense-category-tag {
@@ -137,26 +112,24 @@
 
 <div id="app" class="app-container">
 
-    <div class="header-bg relative">
-        <div class="snow-layer"></div>
-        <div class="px-4 relative z-10 text-deep-sea-blue flex justify-between items-start">
+    <div class="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-30">
+        <div class="px-4 py-3 flex justify-between items-center">
              <div>
-                <p class="text-xs font-medium opacity-70 tracking-widest mb-1">森林一家出國趣！</p>
-                <h1 class="text-3xl font-extrabold tracking-wide">Family Trip</h1>
-                <h2 class="text-xl font-light">to Hokkaido 2026</h2>
+                <p class="text-[10px] font-medium text-slate-400 tracking-widest mb-0.5">北海道家族旅行計畫</p>
+                <h1 class="text-xl font-extrabold text-deep-sea-blue tracking-tight">Family Trip to Hokkaido 2026</h1>
             </div>
             
-            <div class="flex flex-col space-y-2 mt-1">
-                <button @click="currentTab = 'itinerary'" title="行程" :class="currentTab === 'itinerary' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-8 h-8 rounded-full transition-all flex items-center justify-center text-sm">
+            <div class="flex flex-col space-y-2">
+                <button @click="currentTab = 'itinerary'" title="行程" :class="currentTab === 'itinerary' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
                     <i class="fa-solid fa-map-location-dot"></i>
                 </button>
-                <button @click="currentTab = 'info'" title="資訊" :class="currentTab === 'info' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-8 h-8 rounded-full transition-all flex items-center justify-center text-sm">
+                <button @click="currentTab = 'info'" title="資訊" :class="currentTab === 'info' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
                     <i class="fa-solid fa-circle-info"></i>
                 </button>
-                <button @click="currentTab = 'shopping'" title="購物" :class="currentTab === 'shopping' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-8 h-8 rounded-full transition-all flex items-center justify-center text-sm">
+                <button @click="currentTab = 'shopping'" title="購物" :class="currentTab === 'shopping' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
                     <i class="fa-solid fa-basket-shopping"></i>
                 </button>
-                <button @click="currentTab = 'expenses'" title="花費" :class="currentTab === 'expenses' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-8 h-8 rounded-full transition-all flex items-center justify-center text-sm">
+                <button @click="currentTab = 'expenses'" title="花費" :class="currentTab === 'expenses' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
                     <i class="fa-solid fa-coins"></i>
                 </button>
             </div>
@@ -167,13 +140,14 @@
         
         <div v-if="currentTab === 'itinerary'" class="animate-fade-in">
             
-            <div class="flex overflow-x-auto hide-scrollbar space-x-3 pb-4 mb-2 snap-x px-1 sticky top-0 bg-white z-20 pt-1">
+            <div class="flex overflow-x-auto hide-scrollbar space-x-3 pb-4 mb-2 snap-x px-1 sticky top-[68px] bg-white z-20 pt-1 -mx-4 px-4 border-b border-slate-50/50">
                 <div v-for="(day, index) in dates" :key="index" 
                      @click="selectedDateIndex = index"
-                     class="snap-center flex-shrink-0 w-16 h-20 rounded-2xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 border-2 shadow-sm"
+                     class="snap-center flex-shrink-0 w-[58px] h-[68px] rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 border-2 shadow-sm"
                      :class="selectedDateIndex === index ? 'bg-deep-sea-blue text-white border-deep-sea-blue shadow-lg scale-105' : 'bg-white text-slate-400 border-white hover:bg-soft-gray'">
-                    <span class="text-xs font-medium uppercase tracking-wider opacity-80">{{ day.weekday }}</span>
-                    <span class="text-lg font-bold">{{ day.date }}</span> 
+                    
+                    <span class="text-sm font-bold uppercase tracking-wider">{{ day.weekday }}</span> 
+                    <span class="text-xs font-medium opacity-70">{{ day.date }}</span> 
                 </div>
             </div>
 
@@ -507,10 +481,11 @@
                 </select>
                 <input v-model="newItinerary.name" placeholder="名稱" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
                 <input v-model="newItinerary.address" placeholder="地址/地點 (Google Map 搜尋用)" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
-               <div class="grid grid-cols-2 gap-2">
-    <input v-model="newItinerary.hours" placeholder="營業時間" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
-    <input v-model="newItinerary.price" placeholder="門票/價格" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
-</div>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <input v-model="newItinerary.hours" placeholder="營業時間" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
+                    <input v-model="newItinerary.price" placeholder="門票/價格" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
+                </div>
                 <input v-model="newItinerary.startTime" type="time" placeholder="時間點 (ex: 10:30)" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
                 
                 <div class="bg-slate-50 rounded-xl p-3">
