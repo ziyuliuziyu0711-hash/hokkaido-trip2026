@@ -1,198 +1,65 @@
-/* --- 1. 基本設定與字體 (加強冰雪感) --- */
-:root {
-    --primary-color: #5D9CEC; /* 淺藍色，冰雪主色 */
-    --secondary-color: #2D6B8D; /* 略深的藍色 */
-    --background-color: #F8F9FA; /* 雪白色背景 */
-    --card-background: #FFFFFF; /* 卡片白色 */
-    --text-color: #333333;
-    --light-text-color: #6C757D; /* 柔和灰色 */
-    --border-color: #E9ECEF;
-    --shadow-color: rgba(93, 156, 236, 0.15); /* 淺藍色柔和陰影 */
-    --delete-color: #E74C3C;
-    --save-color: #27AE60;
-}
+/* style.css */
+
+/* 引入 Google Fonts: Noto Sans TC */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
 
 body {
-    /* ... 保持不變 ... */
+    background-color: #f0f4f8; /* 淺灰藍底色 */
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: #334155; /* Slate-700 */
 }
 
-/* --- 2. 頁首與標題 (更簡潔的 App 頂部欄) --- */
-header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 15px 15px; /* 縮小高度 */
-    text-align: left; /* 標題左對齊 */
-    box-shadow: 0 2px 4px var(--shadow-color);
-    display: flex; /* 啟用 Flexbox */
-    justify-content: space-between; /* 標題與 Icon 分隔 */
-    align-items: center;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 1.6em; /* 縮小字體 */
-    font-weight: 500;
-}
-
-.subtitle {
-    margin-top: 5px;
-    font-size: 0.9em;
-    opacity: 0.8;
-}
-
-/* 新增：右上角 ICON 群組 */
-.top-icon-group {
-    display: flex;
-    gap: 12px;
-}
-
-.top-icon-btn {
-    width: 30px;
-    height: 30px;
-    background: rgba(255, 255, 255, 0.2); /* 半透明白底 */
-    color: white;
-    border-radius: 6px; /* 圓角 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.top-icon-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
-}
-
-/* --- 3. 主要版面與卡片 (增加 App 圓角感) --- */
-#app {
-    padding: 15px;
-    padding-top: 0;
-}
-
-.day-section, .info-card {
-    background-color: var(--card-background);
-    border-radius: 12px; /* 大圓角 */
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px var(--shadow-color); /* 柔和陰影 */
-}
-
-/* 每日行程標題 (包含天氣) */
-.day-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.day-title-group {
-    display: flex;
-    align-items: flex-end; /* 讓日期與 DAY X 對齊 */
-    gap: 10px;
-}
-
-.day-title-group h2 {
-    font-size: 1.2em;
-    margin: 0;
-    color: var(--secondary-color);
-}
-
-/* 日期上下排列 */
-.date-stack {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.8em;
-    color: var(--light-text-color);
-    line-height: 1.1;
-    text-align: center;
-}
-
-.weather-display {
-    display: flex;
-    align-items: center;
-    font-size: 1em;
-    color: var(--text-color);
-}
-
-.weather-icon {
-    margin-right: 5px;
-    font-size: 1.2em;
-}
-
-/* --- 4. 行程卡片 (簡化，移除齒輪) --- */
-.activity-card {
-    /* 移除原有邊框和背景，讓它更像 App 列表 */
-    padding: 15px 0;
-    margin: 0;
-    border-bottom: 1px solid var(--border-color); /* 列表分隔線 */
+/* 模擬手機 App 的容器設定 */
+.app-container {
+    max-width: 480px; /* 限制最大寬度，像手機一樣 */
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: #ffffff;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
     position: relative;
-    cursor: grab; /* 增加可拖曳指示 */
+    padding-bottom: 90px; /* 避開底部按鈕與安全區域 */
 }
 
-.activity-card:last-child {
-    border-bottom: none;
+/* 隱藏捲軸但保持滑動功能 (橫向日期選單用) */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 
-.activity-info {
-    display: grid;
-    grid-template-columns: 30px 1fr; /* ICON 欄 + 內容欄 */
-    gap: 10px;
-    align-items: flex-start;
+/* 頂部導航列的毛玻璃效果 */
+.glass-nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.activity-icon {
-    font-size: 1.5em;
-    color: var(--primary-color);
-    text-align: center;
+/* 卡片柔和陰影 */
+.card-shadow {
+    box-shadow: 0 4px 20px rgba(178, 235, 242, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.activity-name {
-    font-weight: 700;
-    color: var(--secondary-color);
-    font-size: 1.1em;
-    margin-bottom: 5px;
+/* 卡片點擊效果 */
+.card-shadow:active {
+    transform: scale(0.98);
 }
 
-.activity-meta {
-    grid-column: 2 / 3; /* 讓資訊從第二欄開始 */
-    font-size: 0.9em;
-    color: var(--light-text-color);
-    margin-top: -5px;
+/* 頁面淡入動畫 */
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out;
 }
 
-.activity-meta p {
-    margin: 3px 0;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* 新增：交通時間區塊 (點與點中間) */
-.transport-segment {
-    text-align: center;
-    padding: 8px 0;
-    color: var(--light-text-color);
-    font-size: 0.9em;
-    background-color: #F1F4F8; /* 淺灰底色，區分行程卡片 */
-    margin: 0 -15px; /* 延伸至卡片邊緣 */
+/* 自定義浮動按鈕陰影 */
+.fab-shadow {
+    box-shadow: 0 4px 15px rgba(253, 216, 53, 0.4);
 }
-
-/* --- 5. 浮動新增按鈕 (App 感) --- */
-.fab {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background-color: var(--save-color); /* 綠色 + */
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 28px;
-    line-height: 50px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    cursor: pointer;
-    z-index: 1000;
-}
-
-/* ... 其他樣式保持不變或依需求調整 ... */
