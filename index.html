@@ -48,15 +48,28 @@
 
         /* 恢復雪景背景與漸層 */
         .header-bg {
-            /* 恢復藍色漸層 */
-            background: linear-gradient(135deg, #B3E5FC 0%, #E3F2FD 100%);
-            /* 調整 padding，讓空間更緊湊 */
-            padding-top: 1.5rem; 
-            padding-bottom: 1.5rem;
+            /* 調整為更簡單的背景，因為圖片會覆蓋大部分 */
+            background: #B3E5FC; 
+            padding: 0; /* 移除 padding 讓圖片可以滿版 */
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(1, 87, 155, 0.15);
-            /* 增加深度感 */
+        }
+        
+        /* 新增：圖片專用容器，用於控制圖片高度和滿版 */
+        .header-image-container {
+            width: 100%;
+            /* 調整圖片高度。您可以調整這個數值 (例如 h-40, h-48) 來控制頁首區域的高度 */
+            height: 120px; 
+            overflow: hidden;
+            background-color: #ffffff; /* 如果圖片載入失敗，顯示白色背景 */
+        }
+        
+        .header-image-container img {
+            width: 100%;
+            height: 100%;
+            /* 保持圖片比例並覆蓋整個容器 */
+            object-fit: cover; 
         }
         
         /* 恢復雪花圖層 */
@@ -153,12 +166,11 @@
 <div id="app" class="app-container">
 
     <div class="header-bg relative">
-        <div class="snow-layer"></div> 
-        <div class="px-4 py-3 flex justify-between items-center relative z-10 text-deep-sea-blue">
-             <div class="flex-1 min-w-0">
-                <img src="IMG_4330.PNG" alt="北海道家族旅行計畫" class="w-full h-auto max-h-20 object-contain mx-auto">
-            </div>
-            <div class="flex flex-col space-y-2">
+        <div class="header-image-container">
+            <img src="IMG_4330.PNG" alt="北海道家族旅行計畫">
+        </div>
+        <div class="px-4 py-3 absolute top-0 right-0 z-10 text-deep-sea-blue">
+            <div class="flex flex-col space-y-2 pt-2">
                 <button @click="currentTab = 'itinerary'" title="行程" :class="currentTab === 'itinerary' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
                     <i class="fa-solid fa-map-location-dot"></i>
                 </button>
@@ -176,6 +188,7 @@
                 </button>
             </div>
         </div>
+        <div class="snow-layer"></div> 
     </div>
     
     <main class="p-4">
@@ -792,8 +805,7 @@ rounded-xl p-3 text-sm text-slate-600 outline-none">
                 currencyResult.value = formatNumber(Math.round(Number(currencyInput.value) * exchangeRate));
             };
 
-            // >>>>>>> Modification 1: 新增或修改 openMap 相關函式以實現 Google Maps 導航 <<<<<<<
-            // 修改 openMap 函式，直接跳轉到 Google Maps 的導航頁面 (從當前位置到目的地)
+            // openMap 函式: 直接跳轉到 Google Maps 的導航頁面 (從當前位置到目的地)
             const openMap = (destination) => {
                 if (destination) {
                     // 使用 Google Maps URL Scheme 進行導航 (daddr=destination address)
@@ -817,7 +829,6 @@ rounded-xl p-3 text-sm text-slate-600 outline-none">
                     openMap(end);
                 }
             };
-            // >>>>>>>>>>>>>>>>> END Modification 1 <<<<<<<<<<<<<<<<<
 
             const handleAddClick = () => {
                 if (currentTab.value === 'itinerary') {
