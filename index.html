@@ -46,10 +46,10 @@
             background-color: #ffffff; 
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
             position: relative;
+            /* 調整底部內距以容納浮動按鈕 */
             padding-bottom: 90px;
         }
 
-        /* 恢復雪景背景與圓弧漸層 */
         .header-bg {
             background: #B3E5FC; 
             padding: 0; 
@@ -60,6 +60,7 @@
             border-bottom-left-radius: 35px; 
             border-bottom-right-radius: 35px;
             z-index: 10; 
+            padding-bottom: 25px; /* 增加底部內距以容納按鈕佔用的空間 */
         }
         
         /* 圖片專用容器 */
@@ -97,19 +98,52 @@
             }
         }
         
-        /* --- 橫向 Tab 容器樣式 --- */
-        .horizontal-tab-bar {
-            position: relative;
-            z-index: 20; /* 確保它在圓弧之上 */
-            margin-top: -40px; /* 向上拉動使其疊在圓弧上 */
-            margin-left: 20px; /* 根據 p-4 調整，確保左右對齊 */
-            margin-right: 20px;
+        /* --- 修正：側邊/橫向 Tab 容器樣式 (現在是橫向右下角) --- */
+        .side-tab-bar {
+            position: absolute;
+            /* 讓它位於圖片區域的右下角，並稍微超出圓弧，更有層次感 */
+            bottom: -20px; 
+            right: 16px;
+            z-index: 30; /* 確保它在最上層 */
+            
+            /* 橫向排列 */
+            display: flex;
+            flex-direction: row;
+            gap: 8px; /* 元素之間的間距 */
         }
         
+        /* 單一按鈕樣式 */
+        .tab-button {
+            width: 40px; /* 圓形按鈕寬高 */
+            height: 40px;
+            border-radius: 9999px; /* 圓形 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.125rem; /* Icon 大小 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 柔和陰影 */
+            transition: all 0.2s ease;
+        }
+        
+        /* 活躍按鈕樣式 */
+        .tab-button.active {
+            background-color: #01579B; /* deep-sea-blue */
+            color: #ffffff;
+            box-shadow: 0 6px 15px rgba(1, 87, 155, 0.4); 
+            transform: scale(1.05);
+        }
+        
+        /* 非活躍按鈕樣式 */
+        .tab-button:not(.active) {
+            background-color: #ffffff;
+            color: #B3E5FC; /* ice-blue */
+        }
+
+
         /* --- 圓弧銜接的主內容區域 --- */
         .app-main {
-            /* 調整間距，讓它從橫向 Tab Bar 下方開始 */
-            padding-top: 20px !important; 
+            /* 調整間距，讓它從橫向 Tab Bar 下方開始，減去 header-bg 裡新增的 padding-bottom */
+            padding-top: 45px !important; 
             position: relative;
             z-index: 5;
         }
@@ -194,39 +228,34 @@
         </div>
         
         <div class="snow-layer"></div> 
-    </div>
-
-    <div class="horizontal-tab-bar">
-        <div class="flex justify-between bg-white rounded-xl shadow-lg border border-slate-100">
+        
+        <div class="side-tab-bar">
             <button @click="currentTab = 'itinerary'" title="行程" 
-                    :class="currentTab === 'itinerary' ? 'bg-deep-sea-blue text-white shadow-md' : 'text-slate-500 hover:bg-soft-gray'" 
-                    class="w-1/4 py-3 rounded-l-xl transition-all flex flex-col items-center justify-center text-xs font-bold">
-                <i class="fa-solid fa-map-location-dot mb-1 text-base"></i>
-                行程
+                    :class="{'active': currentTab === 'itinerary'}" 
+                    class="tab-button">
+                <i class="fa-solid fa-map-location-dot"></i>
             </button>
             
             <button @click="currentTab = 'info'" title="資訊" 
-                    :class="currentTab === 'info' ? 'bg-deep-sea-blue text-white shadow-md' : 'text-slate-500 hover:bg-soft-gray'" 
-                    class="w-1/4 py-3 transition-all flex flex-col items-center justify-center text-xs font-bold">
-                <i class="fa-solid fa-circle-info mb-1 text-base"></i>
-                資訊
+                    :class="{'active': currentTab === 'info'}" 
+                    class="tab-button">
+                <i class="fa-solid fa-circle-info"></i>
             </button>
             
             <button @click="currentTab = 'shopping'" title="購物" 
-                    :class="currentTab === 'shopping' ? 'bg-deep-sea-blue text-white shadow-md' : 'text-slate-500 hover:bg-soft-gray'" 
-                    class="w-1/4 py-3 transition-all flex flex-col items-center justify-center text-xs font-bold">
-                <i class="fa-solid fa-basket-shopping mb-1 text-base"></i>
-                購物
+                    :class="{'active': currentTab === 'shopping'}" 
+                    class="tab-button">
+                <i class="fa-solid fa-basket-shopping"></i>
             </button>
             
             <button @click="currentTab = 'expenses'" title="花費" 
-                    :class="currentTab === 'expenses' ? 'bg-deep-sea-blue text-white shadow-md' : 'text-slate-500 hover:bg-soft-gray'" 
-                    class="w-1/4 py-3 rounded-r-xl transition-all flex flex-col items-center justify-center text-xs font-bold">
-                <i class="fa-solid fa-coins mb-1 text-base"></i>
-                花費
+                    :class="{'active': currentTab === 'expenses'}" 
+                    class="tab-button">
+                <i class="fa-solid fa-coins"></i>
             </button>
         </div>
-    </div>
+        </div>
+
     
     <main class="p-4 app-main">
         
