@@ -1,13 +1,18 @@
 /* --- 1. 基本設定與字體 --- */
 :root {
-    --primary-color: #008080; /* 清新的薄荷色/藍綠色 */
-    --secondary-color: #38a59c; /* 略深的薄荷色 */
+    /* [START] 替換為深中淺藍色主題 */
+    --primary-color: #19376D; /* 深藍色 (主要顏色，例如：標題、底部線) */
+    --secondary-color: #576CBC; /* 中藍色 (次要顏色，例如：日曆活動按鈕、活動卡左側線條) */
+    --tertiary-color: #A5D7E8; /* 淺藍色 (輔助色，例如：交通虛線) */
+    --light-background-color: #F0F8FF; /* 雪白色/淺藍色 (卡片淺色背景) */
+    /* [END] 替換為深中淺藍色主題 */
+
     --background-color: #f7f9fc; /* 雪白色背景 */
     --card-background: #ffffff;
     --text-color: #333333;
     --light-text-color: #666666;
     --border-color: #e0e0e0;
-    --shadow-color: rgba(0, 128, 128, 0.1); /* 淺色陰影 */
+    --shadow-color: rgba(25, 55, 109, 0.15); /* 根據新主色調整陰影色 */
     --delete-color: #e74c3c;
     --save-color: #27ae60;
 }
@@ -21,13 +26,41 @@ body {
     line-height: 1.6;
 }
 
-/* --- 2. 頁首與標題 --- */
+/* --- 2. 頁首與標題 (新增北海道雪景圖片) --- */
 header {
-    background-color: var(--primary-color);
+    /* 原有樣式 */
     color: white;
-    padding: 20px 10px;
+    padding: 40px 10px; /* 增加高度讓背景圖更明顯 */
     text-align: center;
     box-shadow: 0 4px 6px var(--shadow-color);
+    /* 新增背景圖片樣式 */
+    background-color: var(--primary-color);
+    /* **請注意：這是一個佔位圖 URL，您可以將其替換為您專屬的雪景圖片連結** */
+    background-image: url('https://picsum.photos/seed/hokkaido_snow_2/1600/600'); 
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    /* 增加圖層讓文字清晰 */
+    position: relative;
+    overflow: hidden; 
+}
+
+/* 新增一個半透明深色層疊在圖片上，讓文字更清晰 */
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.35); /* 半透明深色遮罩 */
+    z-index: 1;
+}
+
+header h1, header .subtitle {
+    position: relative;
+    z-index: 2; /* 確保文字在遮罩上層 */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 header h1 {
@@ -111,7 +144,7 @@ header h1 {
 }
 
 .nav-button.active {
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-color); /* 中藍色 */
     color: white;
     border-color: var(--primary-color);
     box-shadow: 0 2px 5px var(--shadow-color);
@@ -147,6 +180,10 @@ header h1 {
     margin-top: 0;
     font-size: 1.5em;
     font-weight: 700;
+    /* 新增：確保標題中的 icon 有間隔 */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* 天氣與過路費 */
@@ -169,8 +206,8 @@ header h1 {
 }
 
 .toll-estimate {
-    background-color: #e0f2f1; /* 淺薄荷綠 */
-    color: #004d40;
+    background-color: var(--light-background-color); /* 淺藍色背景 */
+    color: var(--primary-color); /* 深藍色文字 */
     padding: 8px 15px;
     border-radius: 6px;
     font-size: 0.9em;
@@ -186,21 +223,21 @@ header h1 {
 }
 
 .activity-item {
-    border-left: 4px solid var(--secondary-color);
+    border-left: 4px solid var(--secondary-color); /* 中藍色邊線 */
     padding: 10px 15px;
     margin-bottom: 15px;
-    background-color: #f5fffd; /* 略淺的卡片背景 */
+    background-color: var(--light-background-color); /* 略淺的卡片背景 */
     border-radius: 0 8px 8px 0;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
 }
 
 .travel-time {
-    color: var(--primary-color);
+    color: var(--secondary-color); /* 中藍色 */
     font-size: 0.85em;
     font-weight: 500;
     margin: 5px 0;
     padding-left: 19px;
-    border-left: 2px dashed #b2dfdb; /* 交通虛線 */
+    border-left: 2px dashed var(--tertiary-color); /* 交通虛線使用淺藍色 */
 }
 
 .travel-time .icon {
@@ -271,7 +308,7 @@ header h1 {
     list-style: none;
     padding-left: 0;
     margin: 10px 0 0 0;
-    border-top: 1px solid #e0f2f1;
+    border-top: 1px solid var(--tertiary-color); /* 使用淺藍色分隔線 */
     padding-top: 10px;
 }
 
@@ -304,13 +341,14 @@ header h1 {
     display: block;
     width: 100%;
     padding: 10px;
-    margin-top: 20px;
+    margin-top: 15px;
     background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1em;
+    font-weight: 500;
     transition: background-color 0.2s;
 }
 
@@ -318,31 +356,22 @@ header h1 {
     background-color: var(--secondary-color);
 }
 
-
 /* --- 5. 資訊 (Info) Tab 樣式 --- */
 .info-tab {
-    padding: 20px;
+    padding: 15px;
 }
 
-.info-tab h2 {
+.info-category-title {
     color: var(--primary-color);
-    border-bottom: 2px solid var(--secondary-color);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 5px;
     margin-top: 20px;
     margin-bottom: 15px;
-    font-size: 1.4em;
-}
-
-.info-group {
-    background-color: var(--card-background);
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px var(--shadow-color);
+    font-size: 1.3em;
 }
 
 .info-item {
-    padding: 8px 0;
+    padding: 10px 0;
     border-bottom: 1px dashed var(--border-color);
 }
 
@@ -381,7 +410,7 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #e0f7fa; /* 淺藍綠色 */
+    background-color: var(--light-background-color); /* 使用新的淺色 */
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
@@ -390,7 +419,7 @@ header h1 {
 
 .total-box h3 {
     margin: 0;
-    color: #006064; /* 深藍綠 */
+    color: var(--primary-color); /* 使用深藍色 */
     font-weight: 500;
     font-size: 1.1em;
 }
@@ -423,53 +452,49 @@ header h1 {
 
 .expense-table {
     width: 100%;
-    min-width: 600px; /* 確保在小螢幕上可以滾動 */
+    min-width: 600px; /* 確保在小螢幕上表格內容可讀 */
     border-collapse: collapse;
-    background-color: var(--card-background);
-    border-radius: 8px;
-    overflow: hidden; /* 隱藏表格的溢出內容 */
-}
-
-.expense-table th, .expense-table td {
-    padding: 12px 10px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
     font-size: 0.9em;
 }
 
-.expense-table th {
-    background-color: var(--primary-color);
-    color: white;
-    font-weight: 500;
-    text-transform: uppercase;
+.expense-table th, .expense-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.expense-table tbody tr:hover {
-    background-color: #e6f7ff;
+.expense-table th {
+    background-color: #f0f4f8;
+    color: var(--primary-color);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.expense-table tr:hover {
+    background-color: #f7f9fb;
 }
 
 .expense-price {
     font-weight: 500;
-    color: #c0392b;
+    color: var(--delete-color);
 }
 
 .delete-btn-sm {
     background-color: var(--delete-color);
     color: white;
     border: none;
-    padding: 4px 8px;
+    padding: 5px 8px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.7em;
-    transition: background-color 0.2s;
+    font-size: 0.75em;
 }
 
 .delete-btn-sm:hover {
-    background-color: #c0392b;
+    opacity: 0.8;
 }
 
-
-/* --- 7. Modal (彈出視窗) 樣式 --- */
+/* --- 7. 彈出視窗 (Modal) 樣式 --- */
 .modal-container {
     display: none; /* 預設隱藏 */
     position: fixed;
@@ -482,49 +507,52 @@ header h1 {
     background-color: rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
 .modal-content {
     background-color: var(--card-background);
-    margin: 10% auto;
-    padding: 25px;
+    padding: 20px;
     border-radius: 12px;
-    width: 90%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
     max-width: 500px;
     position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s;
+    box-sizing: border-box;
 }
 
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(-20px);}
-    to {opacity: 1; transform: translateY(0);}
+.modal-content h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.3em;
 }
 
 .close-btn {
-    color: var(--light-text-color);
+    color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
-    transition: color 0.2s;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    line-height: 1;
+}
+
+.close-btn::after {
+    content: "×";
 }
 
 .close-btn:hover,
 .close-btn:focus {
     color: var(--delete-color);
     text-decoration: none;
-    cursor: pointer;
 }
 
-/* Modal 內的表單樣式 */
-.modal-content h2 {
-    color: var(--primary-color);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
+/* 表單樣式 */
 #activity-form label, #expense-form label {
     display: block;
     margin-top: 10px;
@@ -533,12 +561,7 @@ header h1 {
     color: var(--text-color);
 }
 
-#activity-form input[type="text"], 
-#activity-form textarea,
-#expense-form input:not([type="date"]),
-#expense-form select,
-#expense-form input[type="date"],
-#expense-form input[type="number"] {
+#activity-form input[type="text"], #activity-form textarea, #expense-form input:not([type="date"]), #expense-form select, #expense-form input[type="date"], #expense-form input[type="number"] {
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
@@ -605,37 +628,18 @@ header h1 {
         padding: 10px 5px;
         font-size: 0.9em;
     }
-    
-    .day-detail-area {
-        padding: 10px;
-    }
-    
+
     .day-card {
         padding: 15px;
     }
 
-    .activity-item {
-        padding: 8px 10px;
-    }
-    
-    .activity-controls {
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        align-items: center;
-    }
-    
-    .expand-btn {
-        order: -1; /* 將展開按鈕移到最左邊 */
-        margin-right: auto;
-    }
-    
     .total-box {
         flex-direction: column;
-        align-items: stretch;
+        align-items: flex-start;
         gap: 10px;
     }
-    
-    .add-expense-btn {
-        width: 100%;
+
+    .table-scroll-wrapper {
+        margin: 0 -15px; /* 允許表格在小螢幕上溢出卡片，以維持表格寬度 */
     }
 }
