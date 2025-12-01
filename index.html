@@ -49,20 +49,20 @@
             padding-bottom: 90px;
         }
 
-        /* 恢復雪景背景與漸層 */
+        /* 恢復雪景背景與圓弧漸層 */
         .header-bg {
             background: #B3E5FC; 
             padding: 0; 
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(1, 87, 155, 0.15);
-            /* --- 修正 #3: 圓弧銜接 --- */
+            /* --- 圓弧銜接 --- */
             border-bottom-left-radius: 35px; 
             border-bottom-right-radius: 35px;
-            z-index: 10; /* 確保圓弧邊緣在下方內容上方 */
+            z-index: 10; 
         }
         
-        /* 修正：圖片專用容器 */
+        /* 圖片專用容器 */
         .header-image-container {
             width: 100%;
             height: 200px; 
@@ -97,16 +97,23 @@
             }
         }
         
-        /* --- 新增樣式: 圓弧銜接的主內容區域 --- */
+        /* --- 橫向 Tab 容器樣式 --- */
+        .horizontal-tab-bar {
+            position: relative;
+            z-index: 20; /* 確保它在圓弧之上 */
+            margin-top: -40px; /* 向上拉動使其疊在圓弧上 */
+            margin-left: 20px; /* 根據 p-4 調整，確保左右對齊 */
+            margin-right: 20px;
+        }
+        
+        /* --- 圓弧銜接的主內容區域 --- */
         .app-main {
-            /* 向上移動 30px，讓圓弧與白色區塊重疊 */
-            margin-top: -30px; 
-            /* 確保內容不會被 header 遮擋，並保留下方 padding */
-            padding-top: 40px !important; 
+            /* 調整間距，讓它從橫向 Tab Bar 下方開始 */
+            padding-top: 20px !important; 
             position: relative;
             z-index: 5;
         }
-
+        
         /* 隱藏捲軸但保持滑動功能 */
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
@@ -186,26 +193,39 @@
             <img src="IMG_4330.PNG" alt="北海道家族旅行計畫">
         </div>
         
-        <div class="px-4 py-3 absolute top-12 right-0 z-10 text-deep-sea-blue">
-            <div class="flex flex-col space-y-2 pt-2">
-                <button @click="currentTab = 'itinerary'" title="行程" :class="currentTab === 'itinerary' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
-                    <i class="fa-solid fa-map-location-dot"></i>
-                </button>
-                <button @click="currentTab = 'info'" title="資訊" :class="currentTab === 'info' ?
-'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
-                    <i class="fa-solid fa-circle-info"></i>
-                </button>
-                <button @click="currentTab = 'shopping'" title="購物" :class="currentTab === 'shopping' ?
-'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
-                    <i class="fa-solid fa-basket-shopping"></i>
-                </button>
-                <button @click="currentTab = 'expenses'" title="花費" :class="currentTab === 'expenses' ?
-'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
-                    <i class="fa-solid fa-coins"></i>
-                </button>
-            </div>
-        </div>
         <div class="snow-layer"></div> 
+    </div>
+
+    <div class="horizontal-tab-bar">
+        <div class="flex justify-between bg-white rounded-xl shadow-lg border border-slate-100">
+            <button @click="currentTab = 'itinerary'" title="行程" 
+                    :class="currentTab === 'itinerary' ? 'bg-deep-sea-blue text-white shadow-md' : 'text-slate-500 hover:bg-soft-gray'" 
+                    class="w-1/4 py-3 rounded-l-xl transition-all flex flex-col items-center justify-center text-xs font-bold">
+                <i class="fa-solid fa-map-location-dot mb-1 text-base"></i>
+                行程
+            </button>
+            
+            <button @click="currentTab = 'info'" title="資訊" 
+                    :class="currentTab === 'info' ? 'bg-deep-sea-blue text-white shadow-md' : 'text-slate-500 hover:bg-soft-gray'" 
+                    class="w-1/4 py-3 transition-all flex flex-col items-center justify-center text-xs font-bold">
+                <i class="fa-solid fa-circle-info mb-1 text-base"></i>
+                資訊
+            </button>
+            
+            <button @click="currentTab = 'shopping'" title="購物" 
+                    :class="currentTab === 'shopping' ? 'bg-deep-sea-blue text-white shadow-md' : 'text-slate-500 hover:bg-soft-gray'" 
+                    class="w-1/4 py-3 transition-all flex flex-col items-center justify-center text-xs font-bold">
+                <i class="fa-solid fa-basket-shopping mb-1 text-base"></i>
+                購物
+            </button>
+            
+            <button @click="currentTab = 'expenses'" title="花費" 
+                    :class="currentTab === 'expenses' ? 'bg-deep-sea-blue text-white shadow-md' : 'text-slate-500 hover:bg-soft-gray'" 
+                    class="w-1/4 py-3 rounded-r-xl transition-all flex flex-col items-center justify-center text-xs font-bold">
+                <i class="fa-solid fa-coins mb-1 text-base"></i>
+                花費
+            </button>
+        </div>
     </div>
     
     <main class="p-4 app-main">
