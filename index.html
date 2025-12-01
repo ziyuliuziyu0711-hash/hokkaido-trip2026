@@ -507,10 +507,10 @@
                 </select>
                 <input v-model="newItinerary.name" placeholder="名稱" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
                 <input v-model="newItinerary.address" placeholder="地址/地點 (Google Map 搜尋用)" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
-                <div class="flex space-x-2">
-                    <input v-model="newItinerary.hours" placeholder="營業時間" class="flex-1 bg-slate-50 rounded-xl p-3 text-sm outline-none">
-                    <input v-model="newItinerary.price" placeholder="門票/價格" class="flex-1 bg-slate-50 rounded-xl p-3 text-sm outline-none">
-                </div>
+               <div class="grid grid-cols-2 gap-2">
+    <input v-model="newItinerary.hours" placeholder="營業時間" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
+    <input v-model="newItinerary.price" placeholder="門票/價格" class="bg-slate-50 rounded-xl p-3 text-sm outline-none">
+</div>
                 <input v-model="newItinerary.startTime" type="time" placeholder="時間點 (ex: 10:30)" class="w-full bg-slate-50 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-deep-sea-blue">
                 
                 <div class="bg-slate-50 rounded-xl p-3">
