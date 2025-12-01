@@ -4,9 +4,618 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>❄️ 森林家北海道七天六夜行程 ❄️</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-size='20' fill='%23000'%3E%F0%9F%97%BA%EF%B8%8F%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+    
+    <style>
+        :root {
+            --primary-color: #004d40; /* 深綠色 */
+            --secondary-color: #fdd835; /* 黃色 */
+            --background-light: #f4f6f8;
+            --background-dark: #e0f2f1; /* 淺綠背景 */
+            --text-dark: #263238;
+            --text-light: #ffffff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px; /* 避免底部遮擋 */
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #4db6ac);
+            color: var(--text-light);
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 {
+            margin: 0 0 5px 0;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            margin: 0;
+            font-size: 0.9em;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        #app {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        
+        /* --- Tab Navigation --- */
+        .main-tab-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .main-tab-btn {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: none;
+            background-color: var(--text-light);
+            color: var(--primary-color);
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            font-weight: 500;
+        }
+        
+        .main-tab-btn.active {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-weight: 700;
+        }
+        
+        .main-tab-btn:hover:not(.active) {
+            background-color: #e0f7fa;
+        }
+        
+        /* --- Trip Tab: Day Navigation --- */
+        .day-nav {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-button {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 70px;
+            height: 65px;
+            padding: 5px 10px;
+            margin-right: 8px;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            background-color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-button.active {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .nav-button:not(.active):hover {
+            background-color: var(--background-dark);
+        }
+
+        .nav-day {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
+        .nav-date {
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        /* --- Trip Tab: Day Card --- */
+        .day-card {
+            background-color: var(--text-light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-top: 0;
+            border-bottom: 2px solid #eceff1;
+            padding-bottom: 10px;
+        }
+
+        /* Weather Box */
+        .weather-box {
+            display: flex;
+            align-items: center;
+            background-color: #e3f2fd; /* 淺藍色 */
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .weather-icon {
+            font-size: 1.8em;
+            margin-right: 10px;
+        }
+
+        .weather-info p {
+            margin: 0;
+        }
+        
+        /* Toll Estimate */
+        .toll-estimate {
+            background-color: #ffebee; /* 淺紅色 */
+            color: #c62828;
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        /* Activity List */
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .travel-time {
+            background-color: #cfd8dc;
+            color: var(--text-dark);
+            padding: 6px 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .travel-time .icon {
+            margin-right: 5px;
+            font-size: 1.1em;
+        }
+
+        .activity-item {
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            padding: 15px;
+            position: relative;
+            background-color: var(--background-light);
+            transition: box-shadow 0.2s;
+        }
+        
+        .activity-item:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .description-wrap {
+            font-weight: 700;
+            font-size: 1.1em;
+            line-height: 1.3;
+            flex-grow: 1;
+            padding-right: 120px; /* 留出控制按鈕空間 */
+        }
+        
+        .location-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            border-bottom: 2px dotted var(--primary-color);
+            transition: color 0.2s;
+        }
+        
+        .location-link:hover {
+            color: #00796b;
+        }
+
+        /* Activity Controls (Menu Buttons) */
+        .activity-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .menu-btn {
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background-color 0.2s;
+        }
+        
+        .menu-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .edit-btn {
+            font-size: 1em; /* 讓編輯圖示大一點 */
+        }
+        
+        .expand-btn {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        
+        .expand-btn:hover {
+            background-color: #ffb300;
+        }
+
+        /* Detail List */
+        .detail-list {
+            list-style: none;
+            padding: 10px 0 0 0;
+            margin-top: 10px;
+            border-top: 1px dashed #bdbdbd;
+            font-size: 0.9em;
+        }
+
+        .detail-list li {
+            margin-bottom: 5px;
+        }
+        
+        .detail-label {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-right: 5px;
+            min-width: 80px;
+            display: inline-block;
+        }
+        
+        .feature-item {
+            margin-top: 8px;
+        }
+        
+        .feature-item pre {
+            white-space: pre-wrap; /* 保持換行和空格 */
+            font-family: inherit;
+            margin: 5px 0 0 0;
+            padding: 5px;
+            background-color: #f9f9f9;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .add-item-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #4db6ac;
+            color: var(--text-light);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .add-item-btn:hover {
+            background-color: #26a69a;
+        }
+
+        /* --- Info Tab --- */
+        .info-tab {
+            padding: 20px;
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .info-tab h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 5px;
+            margin-top: 20px;
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+        
+        .info-tab h2:first-child {
+            margin-top: 0;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-left: 4px solid var(--secondary-color);
+            background-color: #fffde7; /* 淺黃色 */
+            border-radius: 4px;
+        }
+        
+        .info-label {
+            display: block;
+            font-weight: 300;
+            font-size: 0.85em;
+            color: #757575;
+            margin-bottom: 3px;
+        }
+        
+        .info-value {
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .info-route {
+            font-size: 0.9em;
+            color: #424242;
+            margin: 3px 0 0 0;
+        }
+        
+        .car-group .info-item {
+            border-left-color: #ff7043; /* 橘色 for car */
+            background-color: #fbe9e7;
+        }
+        
+        /* --- Expense Tab --- */
+        .expense-tab {
+            padding: 20px;
+            background-color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .total-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #e8f5e9; /* 淺綠色 */
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .total-box h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        
+        .total-jpy-amount {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #d84315; /* 深橘色 */
+        }
+        
+        .add-expense-btn {
+            padding: 8px 15px;
+            background-color: #ff8a65; /* 橘色 */
+            color: var(--text-light);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .add-expense-btn:hover {
+            background-color: #ff7043;
+        }
+
+        .table-scroll-wrapper {
+            overflow-x: auto;
+        }
+
+        .expense-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            min-width: 500px;
+        }
+
+        .expense-table th, .expense-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .expense-table th {
+            background-color: var(--background-dark);
+            font-weight: 700;
+            color: var(--primary-color);
+            position: sticky;
+            top: 0;
+        }
+        
+        .expense-table td {
+            background-color: var(--text-light);
+        }
+        
+        .expense-price {
+            font-weight: 500;
+            color: #d84315;
+            white-space: nowrap;
+        }
+        
+        .delete-btn-sm {
+            background-color: #ef9a9a;
+            color: var(--text-dark);
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.75em;
+            transition: background-color 0.2s;
+        }
+        
+        .delete-btn-sm:hover {
+            background-color: #e57373;
+        }
+
+        /* --- Modal (通用) --- */
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* 預設隱藏 */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: var(--text-light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .modal-content h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Modal Form Styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 0.9em;
+            color: #455a64;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .form-actions .submit-btn {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        .form-actions .delete-btn {
+            background-color: #ef5350;
+            color: var(--text-light);
+        }
+
+        .form-actions .submit-btn:hover {
+            background-color: #00796b;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -486,6 +1095,238 @@
         const expenseModalContainer = document.getElementById('expense-modal-container');
         const expenseForm = document.getElementById('expense-form');
         
+        // 生成唯一的 ID，用於新增行程和花費
+        let nextActivityId = 704; // 從現有資料後一個 ID 開始
+        let nextExpenseId = 4;
+
+        // --- 狀態更新與重新渲染 ---
+        function updateState(newState) {
+            currentState = { ...currentState, ...newState };
+            // 如果切換 Tab，重置 Day 索引 (除非新狀態有指定 Day)
+            if (newState.currentTab && newState.currentTab !== 'trip') {
+                currentState.currentDay = 0;
+            }
+            renderApp();
+        }
+
+        // --- 行程細節展開/收起邏輯 ---
+        function toggleDetails(detailKey) {
+            currentState.expandedDetails[detailKey] = !currentState.expandedDetails[detailKey];
+            renderApp();
+        }
+        window.toggleDetails = toggleDetails; // 暴露給 HTML onClick 調用
+
+        // --- 行程項目新增/編輯/刪除邏輯 (Modal) ---
+
+        function openModalForEdit(dayIndex, itemIndex) {
+            const item = currentState.trip[dayIndex].details[itemIndex];
+            currentState.editingItem = { dayIndex, itemIndex, item };
+            renderActivityForm(item);
+            modalContainer.style.display = 'flex';
+        }
+        window.openModalForEdit = openModalForEdit;
+        
+        function openModalForNew(dayIndex) {
+            currentState.editingItem = { dayIndex, itemIndex: -1, item: { id: null, title: '', time: '', ticket: '', feature: '', location: '', travelTime: '' } };
+            renderActivityForm(currentState.editingItem.item);
+            modalContainer.style.display = 'flex';
+        }
+        window.openModalForNew = openModalForNew;
+
+        function closeModal() {
+            modalContainer.style.display = 'none';
+            currentState.editingItem = null;
+        }
+        window.closeModal = closeModal;
+
+        function renderActivityForm(item) {
+            const isEditing = !!item.id;
+            const formHtml = `
+                <div class="form-group">
+                    <label for="title">活動標題 (必填)</label>
+                    <input type="text" id="title" name="title" value="${item.title || ''}" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">時間/時段</label>
+                    <input type="text" id="time" name="time" value="${item.time || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="location">地點名稱 (用於地圖導航)</label>
+                    <input type="text" id="location" name="location" value="${item.location || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="travelTime">交通時間 (顯示在行程上方)</label>
+                    <input type="text" id="travelTime" name="travelTime" value="${item.travelTime || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="ticket">門票/費用</label>
+                    <input type="text" id="ticket" name="ticket" value="${item.ticket || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="feature">特色 & 備註 (可換行)</label>
+                    <textarea id="feature" name="feature">${item.feature || ''}</textarea>
+                </div>
+                <div class="form-actions">
+                    ${isEditing ? `<button type="button" class="delete-btn" onclick="deleteActivity(${currentState.editingItem.dayIndex}, ${currentState.editingItem.itemIndex})">刪除</button>` : '<div></div>'}
+                    <button type="submit" class="submit-btn">${isEditing ? '儲存修改' : '新增行程'}</button>
+                </div>
+            `;
+            activityForm.innerHTML = formHtml;
+            activityForm.onsubmit = saveActivity;
+        }
+
+        function saveActivity(e) {
+            e.preventDefault();
+            const { dayIndex, itemIndex, item } = currentState.editingItem;
+            
+            const formData = {
+                title: document.getElementById('title').value,
+                time: document.getElementById('time').value,
+                location: document.getElementById('location').value,
+                travelTime: document.getElementById('travelTime').value,
+                ticket: document.getElementById('ticket').value,
+                feature: document.getElementById('feature').value,
+            };
+
+            if (!formData.title) {
+                alert('活動標題是必填的！');
+                return;
+            }
+
+            const newTrip = [...currentState.trip];
+            const newDetails = [...newTrip[dayIndex].details];
+
+            if (itemIndex === -1) { // 新增
+                const newItem = {
+                    id: nextActivityId++,
+                    ...formData,
+                };
+                newDetails.push(newItem);
+                newTrip[dayIndex].details = newDetails;
+            } else { // 編輯
+                newDetails[itemIndex] = { ...item, ...formData };
+                newTrip[dayIndex].details = newDetails;
+            }
+
+            updateState({ trip: newTrip });
+            closeModal();
+        }
+
+        function deleteActivity(dayIndex, itemIndex) {
+            if (!confirm('確定要刪除此行程項目嗎？')) return;
+
+            const newTrip = [...currentState.trip];
+            newTrip[dayIndex].details.splice(itemIndex, 1);
+            
+            updateState({ trip: newTrip });
+            closeModal();
+        }
+        window.deleteActivity = deleteActivity;
+
+        function moveActivity(dayIndex, itemIndex, direction) {
+            const newTrip = [...currentState.trip];
+            const newDetails = [...newTrip[dayIndex].details];
+
+            const itemToMove = newDetails.splice(itemIndex, 1)[0];
+            newDetails.splice(itemIndex + direction, 0, itemToMove);
+
+            newTrip[dayIndex].details = newDetails;
+            updateState({ trip: newTrip });
+        }
+        window.moveActivity = moveActivity;
+
+
+        // --- 花費記錄邏輯 (Modal) ---
+        
+        function openExpenseModal() {
+            renderExpenseForm();
+            expenseModalContainer.style.display = 'flex';
+        }
+        window.openExpenseModal = openExpenseModal;
+        
+        function closeExpenseModal() {
+            expenseModalContainer.style.display = 'none';
+        }
+        window.closeExpenseModal = closeExpenseModal;
+        
+        function renderExpenseForm() {
+            // 自動帶入當前日期 (月份/日期)
+            const today = new Date();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const defaultDate = `${month}-${day}`;
+            
+            const expenseCategories = ['餐飲', '交通', '門票', '住宿', '購物', '雜項'];
+            const categoryOptions = expenseCategories.map(c => `<option value="${c}">${c}</option>`).join('');
+            
+            const formHtml = `
+                <div class="form-group">
+                    <label for="expense-date">日期 (MM-DD)</label>
+                    <input type="text" id="expense-date" name="date" value="${defaultDate}" required pattern="\\d{2}-\\d{2}" placeholder="例如: 03-06">
+                </div>
+                <div class="form-group">
+                    <label for="expense-price">價格 (JPY)</label>
+                    <input type="number" id="expense-price" name="price" required min="10">
+                </div>
+                <div class="form-group">
+                    <label for="expense-category">分類</label>
+                    <select id="expense-category" name="category" required>
+                        ${categoryOptions}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expense-method">支付方式</label>
+                    <select id="expense-method" name="method" required>
+                        <option value="現金">現金</option>
+                        <option value="刷卡">刷卡</option>
+                        <option value="電子支付">電子支付</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expense-note">備註</label>
+                    <input type="text" id="expense-note" name="note">
+                </div>
+                <div class="form-actions">
+                    <div></div>
+                    <button type="submit" class="submit-btn">儲存花費</button>
+                </div>
+            `;
+            expenseForm.innerHTML = formHtml;
+            expenseForm.onsubmit = saveExpense;
+        }
+
+        function saveExpense(e) {
+            e.preventDefault();
+            
+            const formData = {
+                id: nextExpenseId++,
+                date: document.getElementById('expense-date').value,
+                price: parseInt(document.getElementById('expense-price').value),
+                currency: 'JPY',
+                method: document.getElementById('expense-method').value,
+                category: document.getElementById('expense-category').value,
+                note: document.getElementById('expense-note').value,
+            };
+
+            if (!formData.date.match(/\d{2}-\d{2}/) || isNaN(formData.price) || formData.price <= 0) {
+                alert('請檢查日期格式(MM-DD)和價格是否輸入正確！');
+                return;
+            }
+
+            const newExpenses = [...currentState.expenses, formData];
+            updateState({ expenses: newExpenses });
+            closeExpenseModal();
+        }
+        
+        function deleteExpense(expenseId) {
+            if (!confirm('確定要刪除這筆花費記錄嗎？')) return;
+
+            const newExpenses = currentState.expenses.filter(e => e.id !== expenseId);
+            updateState({ expenses: newExpenses });
+        }
+        window.deleteExpense = deleteExpense;
+
+
         // --- 渲染子函式 ---
 
         function renderActivityDetails(item, dayIndex, itemIndex) {
@@ -501,7 +1342,7 @@
             
             // 篩選出有效的值
             const detailsList = [
-                { label: '⏰ 營業時間', value: item.time },
+                { label: '⏰ 時間/時段', value: item.time }, // 調整 label
                 { label: '🎫 門票費用', value: item.ticket },
                 { label: '🌟 特色&備註', value: item.feature },
             ].filter(d => d.value && d.value.trim() !== '' && d.value.trim() !== '無'); 
@@ -520,7 +1361,7 @@
                             return `<li><span class="detail-label">${d.label}</span>: ${d.value}</li>`;
                         }
                     }).join('')}
-                   </ul>`
+                    </ul>`
                 : '';
             
             const expandButton = detailsList.length > 0
@@ -530,7 +1371,6 @@
             // 行程排序與編輯按鈕
             const controls = `
                 <div class="activity-controls">
-                    ${expandButton}
                     <button class="menu-btn edit-btn" onclick="openModalForEdit(${dayIndex}, ${itemIndex})">⚙️</button>
                     ${itemIndex > 0 ? `<button class="menu-btn sort-btn" onclick="moveActivity(${dayIndex}, ${itemIndex}, -1)">⬆️</button>` : ''}
                     ${itemIndex < currentState.trip[dayIndex].details.length - 1 ? `<button class="menu-btn sort-btn" onclick="moveActivity(${dayIndex}, ${itemIndex}, 1)">⬇️</button>` : ''}
@@ -542,6 +1382,7 @@
                     <div class="activity-content">
                         <div class="description-wrap">
                             ${locationLink}
+                            ${expandButton}
                         </div>
                     </div>
                     ${controls}
@@ -604,12 +1445,17 @@
                 </div>
             `).join('');
 
-            const hotelsHtml = infoData.hotels.map(h => `
+            const hotelsHtml = infoData.hotels.map(h => {
+                const mapLink = getMapLink(h.location);
+                const nameHtml = mapLink 
+                    ? `<a href="${mapLink}" target="_blank" rel="noopener noreferrer">${h.name}</a>`
+                    : h.name;
+                return `
                 <div class="info-item hotel-item">
                     <span class="info-label">入住期間：${h.dates}</span>
-                    <p class="info-value">🏨 <a href="${getMapLink(h.location)}" target="_blank" rel="noopener noreferrer">${h.name}</a></p>
+                    <p class="info-value">🏨 ${nameHtml}</p>
                 </div>
-            `).join('');
+            `}).join('');
             
             // 渲染租車資訊
             const carRentalHtml = `
@@ -729,295 +1575,19 @@
                 const dayDetailHtml = renderDayCard(currentDayData, state.currentDay);
 
                 mainContent = `
-                    <nav class="day-nav">
+                    <div class="day-nav">
                         ${dayNavButtonsHtml}
-                    </nav>
-                    <div class="day-detail-area">
-                        ${dayDetailHtml}
                     </div>
+                    ${dayDetailHtml}
                 `;
             }
             
-            appContainer.innerHTML = `
-                ${tabNavHtml}
-                <div class="main-content-area">
-                    ${mainContent}
-                </div>
-            `;
-            
-            // 每次渲染後確保天氣資訊的載入
-            // loadWeather(); 
+            // 結合 Tab Nav 和 Main Content
+            appContainer.innerHTML = tabNavHtml + mainContent;
         }
 
-        // 狀態更新函式 (重新渲染頁面)
-        function updateState(newState) {
-            currentState = { ...currentState, ...newState };
-            renderApp();
-            // 在狀態變更後，如果切換回行程頁面，確保滾動到當前日期
-            if (currentState.currentTab === 'trip' && newState.currentDay !== undefined) {
-                scrollToActiveDay(newState.currentDay);
-            }
-        }
-        
-        // --- 行程細節控制函式 ---
-        
-        function toggleDetails(detailKey) {
-            // 複製 expandedDetails 物件
-            const newExpandedDetails = { ...currentState.expandedDetails };
-
-            // 切換狀態
-            if (newExpandedDetails[detailKey]) {
-                delete newExpandedDetails[detailKey];
-            } else {
-                newExpandedDetails[detailKey] = true;
-            }
-
-            // 更新狀態並重新渲染
-            updateState({ expandedDetails: newExpandedDetails });
-        }
-        
-        function scrollToActiveDay(dayIndex) {
-            const dayNav = document.querySelector('.day-nav');
-            const activeDayButton = document.querySelector(`.day-nav .nav-button:nth-child(${dayIndex + 1})`);
-            
-            if (dayNav && activeDayButton) {
-                // 計算需要滾動到的位置：按鈕左邊緣 - 導航欄寬度的一半 + 按鈕寬度的一半
-                const scrollPosition = activeDayButton.offsetLeft - (dayNav.offsetWidth / 2) + (activeDayButton.offsetWidth / 2);
-                
-                dayNav.scrollTo({
-                    left: scrollPosition,
-                    behavior: 'smooth'
-                });
-            }
-        }
-
-        // --- 行程編輯 Modal 邏輯 ---
-
-        function openModalForEdit(dayIndex, itemIndex) {
-            const day = currentState.trip[dayIndex];
-            const item = day.details[itemIndex];
-            
-            currentState.editingItem = { dayIndex, itemIndex, isNew: false };
-            
-            // 填充表單 HTML
-            activityForm.innerHTML = `
-                <input type="hidden" name="id" value="${item.id}">
-                
-                <label for="title">活動名稱:</label>
-                <input type="text" id="title" name="title" value="${item.title}" required>
-
-                <label for="time">時間/時段:</label>
-                <input type="text" id="time" name="time" value="${item.time || ''}">
-
-                <label for="location">地點名稱 (地圖搜尋):</label>
-                <input type="text" id="location" name="location" value="${item.location || ''}">
-                
-                <label for="travelTime">交通時間 (來自前一站):</label>
-                <input type="text" id="travelTime" name="travelTime" value="${item.travelTime || ''}">
-
-                <label for="ticket">門票/費用:</label>
-                <input type="text" id="ticket" name="ticket" value="${item.ticket || '無'}">
-
-                <label for="feature">特色/備註:</label>
-                <textarea id="feature" name="feature">${item.feature || ''}</textarea>
-                
-                <div class="form-actions">
-                    <button type="submit" class="save-btn">儲存修改</button>
-                    <button type="button" class="delete-btn" onclick="deleteActivity(${dayIndex}, ${itemIndex})">刪除此項目</button>
-                </div>
-            `;
-            
-            modalContainer.style.display = 'flex';
-        }
-        
-        function openModalForNew(dayIndex) {
-            currentState.editingItem = { dayIndex, itemIndex: null, isNew: true };
-            
-            activityForm.innerHTML = `
-                <h2>新增行程項目 (Day ${dayIndex + 1})</h2>
-                
-                <label for="title">活動名稱:</label>
-                <input type="text" id="title" name="title" value="" required>
-
-                <label for="time">時間/時段:</label>
-                <input type="text" id="time" name="time" value="TBD">
-
-                <label for="location">地點名稱 (地圖搜尋):</label>
-                <input type="text" id="location" name="location" value="">
-                
-                <label for="travelTime">交通時間 (來自前一站):</label>
-                <input type="text" id="travelTime" name="travelTime" value="">
-
-                <label for="ticket">門票/費用:</label>
-                <input type="text" id="ticket" name="ticket" value="無">
-
-                <label for="feature">特色/備註:</label>
-                <textarea id="feature" name="feature"></textarea>
-                
-                <div class="form-actions">
-                    <button type="submit" class="save-btn">新增項目</button>
-                </div>
-            `;
-            
-            modalContainer.style.display = 'flex';
-        }
-
-        function closeModal() {
-            modalContainer.style.display = 'none';
-            currentState.editingItem = null;
-        }
-
-        activityForm.onsubmit = function(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(activityForm);
-            const newItem = {};
-            for (let [key, value] of formData.entries()) {
-                newItem[key] = value.trim();
-            }
-            
-            const { dayIndex, itemIndex, isNew } = currentState.editingItem;
-            
-            if (isNew) {
-                // 產生一個新的 ID (簡單的隨機 ID)
-                newItem.id = Date.now() + Math.floor(Math.random() * 1000);
-                currentState.trip[dayIndex].details.push(newItem);
-            } else {
-                // 編輯現有項目
-                // 確保 id 被正確轉換成數字
-                newItem.id = Number(newItem.id); 
-                currentState.trip[dayIndex].details[itemIndex] = newItem;
-            }
-            
-            closeModal();
-            updateState({}); // 重新渲染
-        };
-        
-        function deleteActivity(dayIndex, itemIndex) {
-            if (confirm('確定要刪除此行程項目嗎？')) {
-                currentState.trip[dayIndex].details.splice(itemIndex, 1);
-                closeModal();
-                updateState({}); // 重新渲染
-            }
-        }
-        
-        function moveActivity(dayIndex, itemIndex, direction) {
-            const dayDetails = currentState.trip[dayIndex].details;
-            const newIndex = itemIndex + direction;
-            
-            if (newIndex >= 0 && newIndex < dayDetails.length) {
-                // 執行移動操作
-                const itemToMove = dayDetails.splice(itemIndex, 1)[0];
-                dayDetails.splice(newIndex, 0, itemToMove);
-                updateState({}); // 重新渲染
-            }
-        }
-
-        // --- 花費 Modal 邏輯 ---
-        
-        function openExpenseModal() {
-            // 取得今日日期 YYYY-MM-DD 格式
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            const todayDate = `${year}-${month}-${day}`;
-            
-            expenseForm.innerHTML = `
-                <div class="form-group">
-                    <label for="expense-date">日期:</label>
-                    <input type="date" id="expense-date" name="date" value="${todayDate}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="price">價格 (JPY):</label>
-                    <input type="number" id="price" name="price" required min="1" placeholder="輸入日圓價格">
-                </div>
-
-                <div class="form-group">
-                    <label for="category">分類:</label>
-                    <select id="category" name="category" required>
-                        <option value="餐飲">餐飲 🍜</option>
-                        <option value="交通">交通 🚗</option>
-                        <option value="門票">門票 🎫</option>
-                        <option value="購物">購物 🛍️</option>
-                        <option value="住宿">住宿 🏨</option>
-                        <option value="雜項">雜項 💡</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="method">支付方式:</label>
-                    <select id="method" name="method" required>
-                        <option value="現金">現金 💵</option>
-                        <option value="刷卡">刷卡 💳</option>
-                        <option value="電子支付">電子支付 📲</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="note">備註/品項:</label>
-                    <input type="text" id="note" name="note" placeholder="例如：拉麵、水族館門票">
-                </div>
-                
-                <div class="form-actions">
-                    <button type="submit" class="save-btn">記錄花費</button>
-                </div>
-            `;
-            
-            expenseModalContainer.style.display = 'flex';
-        }
-        
-        function closeExpenseModal() {
-            expenseModalContainer.style.display = 'none';
-        }
-        
-        expenseForm.onsubmit = function(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(expenseForm);
-            const newExpense = {
-                id: Date.now() + Math.floor(Math.random() * 1000),
-                currency: 'JPY'
-            };
-
-            for (let [key, value] of formData.entries()) {
-                if (key === 'date') {
-                    // 將 YYYY-MM-DD 轉為 MM-DD 儲存
-                    newExpense[key] = value.substring(5); 
-                } else if (key === 'price') {
-                    newExpense[key] = parseInt(value);
-                } else {
-                    newExpense[key] = value.trim();
-                }
-            }
-
-            currentState.expenses.push(newExpense);
-            closeExpenseModal();
-            updateState({ currentTab: 'expense' }); // 確保切換到花費頁面並重新渲染
-        };
-        
-        function deleteExpense(id) {
-            if (confirm('確定要刪除這筆花費記錄嗎？')) {
-                currentState.expenses = currentState.expenses.filter(e => e.id !== id);
-                updateState({ currentTab: 'expense' }); // 重新渲染花費頁面
-            }
-        }
-        
-        // --- 初始化 ---
+        // 初始化應用程式
         renderApp();
-        // 將核心函式暴露給全域環境，以便 HTML 中的 onclick 事件可以調用
-        window.updateState = updateState;
-        window.toggleDetails = toggleDetails;
-        window.openModalForEdit = openModalForEdit;
-        window.openModalForNew = openModalForNew;
-        window.closeModal = closeModal;
-        window.deleteActivity = deleteActivity;
-        window.moveActivity = moveActivity;
-        window.openExpenseModal = openExpenseModal;
-        window.closeExpenseModal = closeExpenseModal;
-        window.deleteExpense = deleteExpense;
-
     </script>
 </body>
 </html>
