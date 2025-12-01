@@ -18,7 +18,7 @@
                     colors: {
                         'snow-white': '#F0FFFF',        // 雪白色/極淺藍
                         'ice-blue': '#B3E5FC',          // 冰川藍
-                        'light-snow-blue': '#E5F3F7',   // **新增/修正：整個頁面柔和淺藍底色 (根據圖片調整)**
+                        'light-snow-blue': '#E5F3F7',   // 整個頁面柔和淺藍底色
                         'deep-sea-blue': '#01579B',     // 深海藍 (文字/強調)
                         'accent-yellow': '#FFD54F',     // 溫暖黃 (按鈕/點綴)
                         'soft-gray': '#F5F5F5'          // 背景灰
@@ -56,12 +56,15 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(1, 87, 155, 0.15);
+            /* --- 修正 #3: 圓弧銜接 --- */
+            border-bottom-left-radius: 35px; 
+            border-bottom-right-radius: 35px;
+            z-index: 10; /* 確保圓弧邊緣在下方內容上方 */
         }
         
-        /* 修正：圖片專用容器，用於控制圖片高度和滿版 */
+        /* 修正：圖片專用容器 */
         .header-image-container {
             width: 100%;
-            /* **修正**：增加圖片顯示高度，從 150px 調整為 200px */
             height: 200px; 
             overflow: hidden;
             background-color: #ffffff; 
@@ -70,9 +73,7 @@
         .header-image-container img {
             width: 100%;
             height: 100%;
-            /* 保持圖片比例並覆蓋整個容器 */
             object-fit: cover; 
-            /* 修正：確保圖片以塊級元素顯示，防止微小間隙 */
             display: block; 
         }
         
@@ -83,7 +84,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* 沿用原本的雪花動畫圖層 */
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%23fff" opacity="0.8"/><circle cx="20" cy="80" r="0.5" fill="%23fff" opacity="0.6"/><circle cx="70" cy="30" r="1.5" fill="%23fff" opacity="0.9"/></svg>');
             background-size: 100px 100px;
             opacity: 0.7;
@@ -96,6 +96,17 @@
                 background-position: 100px 100px;
             }
         }
+        
+        /* --- 新增樣式: 圓弧銜接的主內容區域 --- */
+        .app-main {
+            /* 向上移動 30px，讓圓弧與白色區塊重疊 */
+            margin-top: -30px; 
+            /* 確保內容不會被 header 遮擋，並保留下方 padding */
+            padding-top: 40px !important; 
+            position: relative;
+            z-index: 5;
+        }
+
         /* 隱藏捲軸但保持滑動功能 */
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
@@ -175,7 +186,7 @@
             <img src="IMG_4330.PNG" alt="北海道家族旅行計畫">
         </div>
         
-        <div class="px-4 py-3 absolute top-0 right-0 z-10 text-deep-sea-blue">
+        <div class="px-4 py-3 absolute top-12 right-0 z-10 text-deep-sea-blue">
             <div class="flex flex-col space-y-2 pt-2">
                 <button @click="currentTab = 'itinerary'" title="行程" :class="currentTab === 'itinerary' ? 'bg-deep-sea-blue text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-100'" class="w-7 h-7 rounded-full transition-all flex items-center justify-center text-xs">
                     <i class="fa-solid fa-map-location-dot"></i>
@@ -197,7 +208,7 @@
         <div class="snow-layer"></div> 
     </div>
     
-    <main class="p-4">
+    <main class="p-4 app-main">
         
         <div v-if="currentTab === 'itinerary'" class="animate-fade-in">
             
