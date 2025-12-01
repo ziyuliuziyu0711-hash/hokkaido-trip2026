@@ -47,6 +47,37 @@
             padding-bottom: 90px;
         }
 
+        /* 恢復雪景背景與漸層 */
+        .header-bg {
+            /* 恢復藍色漸層 */
+            background: linear-gradient(135deg, #B3E5FC 0%, #E3F2FD 100%); 
+            /* 調整 padding，讓空間更緊湊 */
+            padding-top: 1.5rem; 
+            padding-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(1, 87, 155, 0.15); /* 增加深度感 */
+        }
+        
+        /* 恢復雪花圖層 */
+        .snow-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%23fff" opacity="0.8"/><circle cx="20" cy="80" r="0.5" fill="%23fff" opacity="0.6"/><circle cx="70" cy="30" r="1.5" fill="%23fff" opacity="0.9"/></svg>');
+            background-size: 100px 100px;
+            opacity: 0.7;
+            animation: snowfall 10s linear infinite;
+            z-index: 5;
+        }
+
+        @keyframes snowfall {
+            to {
+                background-position: 100px 100px;
+            }
+        }
         /* 隱藏捲軸但保持滑動功能 */
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
@@ -106,17 +137,27 @@
         .expenses-banner {
             background: linear-gradient(135deg, #01579B 0%, #0097A7 100%);
         }
+        
+        /* 日期選單置頂的背景 */
+        .date-selector-sticky {
+             /* 讓日期選單置頂在 Banner 下方，並給予白色背景 */
+            background-color: #ffffff;
+            border-bottom: 1px solid #f0f0f0; 
+            z-index: 20; 
+            top: 0; 
+        }
     </style>
 </head>
 <body>
 
 <div id="app" class="app-container">
 
-    <div class="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-30">
-        <div class="px-4 py-3 flex justify-between items-center">
+    <div class="header-bg relative">
+        <div class="snow-layer"></div> <div class="px-4 py-3 flex justify-between items-center relative z-10 text-deep-sea-blue">
              <div>
-                <p class="text-[10px] font-medium text-slate-400 tracking-widest mb-0.5">北海道家族旅行計畫</p>
-                <h1 class="text-xl font-extrabold text-deep-sea-blue tracking-tight">Family Trip to Hokkaido 2026</h1>
+                <p class="text-[10px] font-medium opacity-70 tracking-widest mb-0.5">北海道家族旅行計畫</p>
+                <h1 class="text-3xl font-extrabold tracking-wide leading-none">Family Trip</h1>
+                <h2 class="text-xl font-light leading-none mt-1">to Hokkaido 2026</h2>
             </div>
             
             <div class="flex flex-col space-y-2">
@@ -140,7 +181,7 @@
         
         <div v-if="currentTab === 'itinerary'" class="animate-fade-in">
             
-            <div class="flex overflow-x-auto hide-scrollbar space-x-3 pb-4 mb-2 snap-x px-1 sticky top-[68px] bg-white z-20 pt-1 -mx-4 px-4 border-b border-slate-50/50">
+            <div class="flex overflow-x-auto hide-scrollbar space-x-3 pb-4 mb-2 snap-x px-1 sticky date-selector-sticky pt-1 -mx-4 px-4">
                 <div v-for="(day, index) in dates" :key="index" 
                      @click="selectedDateIndex = index"
                      class="snap-center flex-shrink-0 w-[58px] h-[68px] rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 border-2 shadow-sm"
@@ -246,6 +287,7 @@
             
             <div class="bg-gradient-to-r from-deep-sea-blue to-cyan-700 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-2xl"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-10 -mb-10 blur-2xl"></div>
                 <h3 class="font-bold text-lg mb-4 flex items-center relative z-10"><i class="fa-solid fa-calculator mr-2"></i> 匯率換算</h3>
                 <div class="flex items-center justify-between space-x-3 relative z-10">
                     <div class="flex-1">
